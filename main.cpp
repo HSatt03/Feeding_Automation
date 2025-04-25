@@ -533,3 +533,37 @@ ostream& operator<<(ostream& os, const Enum1& num)
     }
     return os;
 }
+
+class DiningHall
+{
+public:
+    DiningHall(int, string, string, int);
+    void setHallId(int);
+    void setName(string);
+    void setAddress(string);
+    void setCapacity(int);
+    void print()const;
+    bool operator==(DiningHall);
+    int getHallId()const
+    {
+        return _hall_id;
+    }
+    string getName()const
+    {
+        return _name;
+    }
+    string getAddress()const
+    {
+        return _address;
+    }
+    int getCapacity()const
+    {
+        return _capacity;
+    }
+
+private:
+    int _hall_id;
+    string _name;
+    string _address;
+    int _capacity;
+};
