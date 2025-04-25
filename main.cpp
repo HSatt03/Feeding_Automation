@@ -423,3 +423,64 @@ private:
     Enum1 _meal_type;
     vector<string> _side_item;
 };
+Meal::Meal(int m, string n, float p, Enum1 mt)
+{
+    setMeal_id(m);
+    setName(n);
+    setPrice(p);
+    setMeal_type(mt);
+}
+
+void Meal::setMeal_id(int m) 
+{
+    if(m > 0)
+    {
+        _meal_id = m;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for meal_id!!!");
+    }
+}
+
+void Meal::setName(string name)
+{
+    int value = name.length();
+    for(int i = 0; i < value; i++)
+    {
+        if(!isalpha(name[i]))
+        {
+            throw invalid_argument("Incorrect name!!!");
+        }
+    }
+    _name = name;
+}
+
+void Meal::setPrice(float p)
+{
+    if(p > 0.0)
+    {
+        _price = p;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for price!!!");
+    }
+}
+
+void Meal::setMeal_type(Enum1 e)
+{ 
+    if(e == FIRST_GROUP || e == SECOND_GROUP || e == THRID_GROUP)
+    {
+        _meal_type = e;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for meal_type!!!");
+    }
+}
+
+void Meal::setSide_item(vector<string> si)
+{
+    _side_item = si;
+}
