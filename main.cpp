@@ -148,3 +148,51 @@ void Student::setReservations(vector<Reservation>reserve)
 {
     _reservations = reserve;
 }
+
+void Student::print()const
+{
+    cout << "Name: " << _name << 
+                            "\nUser Id: " << _user_id << 
+                                                    "\nStudent Id: " << _student_id << 
+                                                                                    "\nEmail: " << _email <<
+                                                                                                    "\nBalance: " << _balance << endl;
+}
+
+void Student::reserveMeal(Meal meal)
+{
+    Reservation reserve;
+    reserve.Meal(meal);
+    _reservations.push_back(reserve);
+}
+
+bool Student::cancelReservation(Reservation reserve)
+{
+    bool success = false;
+    for(auto add = _reservations.begin(); add != _reservations.end(); add++)
+    {
+        if(*add == reserve)
+        {
+            _reservations.erase(add);
+            success = true;
+        }
+    }
+    if(success)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Student::operator==(Student ob)
+{
+    return(_user_id == ob._user_id
+          && _student_id == ob._student_id
+          && _name == ob._name
+          && _email == ob._email
+          && _balance == ob._balance
+          && _is_active == ob._is_active);
+}
+////////////////////////////////////
