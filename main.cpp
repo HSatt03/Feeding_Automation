@@ -56,3 +56,46 @@ private:
     bool _is_active;
     vector<Reservation*>_reservations;
 };
+////////////////////////////////////////
+Student::Student(int user_id, string student_id, string name, string email, float balance, bool is_active)
+{
+    setUserId(user_id);  
+    setStudentId(student_id);
+    setName(name);
+    setEmail(email);
+    setBalance(balance);
+    setIsActive(is_active);
+}
+
+void Student::setUserId(int user_id)
+{
+    if(user_id > 0)
+    {
+        _user_id = user_id;
+    }
+}
+
+void Student::setStudentId(string student_id)
+{
+    if(student_id.length() == 10)
+    {
+        _student_id = student_id;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for strudent_id!!!");
+    }
+}
+
+void Student::setName(string name)
+{
+    int value = name.length();
+    for(int i = 0; i < value; i++)
+    {
+        if(!isalpha(name[i]))
+        {
+            throw invalid_argument("Incorrect name!!!");
+        }
+    }
+    _name = name;
+}
