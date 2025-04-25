@@ -99,3 +99,52 @@ void Student::setName(string name)
     }
     _name = name;
 }
+
+void Student::setEmail(string email)
+{
+    bool flag;
+    string s1;
+    int value = email.length();
+    for(int i = 0; i < value; i++)
+    {
+        if(email[i] == '@')
+        {
+            flag = true;
+            s1 = email.substr(i, 10);
+            if(s1 == "@gmail.com")
+            {
+                _email = email;
+            } 
+            else
+            {
+                throw invalid_argument("Incorrect email!!!");
+            }
+        }
+        else if(flag == false && i == value - 1)
+        {
+            throw invalid_argument("Incorrect email!!!");
+        }
+    }
+}
+
+void Student::setBalance(float balance)
+{
+    if(balance >= 0)
+    {
+        _balance = balance;
+    }
+    else 
+    {
+        throw invalid_argument("Incorrect value for balance!!!");
+    }
+}
+
+void Student::setIsActive(bool is_active)
+{
+    _is_active = is_active;
+}
+
+void Student::setReservations(vector<Reservation>reserve)
+{
+    _reservations = reserve;
+}
