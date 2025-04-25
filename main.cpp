@@ -253,3 +253,67 @@ private:
     Enum2 _status;
     time_t _created_at;
 };
+Reservation::Reservation(int r, Student S, DiningHall d, Meal m, Enum2 s, time_t c)
+{
+    setReservation_id(r);
+    setStudent(S);
+    setDhall(d);
+    setMeal(m);
+    setStatus(s);
+    setTime(c);
+}
+
+void Reservation::setReservation_id(int r)
+{
+    if(r > 0)
+    {
+        reservation_id = r;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for reservations");
+    }
+}
+
+void Reservation::setStudent(Student s)
+{
+    s.setUserId(s.getUserId());
+    s.setStudentId(s.getStudentId());
+    s.setName(s.getName());
+    s.setEmail(s.getEmail());
+    s.setBalance(s.getBalance());
+    s.setIsActive(s.getIsActive());
+}
+
+void Reservation::setDhall(DiningHall d)
+{
+    d.setHallId(d.getHallId());
+    d.setName(d.getName());
+    d.setAddress(d.getAddress());
+    d.setCapacity(d.getCapacity());
+}
+
+void Reservation::setMeal(Meal m)
+{
+    m.setMeal_id(m.getMeal_id());
+    m.setName(m.getName());
+    m.setPrice(m.getPrice());
+    m.setMeal_type(m.getMeal_type());
+}
+
+void Reservation::setStatus(Enum2 s)
+{
+    _status = s; //بپرسم
+}
+
+void Reservation::setTime(time_t t)
+{
+    if(t > 0)
+    {
+        _created_at = t;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for time!!!");
+    }
+}
