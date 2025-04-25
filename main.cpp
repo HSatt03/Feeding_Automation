@@ -317,3 +317,57 @@ void Reservation::setTime(time_t t)
         throw invalid_argument("Incorrect value for time!!!");
     }
 }
+void Reservation::print()const
+{
+    cout << "reservation id : " << _reservation_id;
+    cout << endl;
+    _student.print();
+    cout << endl;
+    _dHall.print();
+    cout << "endl";
+    _meal.print();
+    cout << "\nstatus : " << _status;
+    cout << "\ncreaded at : ";
+    tm* localTime = localtime(&_created_at);
+    char buffer1[80];
+    char buffer2[80];
+    strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
+    strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
+    cout << buffer1 <<" " << buffer2 << endl;
+}
+
+bool Reservation::cancel()
+{
+    if(_status == CANCELLED)
+    return true;
+    else
+    return false;
+}
+
+bool Reservation::operator==(Reservation ob)
+{
+    return(_reservation_id == ob._reservation_id
+           && _student == ob._student
+           && _dHall == ob._dHall
+           && _meal == ob._meal
+           && _status == ob._status
+           && _created_at == ob._created_at);
+}
+ostream& operator<<(ostream& os, const Enum2& num)
+{
+    switch(num)
+    {
+        case FAILED:
+            os << "FAILED";
+            break;
+        case CANCELLED:
+            os << "CANCELLED";
+            break;
+        case SUCCESSFULL:
+            os << "SUCCESSFULL";
+            break;
+        default:
+            os << "Unkown!!!";
+    }
+    return os;
+}
