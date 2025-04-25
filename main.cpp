@@ -609,3 +609,11 @@ void DiningHall::setCapacity(int capacity)
         _capacity = capacity;
     }
 }
+
+void DiningHall::print()const
+{
+    cout << "Name: " << _name << 
+                            "\nHall Id: " << _hall_id << 
+                                                    "\nAddress: " << _address << 
+                                                                            "\nCapacity: " << _capacity << endl;            
+}
