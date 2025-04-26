@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include "meal.hpp"
 using namespace std;
 
 enum Enum1
