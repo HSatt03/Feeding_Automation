@@ -7,6 +7,7 @@
 #include "reservation.hpp"
 #include "meal.hpp"
 using namespace std;
+class Reservation;
 class Student
 {
 public:
