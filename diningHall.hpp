@@ -6,7 +6,7 @@ using namespace std;
 class DiningHall
 {
 public:
-    DiningHall(int, string, string, int);
+    DiningHall(int = 1, string = "Sadaf", string = "Next to the central library", int = 100);
     void setHallId(int);
     void setName(string);
     void setAddress(string);

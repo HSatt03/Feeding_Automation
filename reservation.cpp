@@ -5,70 +5,12 @@
 #include "meal.hpp"
 #include "diningHall.hpp"
 #include "reservation.hpp"
+#include "student.hpp"
 using namespace std;
-class Stucent;
-
-enum Enum2
-{
-    FAILED,
-    CANCELLED,
-    SUCCESSFULL,
-};
-
-class Reservation
-{
-public:
-    Reservation(int = 0, Enum2 = FAILED, time_t = time(0), Stucent*, DiningHall, Meal); 
-
-    void setReservation_id(int);
-    void setStudent(Student*);
-    void setDhall(DiningHall);
-    void setMeal(Meal);
-    void setStatus(Enum2);
-    void setTime(time_t);
-
-    int getReservation_id()const
-    {
-        return _reservation_id;
-    }
-    Student getStudent()const
-    {
-        return *_student;
-    }
-    DiningHall getDhall()const
-    {
-        return _dHall;
-    }
-    Meal getMeal()const
-    {
-        return _meal;
-    }
-    Enum getStatus()const
-    {
-        return _status;
-    }
-    time_t getTime()const
-    {
-        return _created_at;
-    }
-
-    void print()const;
-    bool cancel();
-    bool operator==(Reservation);
-    friend ostream& operator<<(ostream& ,const Enum2&);
-
-private:
-    int _reservation_id;
-    Student *_student;
-    DiningHall _dHall;
-    Meal _meal;
-    Enum2 _status;
-    time_t _created_at;
-};
-Reservation::Reservation(int r, Enum2 s, time_t c, Student* S, DiningHall d, Meal m)
+Reservation::Reservation(Student* S, DiningHall d, Meal m,int r, Enum2 s, time_t c)
 {
     setReservation_id(r);
-    setStudent(*S);
+    setStudent(S);
     setDhall(d);
     setMeal(m);
     setStatus(s);
@@ -79,7 +21,7 @@ void Reservation::setReservation_id(int r)
 {
     if(r > 0)
     {
-        reservation_id = r;
+        _reservation_id = r;
     }
     else
     {
