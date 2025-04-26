@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+using namespace std;
 
 enum Enum1
 {
