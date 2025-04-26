@@ -18,11 +18,11 @@ public:
     void setEmail(string);
     void setBalance(float);
     void setIsActive(bool);
-    void setReservations(vector<Reservation>);
+    void setReservations(vector<Reservation*>);
 
     void print()const;
     void reserveMeal(Meal);
-    bool cancelReservation(Reservation);
+    bool cancelReservation(Reservation*);
     bool operator==(Student);
     int getUserId()const
     {
@@ -48,7 +48,7 @@ public:
     {
         return _is_active;
     }
-    const vector<string>& getReservations()const
+    const vector<Reservation*>& getReservations()const
     {
         return _reservations;
     }
