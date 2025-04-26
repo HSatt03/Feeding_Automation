@@ -24,7 +24,7 @@ public:
     void setMeal_type(Enum1);
     void setSide_item(vector<string>);
 
-    void print();
+    void print()const;
     void update_price(float);
     void add_side_item(string);
     bool operator==(Meal);

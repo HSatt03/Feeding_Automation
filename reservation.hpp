@@ -20,7 +20,7 @@ enum Enum2
 class Reservation
 {
 public:
-    Reservation(int = 0, Enum2 = FAILED, time_t = time(0)); 
+    Reservation(Student*, DiningHall, Meal, int = 0, Enum2 = FAILED, time_t = time(0)); 
 
     void setReservation_id(int);
     void setStudent(Student*);
@@ -45,7 +45,7 @@ public:
     {
         return _meal;
     }
-    Enum getStatus()const
+    Enum2 getStatus()const
     {
         return _status;
     }
