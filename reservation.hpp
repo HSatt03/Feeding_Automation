@@ -6,7 +6,9 @@
 #include <ctime>
 #include "meal.hpp"
 #include "diningHall.hpp"
+using namespace std;
 class Stucent;
+
 
 enum Enum2
 {
