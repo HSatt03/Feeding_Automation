@@ -5,14 +5,12 @@
 #include "meal.hpp"
 #include "diningHall.hpp"
 #include "reservation.hpp"
-#include "student.hpp"
 using namespace std;
-Reservation::Reservation(Student* S, DiningHall d, Meal m,int r, Enum2 s, time_t c)
+Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t c)
 {
     setReservation_id(r);
-    setStudent(S);
-    setDhall(d);
-    setMeal(m);
+    setDhall(*d);
+    setMeal(*m);
     setStatus(s);
     setTime(c);
 }
@@ -29,33 +27,23 @@ void Reservation::setReservation_id(int r)
     }
 }
 
-void Reservation::setStudent(Student* s)
+void Reservation::setDhall(DiningHall *d)
 {
-    s->setUserId(s->getUserId());
-    s->setStudentId(s->getStudentId());
-    s->setName(s->getName());
-    s->setEmail(s->getEmail());
-    s->setBalance(s->getBalance());
-    s->setIsActive(s->getIsActive());
+    d->setHallId(d->getHallId());
+    d->setName(d->getName());
+    d->setAddress(d->getAddress());
+    d->setCapacity(d->getCapacity());
 }
 
-void Reservation::setDhall(DiningHall d)
+void Reservation::setMeal(Meal *m)
 {
-    d.setHallId(d.getHallId());
-    d.setName(d.getName());
-    d.setAddress(d.getAddress());
-    d.setCapacity(d.getCapacity());
+    m->setMeal_id(m->getMeal_id());
+    m->setName(m->getName());
+    m->setPrice(m->getPrice());
+    m->setMeal_type(m->getMeal_type());
 }
 
-void Reservation::setMeal(Meal m)
-{
-    m.setMeal_id(m.getMeal_id());
-    m.setName(m.getName());
-    m.setPrice(m.getPrice());
-    m.setMeal_type(m.getMeal_type());
-}
-
-void Reservation::setStatus(Enum2 s)
+void Reservation::setStatus(RStatus s)
 {
     _status = s;
 }
@@ -75,11 +63,9 @@ void Reservation::print()const
 {
     cout << "reservation id : " << _reservation_id;
     cout << endl;
-    _student->print();
-    cout << endl;
-    _dHall.print();
+    _dHall->print();
     cout << "endl";
-    _meal.print();
+    _meal->print();
     cout << "\nstatus : " << _status;
     cout << "\ncreaded at : ";
     tm* localTime = localtime(&_created_at);
@@ -101,13 +87,12 @@ bool Reservation::cancel()
 bool Reservation::operator==(Reservation ob)
 {
     return(_reservation_id == ob._reservation_id
-           && _student == ob._student
            && _dHall == ob._dHall
            && _meal == ob._meal
            && _status == ob._status
            && _created_at == ob._created_at);
 }
-ostream& operator<<(ostream& os, const Enum2& num)
+ostream& operator<<(ostream& os, const RStatus& num)
 {
     switch(num)
     {
