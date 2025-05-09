@@ -66,6 +66,24 @@ void Meal::setSide_item(vector<string> si)
 {
     _side_item = si;
 }
+
+void Meal::setIsActive(bool b)
+{
+    _isActive = b;
+}
+
+void Meal::setReservationDay(Enum3 e)
+{
+    if(e == SATURDAY || e == SUNDAY || e == MONDAY || e == TUESDAY || e ==  WEDNESDAY || e == THURSDAY) 
+    {
+        _reservation_day = e;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for reservation_day!!!");
+    }
+}
+
 void Meal::print()const
 {
     cout << "meal id : " << _meal_id;
@@ -114,4 +132,14 @@ ostream& operator<<(ostream& os, const Enum1& num)
             os << "Unknown!!!";
     }
     return os;
+}
+
+bool Meal::activate()
+{
+    _isActive = 1;
+}
+
+bool Meal::deactivate()
+{
+    _isActive = 0;
 }

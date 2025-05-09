@@ -10,7 +10,17 @@ enum Enum1
 {
     FIRST_GROUP,
     SECOND_GROUP,
-    THRID_GROUP,
+    THRID_GROUP
+};
+
+enum Enum3
+{
+    SATURDAY,
+    SUNDAY,
+    MONDAY,
+    TUESDAY, 
+    WEDNESDAY,
+    THURSDAY
 };
 
 class Meal
@@ -23,12 +33,16 @@ public:
     void setPrice(float);
     void setMeal_type(Enum1);
     void setSide_item(vector<string>);
+    void setIsActive(bool);
+    void setReservationDay(Enum3);
 
     void print()const;
     void update_price(float);
     void add_side_item(string);
     bool operator==(Meal);
     friend ostream& operator<<(ostream&, const Enum1&);
+    bool activate();
+    bool deactivate();
 
     int getMeal_id()const 
     {
@@ -50,6 +64,14 @@ public:
     {
         return _side_item;
     }
+    bool getIsActive()const
+    {
+        return _isActive;
+    }
+    Enum3 getReservationDay()const
+    {
+        return _reservation_day;
+    }
 
 private:
     int _meal_id;
@@ -57,6 +79,8 @@ private:
     float _price;
     Enum1 _meal_type;
     vector<string> _side_item;
+    bool _isActive;
+    Enum3 _reservation_day;
 };
 #endif
 
