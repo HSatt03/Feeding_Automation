@@ -113,6 +113,32 @@ bool Student::cancelReservation(Reservation* reserve)
     }
 }
 
+bool Student::isActive()
+{
+    if(_is_active)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void Student::activate()
+{
+    _is_active = true;
+}
+
+void Student::deactivate()
+{
+    _is_active = false;
+}
+void Student::getType()
+{
+
+}
+
 bool Student::operator==(Student ob)
 {
     return(getUserID() == ob.getUserID()

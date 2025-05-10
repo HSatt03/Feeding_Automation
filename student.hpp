@@ -23,6 +23,10 @@ public:
     void print()const;
     void reserveMeal(Meal);
     bool cancelReservation(Reservation*);
+    bool isActive();
+    void activate();
+    void deactivate();
+    void getType();
     bool operator==(Student);
 
     string getStudentId()const
@@ -41,7 +45,7 @@ public:
     {
         return _is_active;
     }
-    const vector<Reservation*>& getReservations()const
+    const vector<Reservation*>& getReserves()const
     {
         return _reservations;
     }
