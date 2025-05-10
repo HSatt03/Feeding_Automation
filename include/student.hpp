@@ -26,7 +26,7 @@ public:
     bool isActive();
     void activate();
     void deactivate();
-    void getType();
+    string getType();
     bool operator==(Student);
 
     string getStudentId()const

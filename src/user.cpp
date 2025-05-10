@@ -62,7 +62,7 @@ void User::print()const
                                                                 "\nHashed Password: " << _hashed_password;
 }
 
-void User::getType()
+string User::getType()
 {
-
+    return "User";
 }

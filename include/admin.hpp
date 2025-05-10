@@ -6,6 +6,6 @@ class Admin
 {
 public:
     void print()const;
-    void getType();
+    string getType();
 };
 #endif

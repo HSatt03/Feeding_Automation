@@ -14,7 +14,7 @@ public:
     void setPassword(string);
 
     virtual void print()const;
-    virtual void getType();
+    virtual string getType();
     
     int getUserID()const
     {
