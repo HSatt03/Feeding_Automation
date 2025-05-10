@@ -14,7 +14,7 @@ void Storage::setDiningHallIDCounter(int d)
 {
     _diningHallIDCounter = (d > 0) ? d : 0;
 }
-static Storage&::Storage instance()
+Storage& Storage::instance()
 {
     static Storage instance;
     return instance;

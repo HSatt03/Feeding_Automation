@@ -52,7 +52,7 @@ void Meal::setPrice(float p)
     }
 }
 
-void Meal::setMeal_type(Enum1 e)
+void Meal::setMeal_type(MealType e)
 { 
     if(e == FIRST_GROUP || e == SECOND_GROUP || e == THRID_GROUP)
     {
@@ -78,7 +78,7 @@ void Meal::setReserveDay(ReserveDay e)
 {
     if(e == SATURDAY || e == SUNDAY || e == MONDAY || e == TUESDAY || e ==  WEDNESDAY || e == THURSDAY) 
     {
-        _reservation_day = e;
+        _reserve_day = e;
     }
     else
     {
@@ -117,7 +117,7 @@ bool Meal::operator==(Meal ob)
             && _meal_type == ob._meal_type
             && _side_item == ob._side_item);
 }
-ostream& operator<<(ostream& os, const Enum1& num)
+ostream& operator<<(ostream& os, const MealType& num)
 {
     switch(num)
     {

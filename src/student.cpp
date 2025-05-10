@@ -85,7 +85,7 @@ void Student::print()const
                                 "\nBalance: " << _balance << endl;
 }
 
-void Student::reserveMeal(Meal meal)
+void Student::reserveMeal(Meal* meal)
 {
     Reservation* reserve;
     reserve->setMeal(meal);

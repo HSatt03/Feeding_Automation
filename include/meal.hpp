@@ -31,19 +31,19 @@ public:
     void setMeal_id(int);
     void setName(string);
     void setPrice(float);
-    void setMeal_type(EnuMealTypem1);
+    void setMeal_type(MealType);
     void setSide_item(vector<string>);
-    bool isActive(bool);
     void setIsActive(bool);
     void setReserveDay(ReserveDay);
 
+    bool isActive(bool);
     void print()const;
     void update_price(float);
     void add_side_item(string);
-    bool operator==(Meal);
-    friend ostream& operator<<(ostream&, const MealType&);
     bool activate();
     bool deactivate();
+    bool operator==(Meal);
+    friend ostream& operator<<(ostream&, const MealType&);
 
     int getMeal_id()const 
     {
@@ -71,7 +71,7 @@ public:
     }
     ReserveDay getReserveDay()const
     {
-        return _reservation_day;
+        return _reserve_day;
     }
 
 private:

@@ -21,7 +21,7 @@ public:
     void setReservations(vector<Reservation*>);
 
     void print()const;
-    void reserveMeal(Meal);
+    void reserveMeal(Meal*);
     bool cancelReservation(Reservation*);
     bool isActive();
     void activate();

@@ -9,8 +9,8 @@ using namespace std;
 Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t c)
 {
     setReservation_id(r);
-    setDhall(*d);
-    setMeal(*m);
+    setDhall(d);
+    setMeal(m);
     setStatus(s);
     setTime(c);
 }
