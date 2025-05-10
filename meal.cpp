@@ -5,12 +5,14 @@
 #include "meal.hpp"
 using namespace std;
 
-Meal::Meal(int m, string n, float p, Enum1 mt)
+Meal::Meal(int m, string n, float p, MealType mt, ReserveDay r, bool b)
 {
     setMeal_id(m);
     setName(n);
     setPrice(p);
     setMeal_type(mt);
+    setReserveDay(r);
+    setIsActive(b);
 }
 
 void Meal::setMeal_id(int m) 
@@ -66,6 +68,24 @@ void Meal::setSide_item(vector<string> si)
 {
     _side_item = si;
 }
+
+void Meal::setIsActive(bool b)
+{
+    _isActive = b;
+}
+
+void Meal::setReserveDay(ReserveDay e)
+{
+    if(e == SATURDAY || e == SUNDAY || e == MONDAY || e == TUESDAY || e ==  WEDNESDAY || e == THURSDAY) 
+    {
+        _reservation_day = e;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for reservation_day!!!");
+    }
+}
+
 void Meal::print()const
 {
     cout << "meal id : " << _meal_id;
@@ -114,4 +134,18 @@ ostream& operator<<(ostream& os, const Enum1& num)
             os << "Unknown!!!";
     }
     return os;
+}
+
+bool Meal::isActive(bool b)
+{
+    _isActive = b;
+}
+bool Meal::activate()
+{
+    isActive(1);
+}
+
+bool Meal::deactivate()
+{
+    isActive(0);
 }
