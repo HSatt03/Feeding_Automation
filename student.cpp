@@ -6,6 +6,7 @@
 #include "student.hpp"
 #include "meal.hpp"
 using namespace std;
+
 Student::Student(int user_id, string name, string last_name, string password, string student_id, string email, float balance, bool is_active)
 :User(user_id, name, last_name, password)
 {
@@ -78,12 +79,10 @@ void Student::setReservations(vector<Reservation*>reserve)
 
 void Student::print()const
 {
-    cout << "Name: " << getName() << 
-                            "\nLast Name: " << getLastName() <<
-                                             "\nUser Id: " << getUserID() << 
-                                                                "\nStudent Id: " << _student_id << 
-                                                                                     "\nEmail: " << _email <<
-                                                                                            "\nBalance: " << _balance << endl;
+    User::print();
+    cout << "\nStudent Id: " << _student_id << 
+                        "\nEmail: " << _email <<
+                                "\nBalance: " << _balance << endl;
 }
 
 void Student::reserveMeal(Meal meal)
