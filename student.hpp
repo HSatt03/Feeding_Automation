@@ -1,20 +1,20 @@
-#ifndef STUDENT_H
-#define STUDENT_H
+#ifndef STUDENT_HPP
+#define STUDENT_HPP
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cctype>
 #include "meal.hpp"
+#include "user.hpp"
 using namespace std;
+class User;
 class Reservation;
-class Student
+class Student : public User
 {
 public:
-    Student(int user_id = 12, string student_id = "4022559082", string name = "name", string email = "name20002001@gmail.com", float balance = 100000, bool is_active = false);
+    Student(int = 0, string = "", string = "", string = "", string = "", string = "", float = 0, bool = 0);
 
-    void setUserId(int);
     void setStudentId(string);
-    void setName(string);
     void setEmail(string);
     void setBalance(float);
     void setIsActive(bool);
@@ -23,18 +23,15 @@ public:
     void print()const;
     void reserveMeal(Meal);
     bool cancelReservation(Reservation*);
+    bool isActive();
+    void activate();
+    void deactivate();
+    void getType();
     bool operator==(Student);
-    int getUserId()const
-    {
-        return _user_id;
-    }
+
     string getStudentId()const
     {
         return _student_id;
-    }
-    string getName()const
-    {
-        return _name;
     }
     string getEmail()const
     {
@@ -48,15 +45,13 @@ public:
     {
         return _is_active;
     }
-    const vector<Reservation*>& getReservations()const
+    const vector<Reservation*>& getReserves()const
     {
         return _reservations;
     }
 
 private:
-    int _user_id;
     string _student_id;
-    string _name;
     string _email;
     float _balance;
     bool _is_active;

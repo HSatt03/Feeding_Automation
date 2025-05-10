@@ -6,22 +6,14 @@
 #include "student.hpp"
 #include "meal.hpp"
 using namespace std;
-Student::Student(int user_id, string student_id, string name, string email, float balance, bool is_active)
+
+Student::Student(int user_id, string name, string last_name, string password, string student_id, string email, float balance, bool is_active)
+:User(user_id, name, last_name, password)
 {
-    setUserId(user_id);  
     setStudentId(student_id);
-    setName(name);
     setEmail(email);
     setBalance(balance);
     setIsActive(is_active);
-}
-
-void Student::setUserId(int user_id)
-{
-    if(user_id > 0)
-    {
-        _user_id = user_id;
-    }
 }
 
 void Student::setStudentId(string student_id)
@@ -34,19 +26,6 @@ void Student::setStudentId(string student_id)
     {
         throw invalid_argument("Incorrect value for strudent_id!!!");
     }
-}
-
-void Student::setName(string name)
-{
-    int value = name.length();
-    for(int i = 0; i < value; i++)
-    {
-        if(!isalpha(name[i]))
-        {
-            throw invalid_argument("Incorrect name!!!");
-        }
-    }
-    _name = name;
 }
 
 void Student::setEmail(string email)
@@ -100,11 +79,10 @@ void Student::setReservations(vector<Reservation*>reserve)
 
 void Student::print()const
 {
-    cout << "Name: " << _name << 
-                            "\nUser Id: " << _user_id << 
-                                                    "\nStudent Id: " << _student_id << 
-                                                                                    "\nEmail: " << _email <<
-                                                                                                    "\nBalance: " << _balance << endl;
+    User::print();
+    cout << "\nStudent Id: " << _student_id << 
+                        "\nEmail: " << _email <<
+                                "\nBalance: " << _balance << endl;
 }
 
 void Student::reserveMeal(Meal meal)
@@ -135,11 +113,39 @@ bool Student::cancelReservation(Reservation* reserve)
     }
 }
 
+bool Student::isActive()
+{
+    if(_is_active)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void Student::activate()
+{
+    _is_active = true;
+}
+
+void Student::deactivate()
+{
+    _is_active = false;
+}
+void Student::getType()
+{
+
+}
+
 bool Student::operator==(Student ob)
 {
-    return(_user_id == ob._user_id
+    return(getUserID() == ob.getUserID()
+          && getName() == ob.getName()
+          && getLastName() == ob.getLastName()
+          && getPasssword() == ob.getPasssword()
           && _student_id == ob._student_id
-          && _name == ob._name
           && _email == ob._email
           && _balance == ob._balance
           && _is_active == ob._is_active);
