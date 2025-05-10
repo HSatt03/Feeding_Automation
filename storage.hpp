@@ -29,5 +29,5 @@ private:
     Storage(int = 0, int = 0);
     Storage(const Storage&) = delete;
     Storage operator=(const Storage&) = delete;
-};
+}
 #endif
