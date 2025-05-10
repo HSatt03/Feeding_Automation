@@ -11,8 +11,8 @@ public:
     void setMealIDCounter(int);
     void setDiningHallIDCounter(int);
 
-    vector<Meal> allMeals;
-    vector<DiningHall> allDiningHall;
+    vector<Meal*> allMeals;
+    vector<DiningHall*> allDiningHall;
     static Storage& instance();
     int getMealIDCounter()const
     {
@@ -29,5 +29,5 @@ private:
     Storage(int = 0, int = 0);
     Storage(const Storage&) = delete;
     Storage operator=(const Storage&) = delete;
-}
+};
 #endif

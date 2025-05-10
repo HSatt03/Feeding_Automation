@@ -1,55 +1,56 @@
 #include <iostream>
 #include "panel.hpp"
+#include "reservation.hpp"
 using namespace std;
-bool panel::Action(bool b)
+bool Panel::Action(bool b)
 {
 
 }
-void panel::showMenu()
+void Panel::showMenu()
 {
 
 }
-void panel::showStudentInfo()
+void Panel::showStudentInfo()
 {
 
 }
-void panel::checkBalance()
+void Panel::checkBalance()
 {
 
 }
-void panel::viewReservation()
+void Panel::viewReservation()
 {
 
 }
-void panel::addviewReservation(Reservation)
+void Panel::addviewReservation(Reservation)
 {
 
 }
-void panel::addToShoppingCart()
+void Panel::addToShoppingCart()
 {
 
 }
-void panel::confirmShoppingCart()
+void Panel::confirmShoppingCart()
 {
 
 }
-void panel::removeShoppingCartItem()
+void Panel::removeShoppingCartItem()
 {
 
 }
-void panel::increaseBalance()
+void Panel::increaseBalance()
 {
 
 }
-void panel::viewRecentTransactions()
+void Panel::viewRecentTransactions()
 {
 
 }
-void panel::cancelReservation(int)
-[
-
-]
-void panel::exit(bool b)
+void Panel::cancelReservation(int)
+{
+    
+}
+void Panel::exit(bool b)
 {
 
 }
