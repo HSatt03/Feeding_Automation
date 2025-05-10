@@ -7,16 +7,32 @@ class User
 {
 public:
     User(int = 0, string = "", string = "", string = "");
+
     void setUserID(int);
     void setName(string);
     void setLastName(string);
     void setPassword(string);
-    int getUserID()const;
-    string getName()const;
-    string getLastName()const;
-    string getPasssword()const;
+
     virtual void print()const;
     virtual void getType();
+    
+    int getUserID()const
+    {
+        return _user_id;
+    }
+    string getName()const
+    {
+        return _name;
+    }
+    string getLastName()const
+    {
+        return _last_name;
+    }
+    string getPasssword()const
+    {
+        return _hashed_password;
+    }
+
 private:
     int _user_id;
     string _name;
