@@ -134,9 +134,9 @@ void Student::deactivate()
 {
     _is_active = false;
 }
-void Student::getType()
+string Student::getType()
 {
-
+    return "Student";
 }
 
 bool Student::operator==(Student ob)

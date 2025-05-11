@@ -7,7 +7,7 @@ void Admin::print()const
 
 }
 
-void Admin::getType()
+string Admin::getType()
 {
-    
+    return "Admin";
 }
