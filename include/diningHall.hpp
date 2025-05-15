@@ -1,8 +1,6 @@
 #ifndef DININGHALL_H
 #define DININGHALL_H
-#include <iostream>
 #include <string>
-using namespace std;
 class DiningHall
 {
 public:

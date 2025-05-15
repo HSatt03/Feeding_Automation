@@ -1,7 +1,6 @@
 #ifndef PANEL.H
 #define PANEL.H
 #include "reservation.hpp"
-using namespace std;
  class Panel
  {
  public:

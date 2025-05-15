@@ -1,12 +1,10 @@
 #ifndef STUDENT_HPP
 #define STUDENT_HPP
-#include <iostream>
 #include <string>
 #include <vector>
 #include <cctype>
 #include "meal.hpp"
 #include "user.hpp"
-using namespace std;
 class User;
 class Reservation;
 class Student : public User
