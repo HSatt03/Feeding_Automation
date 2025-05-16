@@ -1,7 +1,6 @@
 #ifndef STORAGE_H
 #define STORAGE_H
 #include <vector>
-using namespace std;
 class Meal;
 class DiningHall;
 
