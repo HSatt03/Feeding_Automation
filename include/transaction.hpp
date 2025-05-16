@@ -1,0 +1,60 @@
+#ifndef TRANSACTION_H
+#define TRANSACTION_H
+using namespace std;
+
+enum TransactionType
+{
+    TRANSFER,
+    PAYMENT
+};
+
+enum TransactionStatus
+{
+    PENDING,
+    COMPLETED,
+    FIALED
+};
+
+class Transaction
+{
+public:
+    Transaction(int = 0, string = "00000", float = 0.00, TransactionType = TRANSFER, TransactionStatus = PENDING, time_t = time(0));
+    void setTransactionID(int);
+    void setTrackingCode(string);
+    void setAmount(float);
+    void setType(TransactionType);
+    void setStatus(TransactionStatus);
+    void setCreatedAT(time_t);
+
+    int getTransactionID()const
+    {
+        return _transactionID;
+    }
+    string getTrackingCode()const
+    {
+        return _trackingCode;
+    }
+    float getAmount()const
+    {
+        return _amount;
+    }
+    TransactionType getType()const
+    {
+        return _type;
+    }
+    TransactionStatus getStatus()const
+    {
+        return _status;
+    }
+    time_t getCreatedAT()const
+    {
+        return _createdAT;
+    }
+    private:
+    int _transactionID;
+    string _trackingCode;
+    float _amount;
+    TransactionType _type;
+    TransactionStatus _status;
+    time_t _createdAT;
+};
