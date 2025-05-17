@@ -11,7 +11,8 @@ enum RStatus
 {
     FAILED,
     CANCELLED,
-    SUCCESSFULL
+    SUCCESSFULL,
+    NOT_PAID
 };
 
 class Reservation

@@ -7,9 +7,9 @@
 
 enum MealType
 {
-    FIRST_GROUP,
-    SECOND_GROUP,
-    THRID_GROUP
+    BREAKFAST,
+    LUNCH,
+    DINNER
 };
 
 enum ReserveDay
@@ -25,7 +25,7 @@ enum ReserveDay
 class Meal
 {
 public:
-    Meal(int = 0, string = "NAME", float = 0.0, MealType = FIRST_GROUP, ReserveDay = SATURDAY, bool = 0);
+    Meal(int = 0, string = "NAME", float = 0.0, MealType = BREAKFAST, ReserveDay = SATURDAY, bool = 0);
 
     void setMeal_id(int);
     void setName(string);

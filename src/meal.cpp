@@ -54,7 +54,7 @@ void Meal::setPrice(float p)
 
 void Meal::setMeal_type(MealType e)
 { 
-    if(e == FIRST_GROUP || e == SECOND_GROUP || e == THRID_GROUP)
+    if(e == BREAKFAST || e == LUNCH || e == DINNER)
     {
         _meal_type = e;
     }

@@ -45,8 +45,14 @@ void Reservation::setMeal(Meal *m)
 
 void Reservation::setStatus(RStatus s)
 {
-    _status = s;
-}
+    if(s == FAILED || s == CANCELLED || s == SUCCESSFULL || s == NOT_PAID) 
+    {
+        _status = s;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for reservation_status!!!");
+    }
 
 void Reservation::setTime(time_t t)
 {

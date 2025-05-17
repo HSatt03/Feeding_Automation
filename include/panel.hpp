@@ -1,10 +1,10 @@
-#ifndef PANEL.H
-#define PANEL.H
+#ifndef PANEL_H
+#define PANEL_H
 #include "reservation.hpp"
  class Panel
  {
  public:
-     bool Action(bool);
+     bool Action(int);
      void showMenu();
      void showStudentInfo();
      void checkBalance();
@@ -16,7 +16,7 @@
      void increaseBalance();
      void viewRecentTransactions();
      void cancelReservation(int);
-     void exit(bool);
+     void exit();
  };
  #endif
 
