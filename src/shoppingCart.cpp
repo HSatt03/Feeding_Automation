@@ -7,7 +7,7 @@
 #include "../include/reservation.hpp"
 #include "../include/transaction.hpp"
 using namespace std;
-time_t Stime, Ftime;
+time_t Stime, Ftime, specialTime = 123456;
 Transaction ShoppingCart::confirm()
 {
 
@@ -27,6 +27,10 @@ void ShoppingCart::removeReservation(int ID)
             _reservations.erase(add);
             Ftime = time(0);
             break;
+        }
+        else 
+        {
+            Ftime = specialTime;
         }
     }
 }
@@ -66,9 +70,12 @@ void ShoppingCart::viewShoppingCartItems()
     strftime(buffer1, sizeof(buffer1), "%H:%M:%S" , localTime);
     gotoxy(2,2);
     cout << "The reservation was added to the shopping cart at " << buffer1 << endl;
-    tm* localTime = localtime(&Ftime);
-    char buffer2[80];
-    strftime(buffer2, sizeof(buffer2), "%H:%M:%S" , localTime);
-    gotoxy(2,4);
-    cout << "The reservation was deleted from the shopping cart at " << buffer2 << endl;
+    if(Ftime == specialTime)
+    {
+        tm* localTime = localtime(&Ftime);
+        char buffer2[80];
+        strftime(buffer2, sizeof(buffer2), "%H:%M:%S" , localTime);
+        gotoxy(2,4);
+        cout << "The reservation was deleted from the shopping cart at " << buffer2 << endl;
+    }
 }

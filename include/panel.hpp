@@ -1,6 +1,9 @@
 #ifndef PANEL_H
 #define PANEL_H
+#include <iostream>
 #include "reservation.hpp"
+using namespace std;
+
  class Panel
  {
  public:
@@ -18,5 +21,6 @@
      void cancelReservation(int);
      void exit();
  };
+ 
  #endif
 
