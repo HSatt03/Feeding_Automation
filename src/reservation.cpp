@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 #include <ctime>
-#include "meal.hpp"
-#include "diningHall.hpp"
-#include "reservation.hpp"
+#include "../include/meal.hpp"
+#include "../include/diningHall.hpp"
+#include "../include/reservation.hpp"
 using namespace std;
 Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t c)
 {
