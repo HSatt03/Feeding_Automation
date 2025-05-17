@@ -1,6 +1,9 @@
 #ifndef USER_HPP
 #define USER_HPP
+#include <iostream>
 #include <string>
+using namespace std;
+
 class User
 {
 public:
@@ -37,4 +40,5 @@ private:
     string _last_name;
     string _hashed_password;
 };
+
 #endif

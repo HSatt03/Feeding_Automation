@@ -1,6 +1,9 @@
 #ifndef STORAGE_H
 #define STORAGE_H
+#include <iostream>
 #include <vector>
+using namespace std;
+
 class Meal;
 class DiningHall;
 
@@ -29,4 +32,5 @@ private:
     Storage(const Storage&) = delete;
     Storage operator=(const Storage&) = delete;
 };
+
 #endif

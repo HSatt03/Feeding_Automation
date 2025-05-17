@@ -1,8 +1,11 @@
 #ifndef SHOPPINGCART_HPP
 #define SHOPPINGCART_HPP
+#include <iostream>
 #include <vector>
 #include "reservation.hpp"
 #include "transaction.hpp"
+using namespace std;
+
 class ShoppingCart
 {
 public:
@@ -15,4 +18,5 @@ public:
 private:
     vector<Reservation> _reservations;
 };
+
 #endif 
