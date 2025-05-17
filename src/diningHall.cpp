@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "diningHall.hpp"
+#include "../include/diningHall.hpp"
 using namespace std;
 DiningHall::DiningHall(int hall_id = 2, string name = "Sadaf", string address = "Next to the Central Library", int capacity = 100)
 {

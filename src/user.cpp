@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "user.hpp"
+#include "../include/user.hpp"
 using namespace std;
 
 User::User(int user_id, string name, string last_name, string password)

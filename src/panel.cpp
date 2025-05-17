@@ -1,6 +1,6 @@
 #include <iostream>
-#include "panel.hpp"
-#include "reservation.hpp"
+#include "../include/panel.hpp"
+#include "../include/reservation.hpp"
 using namespace std;
 bool Panel::Action(bool b)
 {

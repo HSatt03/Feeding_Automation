@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 #include <cctype>
-#include "reservation.hpp"
-#include "student.hpp"
-#include "meal.hpp"
+#include "../include/reservation.hpp"
+#include "../include/student.hpp"
+#include "../include/meal.hpp"
 using namespace std;
 
 Student::Student(int user_id, string name, string last_name, string password, string student_id, string email, float balance, bool is_active)
@@ -101,6 +101,7 @@ bool Student::cancelReservation(Reservation* reserve)
         {
             _reservations.erase(add);
             success = true;
+            break;
         }
     }
     if(success)

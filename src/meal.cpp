@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
-#include "meal.hpp"
+#include "../include/meal.hpp"
 using namespace std;
 
 Meal::Meal(int m, string n, float p, MealType mt, ReserveDay r, bool b)
