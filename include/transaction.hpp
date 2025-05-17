@@ -1,5 +1,5 @@
-#ifndef TRANSACTION_H
-#define TRANSACTION_H
+#ifndef TRANSACTION_HPP
+#define TRANSACTION_HPP
 using namespace std;
 
 enum TransactionType
@@ -58,3 +58,4 @@ public:
     TransactionStatus _status;
     time_t _createdAT;
 };
+#endif

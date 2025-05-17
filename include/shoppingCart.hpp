@@ -9,8 +9,8 @@ public:
     Transaction confirm();
     void addReservation(Reservation);
     void removeReservation(int ID);
-    void viewShoppingCartItems()
-    void clear()
+    void viewShoppingCartItems();
+    void clear();
     vector<Reservation> getReservations() const;
 private:
     vector<Reservation> _reservations;
