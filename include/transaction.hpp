@@ -1,14 +1,15 @@
 #ifndef TRANSACTION_HPP
 #define TRANSACTION_HPP
+#include <iostream>
 using namespace std;
 
-enum TransactionType
+enum class TransactionType
 {
     TRANSFER,
     PAYMENT
 };
 
-enum TransactionStatus
+enum class TransactionStatus
 {
     PENDING,
     COMPLETED,
@@ -58,4 +59,5 @@ public:
     TransactionStatus _status;
     time_t _createdAT;
 };
+
 #endif
