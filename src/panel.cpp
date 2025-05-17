@@ -1,4 +1,6 @@
 #include <iostream>
+#include <windows.h>
+#include <conio.h>
 #include "../include/panel.hpp"
 #include "../include/reservation.hpp"
 using namespace std;
@@ -34,16 +36,15 @@ bool Panel::Action(int n)
         cancelReservation();
         break;
     }
-}
-void Panel::showMenu()
+void gotoxy(int x, int y)
 {
-     void gotoxy(int x, int y) {
     COORD coord;
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
-
+void Panel::showMenu()
+{
     int hightMM, widthMM;
     int i,j,y_start;
     bool sw_MainMenu;
@@ -51,10 +52,10 @@ void Panel::showMenu()
 
   //while(true)
   //{
-    sw_MainMenu=false;
-    hightMM=28;
-    widthMM=28;
-    y_start=3;
+    sw_MainMenu = false;
+    hightMM = 28;
+    widthMM = 28;
+    y_start = 3;
 
     //system("cls");
     gotoxy(5,y_start);
