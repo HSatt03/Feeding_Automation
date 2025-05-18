@@ -1,8 +1,12 @@
 #include <iostream>
+#include <windows.h>
+#include <iomanip>
 #include "../include/panel.hpp"
 #include "../include/reservation.hpp"
+#include "../include/student.hpp"
+
 using namespace std;
-bool Panel::Action(int n)
+void Panel::Action(int n)
 {
     switch (n)
     {
@@ -35,15 +39,18 @@ bool Panel::Action(int n)
         break;
     }
 }
-void Panel::showMenu()
+
+void gotoxy(int x, int y)
 {
-     void gotoxy(int x, int y) {
     COORD coord;
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+void Panel::showMenu()
+{
+     
     int hightMM, widthMM;
     int i,j,y_start;
     bool sw_MainMenu;
@@ -137,51 +144,83 @@ void Panel::showMenu()
     }
   }*/
 //}
-return 0;
 }    
+
 void Panel::showStudentInfo()
 {
 
 }
-void Panel::checkBalance()
-{
 
+void showBalanceBox(double balance)
+{
+    string title = " your balance ";
+    string currency = " toman ";
+    string balanceStr = to_string((int)balance) + currency;
+    int width = 30;
+
+    cout << "+" << string(width, '-') << "+" << endl;
+    cout << "|" << setw((width + title.size()) / 2) << right << title;
+    cout << setw(width - ((width + title.size()) / 2)) << left << "" << "|" << endl;
+    cout << "+" << string(width, '-') << "+" << endl;
+    cout << "|" << setw((width + balanceStr.size()) / 2) << right << balanceStr;
+    cout << setw(width - ((width + balanceStr.size()) / 2)) << left << "" << "|" << endl;
+    cout << "+" << string(width, '-') << "+" << endl;
 }
+
+void Panel::checkBalance(Student *s)
+{
+    double balance = s.getBalance();
+    showBalanceBox(balance);
+}
+
 void Panel::viewReservation()
 {
 
 }
-void Panel::addviewReservation(Reservation)
-{
 
-}
 void Panel::addToShoppingCart()
 {
 
 }
+
 void Panel::confirmShoppingCart()
 {
 
 }
+
 void Panel::removeShoppingCartItem()
 {
 
 }
-void Panel::increaseBalance()
-{
 
+void Panel::increaseBalance(Student *s, float a)
+{
+    system("cls");
+    
+    if (a <= 0)
+    {
+        throw invalid_argument("Amount must be greater than zero.");
+    }
+    else
+    {
+        float balance = s->getBalance();
+        s->setBalance(balance + a);
+    }
 }
+
 void Panel::viewRecentTransactions()
 {
 
 }
+
 void Panel::cancelReservation(int)
 {
     
 }
-void Panel::exit()
+
+void Panel::exit(bool b)
 {
-     system(cls);
+     system("cls");
     cout << "";
     exit(0);
 }
