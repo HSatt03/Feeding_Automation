@@ -59,5 +59,3 @@ public:
     TransactionStatus _status;
     time_t _createdAT;
 };
-
-#endif
