@@ -9,6 +9,7 @@ Transaction ShoppingCart::confirm()
 }
 ShoppingCart::addReservation(Reservation reservation)
 {
+<<<<<<< HEAD
     reservation.setStatus(RStatus::NOT_PAID);
     Stime = time(0);
     _reservations.push_back(reservation);
