@@ -4,16 +4,15 @@
 #include <string>
 #include <vector>
 #include <cctype>
-using namespace std;
 
-enum class MealType
+enum MealType
 {
     BREAKFAST,
     LUNCH,
     DINNER
 };
 
-enum class ReserveDay
+enum ReserveDay
 {
     SATURDAY,
     SUNDAY,
@@ -83,6 +82,5 @@ private:
     bool _isActive;
     ReserveDay _reserve_day;
 };
-
 #endif
 

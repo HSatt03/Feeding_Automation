@@ -6,9 +6,8 @@
 #include <ctime>
 #include "meal.hpp"
 #include "diningHall.hpp"
-using namespace std;
 
-enum class RStatus
+enum RStatus
 {
     FAILED,
     CANCELLED,
@@ -61,6 +60,5 @@ private:
     time_t _created_at;
 
 };
-
 #endif
 
