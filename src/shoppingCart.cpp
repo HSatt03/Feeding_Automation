@@ -14,7 +14,7 @@ Transaction ShoppingCart::confirm()
 }
 void ShoppingCart::addReservation(Reservation reservation)
 {
-    reservation.setStatus(NOT_PAID);
+    reservation.setStatus(RStatus::NOT_PAID);
     Stime = time(0);
     _reservations.push_back(reservation);
 }
