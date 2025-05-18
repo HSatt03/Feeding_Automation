@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <vector>
 #include <cctype>
 #include "../include/meal.hpp"
@@ -122,13 +122,13 @@ ostream& operator<<(ostream& os, const MealType& num)
     switch(num)
     {
         case FIRST_GROUP:
-            os << "FIRST_GROUP";
+            os << "BREAKFAST";
             break;
         case SECOND_GROUP:
-            os << "SECOND_GROUP";
+            os << "LUNCH";
             break;
         case THRID_GROUP:
-            os << "THRID_GROUP";
+            os << "DINNER";
             break;
         default:
             os << "Unknown!!!";
