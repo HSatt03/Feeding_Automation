@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../include/sessionBase.hpp"
+using namespace std;
+
 void SessionBase::setCreatedAt(time_t createdAt)
 {
     if(createdAt > 0)
