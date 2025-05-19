@@ -19,7 +19,7 @@ enum class RStatus
 class Reservation
 {
 public:
-    Reservation(DiningHall*, Meal*, int = 0, RStatus = FAILED, time_t = time(0)); 
+    Reservation(DiningHall*, Meal*, int = 0, RStatus = RStatus::FAILED, time_t = time(0)); 
 
     void setReservation_id(int);
     void setDhall(DiningHall*);

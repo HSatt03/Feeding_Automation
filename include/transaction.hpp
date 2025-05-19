@@ -19,7 +19,7 @@ enum class TransactionStatus
 class Transaction
 {
 public:
-    Transaction(int = 0, string = "00000", float = 0.00, TransactionType = TRANSFER, TransactionStatus = PENDING, time_t = time(0));
+    Transaction(int = 0, string = "00000", float = 0.00, TransactionType = TransactionType::TRANSFER, TransactionStatus = TransactionStatus::PENDING, time_t = time(0));
     void setTransactionID(int);
     void setTrackingCode(string);
     void setAmount(float);

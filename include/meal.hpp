@@ -26,7 +26,7 @@ enum class ReserveDay
 class Meal
 {
 public:
-    Meal(int = 0, string = "NAME", float = 0.0, MealType = BREAKFAST, ReserveDay = SATURDAY, bool = 0);
+    Meal(int = 0, string = "NAME", float = 0.0, MealType = MealType::BREAKFAST, ReserveDay = ReserveDay::SATURDAY, bool = 0);
 
     void setMeal_id(int);
     void setName(string);
