@@ -6,9 +6,8 @@
 #include <ctime>
 #include "meal.hpp"
 #include "diningHall.hpp"
-using namespace std;
 
-enum class RStatus
+enum RStatus
 {
     FAILED,
     CANCELLED,
@@ -19,7 +18,7 @@ enum class RStatus
 class Reservation
 {
 public:
-    Reservation(DiningHall*, Meal*, int = 0, RStatus = FAILED, time_t = time(0)); 
+    Reservation(DiningHall*, Meal*, int = 0, RStatus = RStatus::FAILED, time_t = time(0)); 
 
     void setReservation_id(int);
     void setDhall(DiningHall*);
@@ -61,6 +60,5 @@ private:
     time_t _created_at;
 
 };
-
 #endif
 
