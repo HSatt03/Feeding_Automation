@@ -14,7 +14,7 @@ Transaction ShoppingCart::confirm()
 }
 void ShoppingCart::addReservation(Reservation reservation)
 {
-    reservation.setStatus(NOT_PAID);
+    reservation.setStatus(RStatus::NOT_PAID);
     Stime = time(0);
     _reservations.push_back(reservation);
 }
@@ -78,4 +78,12 @@ void ShoppingCart::viewShoppingCartItems()
         gotoxy(2,4);
         cout << "The reservation was deleted from the shopping cart at " << buffer2 << endl;
     }
+}
+void ShoppingCart::clear()
+{
+
+}
+vector<Reservation> ShoppingCart::getReservations()const
+{
+    return _reservations;
 }
