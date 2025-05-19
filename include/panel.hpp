@@ -1,22 +1,25 @@
 #ifndef PANEL_H
 #define PANEL_H
 #include <iostream>
-#include "reservation.hpp"
+#include "../include/reservation.hpp"
+#include "../include/shoppingCart.hpp"
+#include "../include/sessionManager.hpp"
 using namespace std;
+using namespace StudentSession;
 
  class Panel
  {
  public:
      bool Action(int);
      void showMenu();
-     void showStudentInfo();
-     void checkBalance();
-     void viewReservation();
-     void addviewReservation(Reservation);
+     void showStudentInfo(StudentSession::SessionManager&);
+     void checkBalance(StudentSession::SessionManager&);
+     void viewReservation(StudentSession::SessionManager&);
+     void viewShappingCart(ShoppingCart*);
      void addToShoppingCart();
      void confirmShoppingCart();
-     void removeShoppingCartItem();
-     void increaseBalance();
+     void removeShoppingCartItem(StudentSession::SessionManager&);
+     void increaseBalance(StudentSession::SessionManager&);
      void viewRecentTransactions();
      void cancelReservation(int);
      void exit();
