@@ -6,6 +6,7 @@
 #include "../include/diningHall.hpp"
 #include "../include/reservation.hpp"
 using namespace std;
+
 Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t c)
 {
     setReservation_id(r);
@@ -45,7 +46,7 @@ void Reservation::setMeal(Meal *m)
 
 void Reservation::setStatus(RStatus s)
 {
-    if(s == FAILED || s == CANCELLED || s == SUCCESSFULL || s == NOT_PAID) 
+    if(s == RStatus::FAILED || s == RStatus::CANCELLED || s == RStatus::SUCCESSFULL || s == RStatus::NOT_PAID) 
     {
         _status = s;
     }

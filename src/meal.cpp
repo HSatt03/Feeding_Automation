@@ -54,7 +54,7 @@ void Meal::setPrice(float p)
 
 void Meal::setMeal_type(MealType e)
 { 
-    if(e == BREAKFAST || e == LUNCH || e == DINNER)
+    if(e == MealType::BREAKFAST || e == MealType::LUNCH || e == MealType::DINNER)
     {
         _meal_type = e;
     }
@@ -76,7 +76,7 @@ void Meal::setIsActive(bool b)
 
 void Meal::setReserveDay(ReserveDay e)
 {
-    if(e == SATURDAY || e == SUNDAY || e == MONDAY || e == TUESDAY || e ==  WEDNESDAY || e == THURSDAY) 
+    if(e == ReserveDay::SATURDAY || e == ReserveDay::SUNDAY || e == ReserveDay::MONDAY || e == ReserveDay::TUESDAY || e ==  ReserveDay::WEDNESDAY || e == ReserveDay::THURSDAY) 
     {
         _reserve_day = e;
     }
@@ -121,14 +121,14 @@ ostream& operator<<(ostream& os, const MealType& num)
 {
     switch(num)
     {
-        case FIRST_GROUP:
-            os << "FIRST_GROUP";
+        case MealType::BREAKFAST:
+            os << "BREAKFAST";
             break;
-        case SECOND_GROUP:
-            os << "SECOND_GROUP";
+        case MealType::LUNCH:
+            os << "LUNCH";
             break;
-        case THRID_GROUP:
-            os << "THRID_GROUP";
+        case MealType::DINNER:
+            os << "DINNER";
             break;
         default:
             os << "Unknown!!!";
