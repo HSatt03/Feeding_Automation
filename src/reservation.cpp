@@ -7,13 +7,14 @@
 #include "../include/reservation.hpp"
 using namespace std;
 
-Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t c)
+Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t t1, time_t t2)
 {
     setReservation_id(r);
     setDhall(d);
     setMeal(m);
     setStatus(s);
-    setTime(c);
+    setCreatedTime(t1);
+    setRemovedTime(t2);
 }
 
 void Reservation::setReservation_id(int r)
@@ -54,8 +55,9 @@ void Reservation::setStatus(RStatus s)
     {
         throw invalid_argument("Incorrect value for reservation_status!!!");
     }
+}
 
-void Reservation::setTime(time_t t)
+void Reservation::setCreatedTime(time_t t)
 {
     if(t > 0)
     {
@@ -66,6 +68,19 @@ void Reservation::setTime(time_t t)
         throw invalid_argument("Incorrect value for time!!!");
     }
 }
+
+void Reservation::setRemovedTime(time_t t)
+{
+    if(t > 0)
+    {
+        _removed_from = t;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for time!!!");
+    }
+}  
+
 void Reservation::print()const
 {
     cout << "reservation id : " << _reservation_id;
@@ -85,7 +100,7 @@ void Reservation::print()const
 
 bool Reservation::cancel()
 {
-    if(_status == CANCELLED)
+    if(_status == RStatus::CANCELLED)
     return true;
     else
     return false;
@@ -103,13 +118,13 @@ ostream& operator<<(ostream& os, const RStatus& num)
 {
     switch(num)
     {
-        case FAILED:
+        case RStatus::FAILED:
             os << "FAILED";
             break;
-        case CANCELLED:
+        case RStatus::CANCELLED:
             os << "CANCELLED";
             break;
-        case SUCCESSFULL:
+        case RStatus::SUCCESSFULL:
             os << "SUCCESSFULL";
             break;
         default:

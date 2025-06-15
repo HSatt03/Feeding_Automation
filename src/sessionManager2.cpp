@@ -5,7 +5,7 @@
 using namespace std;
 using namespace AdminSession;
 
-SessionManager::SessionManager(Admin *a, int i)
+AdminSession::SessionManager::SessionManager(Admin *a, int i)
 {
     _currentAdmin = a;
     _adminID = i;
