@@ -26,6 +26,7 @@ public:
     void setType(TransactionType);
     void setStatus(TransactionStatus);
     void setCreatedAT(time_t);
+    void print();
 
     int getTransactionID()const
     {

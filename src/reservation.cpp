@@ -70,9 +70,9 @@ void Reservation::print()const
 {
     cout << "reservation id : " << _reservation_id;
     cout << endl;
-    _dHall->print();
-    cout << "endl";
-    _meal->print();
+    _dHall->print()
+    cout << endl;
+    _meal->print()
     cout << "\nstatus : " << _status;
     cout << "\ncreaded at : ";
     tm* localTime = localtime(&_created_at);

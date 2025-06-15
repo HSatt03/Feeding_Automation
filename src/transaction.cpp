@@ -26,7 +26,7 @@ void Transaction::setAmount(float f)
 }
 void Transaction::setType(TransactionType t)
 {
-    if(t == TRANSFER || t == PAYMENT) 
+    if(t == TransactionType::TRANSFER || t == TransactionType::PAYMENT) 
     {
         _type = t;
     }
@@ -37,7 +37,7 @@ void Transaction::setType(TransactionType t)
 }
 void Transaction::setStatus(TransactionStatus t)
 {
-    if(t == PENDING || t == COMPLETED || t == FIALED) 
+    if(t == TransactionStatus::PENDING || t == TransactionStatus::COMPLETED || t == TransactionStatus::FIALED) 
     {
         _status = t;
     }
@@ -56,4 +56,49 @@ void Transaction::setCreatedAT(time_t t)
     {
         throw invalid_argument("Incorrect value for time!!!");
     }
+}
+
+void Transaction::print()
+{
+    cout << "TransactionID : " << getTransactionID();
+    cout << "\nTrackingCode : " << getTrackingCode();
+    cout << "\nAmount : " << getAmount();
+    cout << "\nType : " << getType();
+    cout << "\nStatus : " << getStatus();
+    cout << "\nCreatedAT : " << getCreatedAT();
+}
+
+ostream& operator<<(ostream& os, const TransactionType& num)
+{
+    switch(num)
+    {
+        case TransactionType::TRANSFER:
+            os << "TRANSFER";
+            break;
+        case TransactionType::PAYMENT:
+            os << "PAYMENT";
+            break;
+        default:
+            os << "Unknown!!!";
+    }
+    return os;
+}
+
+ostream& operator<<(ostream& os, const TransactionStatus& num)
+{
+    switch(num)
+    {
+        case TransactionStatus::PENDING:
+            os << "PENDING";
+            break;
+        case TransactionStatus::COMPLETED:
+            os << "COMPLETED";
+            break;
+        case TransactionStatus::FIALED:
+            os << "FIALED";
+            break;
+        default:
+            os << "Unknown!!!";
+    }
+    return os;
 }
