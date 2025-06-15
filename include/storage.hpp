@@ -24,6 +24,14 @@ public:
     {
         return _diningHallIDCounter;
     }
+    void addMeal(Meal*);
+    void addDiningHall(DiningHall*);
+    void removeMeal(int);
+    void removeDiningHall(int);
+    void MealActivation(int, bool);
+    vector<Meal*>::iterator findMeal(int);
+    vector <DiningHall*>::iterator findDiningHall(int);
+
 
 private:
     int _mealIDCounter;
