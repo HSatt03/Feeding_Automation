@@ -36,7 +36,7 @@ public:
     void setIsActive(bool);
     void setReserveDay(ReserveDay);
 
-    bool isActive(bool);
+    void isActive(bool);
     void print()const;
     void update_price(float);
     void add_side_item(string);
