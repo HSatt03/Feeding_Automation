@@ -136,16 +136,18 @@ ostream& operator<<(ostream& os, const MealType& num)
     return os;
 }
 
-bool Meal::isActive(bool b)
+void Meal::isActive(bool b)
 {
     _isActive = b;
 }
 bool Meal::activate()
 {
     isActive(1);
+    return true;
 }
 
 bool Meal::deactivate()
 {
     isActive(0);
+    return true;
 }
