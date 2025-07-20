@@ -53,7 +53,7 @@ public:
         return _createdAT;
     }
     private:
-    int _transactionID;
+    static int _transactionID;
     string _trackingCode;
     float _amount;
     TransactionType _type;
