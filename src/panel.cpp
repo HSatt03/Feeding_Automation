@@ -1,10 +1,12 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <ctime>
 #include "../include/panel.hpp"
 #include "../include/reservation.hpp"
 #include "../include/shoppingCart.hpp"
 #include "../include/sessionManager.hpp"
+#include "../include/transaction.hpp"
 using namespace std;
 using namespace StudentSession;
 
@@ -27,6 +29,14 @@ void drawBox(int x, int y, int width, int height)
         gotoxy(x, y + i); cout << "|";
         gotoxy(x + width, y + i); cout << "|";
     }
+}
+
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 bool Panel::Action(int n)
@@ -67,14 +77,6 @@ bool Panel::Action(int n)
     case 11:
         exit();
     }
-}
-
-void gotoxy(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 void Panel::showMenu()
@@ -205,7 +207,10 @@ void Panel::viewReservation(StudentSession::SessionManager& s)
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
     cout << "Definite reservation :";
-    s.currentStudent()->getReserves().print();
+    for (Reservation* R : s.currentStudent()->getReserves()) // روش for-each
+    {
+        if (R) R->print(); // چک کن null نباشه
+    }
 }
 
 void Panel::viewShappingCart(ShoppingCart *s)
@@ -222,7 +227,7 @@ void Panel::viewShappingCart(ShoppingCart *s)
 
 void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 {
-    system("cls");
+    /*system("cls");
     drawBox(0, 0, 50, 20);
    
     vector<DiningHall> diningHalls = {
@@ -280,7 +285,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     // اضافه کردن به سبد خرید کاربر
     s.shoppingCart()->addReservation(newReservation);
     
-    cout << "\nرزرو با موفقیت به سبد خرید اضافه شد!\n";
+    cout << "\nرزرو با موفقیت به سبد خرید اضافه شد!\n";*/
 }
 
 void Panel::confirmShoppingCart()
@@ -300,7 +305,7 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
 
 }
 
-void Panel::increaseBalance(StudentSession::SessionManager& s)
+void Panel::increaseBalance(StudentSession::SessionManager& s, Transaction& t)
 {
     float amount;
     system("cls");
@@ -318,6 +323,14 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
         f += amount;
         s.currentStudent()->setBalance(f);
     }
+    
+    t.setTransactionID(t.getTransactionID()+1);
+    t.setTrackingCode(to_string(rand() % 90000 + 10000));
+    t.setAmount(amount);
+    t.setType(TransactionType::TRANSFER);
+    t.setStatus(TransactionStatus::COMPLETED);
+    t.setCreatedAT(time(0));
+    t.print();
 }
 
 void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
@@ -325,7 +338,7 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
-    s->shoppingCart()->confirm().print();
+    s.shoppingCart()->confirm().print();
 }
 
 void Panel::cancelReservation(int)
