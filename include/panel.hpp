@@ -10,18 +10,18 @@ using namespace StudentSession;
  class Panel
  {
  public:
-     bool Action(int);
+     bool Action(int, StudentSession::SessionManager*);
      void showMenu();
      void showStudentInfo(StudentSession::SessionManager&);
      void checkBalance(StudentSession::SessionManager&);
      void viewReservation(StudentSession::SessionManager&);
-     void viewShappingCart(ShoppingCart*);
+     void viewShappingCart(StudentSession::SessionManager&);
      void addToShoppingCart(StudentSession::SessionManager&);
-     void confirmShoppingCart();
+     void confirmShoppingCart(StudentSession::SessionManager&);
      void removeShoppingCartItem(StudentSession::SessionManager&);
-     void increaseBalance(StudentSession::SessionManager&, Transaction&);
+     void increaseBalance(StudentSession::SessionManager&);
      void viewRecentTransactions(StudentSession::SessionManager&);
-     void cancelReservation(int);
+     void cancelReservation(StudentSession::SessionManager&);
      void exit();
  };
  

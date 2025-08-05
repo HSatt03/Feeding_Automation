@@ -30,6 +30,7 @@ public:
     void deactivate();
     string getType();
     bool operator==(Student);
+    void addTransaction(const Transaction&);
 
     string getStudentId()const
     {
@@ -47,9 +48,13 @@ public:
     {
         return _is_active;
     }
-    const vector<Reservation*>& getReserves()const
+    vector<Reservation*>& getReserves()
     {
         return _reservations;
+    }
+    const vector<Transaction>& getTransactions() const
+    {
+        return _transactions;
     }
 
 private:
@@ -58,6 +63,7 @@ private:
     float _balance;
     bool _is_active;
     vector<Reservation*>_reservations;
+    vector<Transaction> _transactions;
 };
 
 #endif
