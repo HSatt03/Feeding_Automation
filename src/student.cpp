@@ -5,6 +5,7 @@
 #include "../include/reservation.hpp"
 #include "../include/student.hpp"
 #include "../include/meal.hpp"
+#include "../include/transaction.hpp"
 using namespace std;
 
 Student::Student(int user_id, string name, string last_name, string password, string student_id, string email, float balance, bool is_active)
@@ -150,4 +151,9 @@ bool Student::operator==(Student ob)
           && _email == ob._email
           && _balance == ob._balance
           && _is_active == ob._is_active);
+}
+
+void Student::addTransaction(const Transaction& t)
+{
+    _transactions.push_back(t);
 }
