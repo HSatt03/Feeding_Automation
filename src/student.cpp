@@ -8,6 +8,7 @@
 #include "../include/transaction.hpp"
 using namespace std;
 
+
 Student::Student(int user_id, string name, string last_name, string password, string student_id, string email, float balance, bool is_active)
 :User(user_id, name, last_name, password)
 {

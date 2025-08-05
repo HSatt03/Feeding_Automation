@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <ctime>
+#include <cstdlib>
 #include <vector>
 #include "../include/shoppingCart.hpp"
 #include "../include/reservation.hpp"
