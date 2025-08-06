@@ -13,13 +13,15 @@ enum class RStatus
     FAILED,
     CANCELLED,
     SUCCESSFULL,
+    PENDING,
     NOT_PAID
 };
 
 class Reservation
 {
 public:
-    Reservation(DiningHall*, Meal*, int = 0, RStatus = RStatus::FAILED, time_t = time(0), time_t = time(0)); 
+    Reservation(DiningHall* d = nullptr, Meal* m = nullptr, int r = 0,
+            RStatus s = RStatus::PENDING, time_t t1 = time(0), time_t t2 = 0); 
 
     void setReservation_id(int);
     void setDhall(DiningHall*);
