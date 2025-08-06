@@ -7,6 +7,7 @@
 #include "../include/shoppingCart.hpp"
 #include "../include/sessionManager.hpp"
 #include "../include/transaction.hpp"
+#include "../include/student.hpp"
 using namespace std;
 using namespace StudentSession;
 
@@ -39,9 +40,8 @@ void gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-bool Panel::Action(int n)
+bool Panel::Action(int n, StudentSession::SessionManager *Student)
 {
-    StudentSession::SessionManager *Student;
     switch (n)
     {
     case 1:
@@ -54,13 +54,13 @@ bool Panel::Action(int n)
          viewReservation(*Student);
         break;
     case 4:
-        viewShappingCart(Student->shoppingCart());
+        viewShappingCart(*Student);
         break;
     case 5:
-        addToShoppingCart();
+        addToShoppingCart(*Student);
         break;
     case 6:
-        confirmShoppingCart();
+        confirmShoppingCart(*Student);
         break;
     case 7:
         removeShoppingCartItem(*Student);
@@ -69,10 +69,10 @@ bool Panel::Action(int n)
         increaseBalance(*Student);
         break;
     case 9:
-        viewRecentTransactions();
+        viewRecentTransactions(*Student);
         break;
     case 10:
-        cancelReservation();
+        cancelReservation(*Student);
         break;
     case 11:
         exit();
@@ -189,8 +189,6 @@ void Panel::showStudentInfo(StudentSession::SessionManager& s)
     gotoxy(20, 17);
     cout << "Student information :" << endl;
     s.currentStudent()->print();
-
-
 }
 
 void Panel::checkBalance(StudentSession::SessionManager& s)
@@ -213,13 +211,13 @@ void Panel::viewReservation(StudentSession::SessionManager& s)
     }
 }
 
-void Panel::viewShappingCart(ShoppingCart *s)
+void Panel::viewShappingCart(StudentSession::SessionManager& s)
 {
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
     cout <<"Temporary reservation :" << endl;
-    for (auto add = s->getReservations().begin(); add != s->getReservations().end(); add++)
+    for (auto add = s.shoppingCart()->getReservations().begin(); add != s.shoppingCart()->getReservations().end(); add++)
     {
         add->print();
     }
@@ -288,9 +286,23 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     cout << "\nرزرو با موفقیت به سبد خرید اضافه شد!\n";*/
 }
 
-void Panel::confirmShoppingCart()
+void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
 {
-
+    system("cls");
+    drawBox(0, 0, 40, 15);
+    gotoxy(20, 17);
+    vector<Transaction> transactions;  // استفاده از وکتور به پیشنهاد چت جی پی تی برای دخیره تراکنش ها
+    try 
+    {
+        Transaction t = s.shoppingCart()->confirm();
+        transactions.push_back(t);
+        cout << "Shopping cart confirmed successfully.\n";
+        t.print(); // نمایش جزئیات تراکنش
+    } 
+    catch (const exception& e) 
+    {
+        cout << "Error: " << e.what() << endl;
+    }
 }
 
 void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
@@ -302,12 +314,12 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
     cout << "Enter the reservationID you want to remove.";
     cin >> ID;
     s.shoppingCart()->removeReservation(ID);
-
 }
 
-void Panel::increaseBalance(StudentSession::SessionManager& s, Transaction& t)
+void Panel::increaseBalance(StudentSession::SessionManager& s)
 {
     float amount;
+    Transaction t;
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
@@ -331,19 +343,89 @@ void Panel::increaseBalance(StudentSession::SessionManager& s, Transaction& t)
     t.setStatus(TransactionStatus::COMPLETED);
     t.setCreatedAT(time(0));
     t.print();
+
+    Student* student = StudentSession::SessionManager::instance().currentStudent();
+    if (student)
+    {
+        student->addTransaction(t);  // دخیره کردن در کلاس student
+    }             
 }
 
 void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 {
+    system("cls"); // پاک کردن صفحه
+    drawBox(0, 0, 80, 20);
+    gotoxy(2, 1);
+    cout << "Recent Transactions:\n";
+
+    const vector<Transaction>& transactions = s.currentStudent()->getTransactions();
+    if (transactions.empty())
+    {
+        gotoxy(2, 3);
+        cout << "No transactions found.\n";
+        return;
+    }
+
+    int line = 3;
+    for (const auto& t : transactions)
+    {
+        gotoxy(2, line++);
+        cout << "ID: " << t.getTransactionID()
+             << " Code: " << t.getTrackingCode()
+             << " Amount: " << t.getAmount()
+             << " Type: " << (t.getType() == TransactionType::TRANSFER ? "Transfer" : "Payment")
+             << " Status: " << (t.getStatus() == TransactionStatus::COMPLETED ? "Completed" :
+                                t.getStatus() == TransactionStatus::PENDING ? "Pending" : "Failed");
+            time_t createdAt = t.getCreatedAT();       // مقدار رو بگیر
+            cout << " Time: " << ctime(&createdAt);    // آدرس بده به ctime
+                    
+        line++;
+        if (line > 18) break; // محدود به تعداد خط
+    }
+
+    //gotoxy(2, 19);
+    //system("pause");
+}
+
+void Panel::cancelReservation(StudentSession::SessionManager& s)
+{
+    int id;
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
-    s.shoppingCart()->confirm().print();
-}
+    cout << "Enter reservation ID to cancel: ";
+    cin >> id;
 
-void Panel::cancelReservation(int)
-{
-    
+    vector<Reservation*>& reservations = s.currentStudent()->getReserves();
+    for (auto it = reservations.begin(); it != reservations.end(); ++it)
+    {
+        if ((*it)->getReservation_id() == id)
+        {
+            if ((*it)->cancel())
+            {
+                // برگردوندن پول به دانشجو
+                float price = (*it)->getMeal().getPrice();
+                s.currentStudent()->setBalance(s.currentStudent()->getBalance()+ price);
+
+                // حذف رزرو از لیست
+                delete *it; // اگه با new ساخته شده
+                reservations.erase(it);
+
+                gotoxy(20, 19);
+                cout << "Reservation cancelled successfully and amount refunded.\n";
+                return;
+            }
+            else
+            {
+                gotoxy(20, 19);
+                cout << "This reservation is already cancelled!\n";
+                return;
+            }
+        }
+    }
+
+    gotoxy(20, 19);
+    cout << "Reservation ID not found!\n";
 }
 
 void Panel::exit()

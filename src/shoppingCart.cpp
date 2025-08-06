@@ -7,6 +7,9 @@
 #include "../include/shoppingCart.hpp"
 #include "../include/reservation.hpp"
 #include "../include/transaction.hpp"
+#include "../include/student.hpp"
+#include "../include/sessionManager.hpp"
+
 using namespace std;
 time_t specialTime = 123456;
 Transaction ShoppingCart::confirm()
@@ -33,6 +36,12 @@ Transaction ShoppingCart::confirm()
                   TransactionType::PAYMENT,
                   TransactionStatus::COMPLETED,
                   now);
+
+    Student* student = StudentSession::SessionManager::instance().currentStudent();
+    if (student)
+    {
+        student->addTransaction(t);  // دخیره کردن در کلاس student
+    }             
 
     // پاک کردن سبد خرید بعد از تایید تراکنش
     clear();
