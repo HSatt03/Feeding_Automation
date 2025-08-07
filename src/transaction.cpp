@@ -1,8 +1,9 @@
-#include <string.h>
+#include <string>
 #include <iostream>
 #include "../include/transaction.hpp"
 using namespace std;
 
+int Transaction::_transactionID = 0; 
 Transaction::Transaction(int transactionID, string trackingCode, float amount , TransactionType type, TransactionStatus status, time_t createdAT)
 {
     setTransactionID(transactionID);
@@ -14,7 +15,7 @@ Transaction::Transaction(int transactionID, string trackingCode, float amount , 
 }
 void Transaction::setTransactionID(int i)
 {
-    _transactionID = (i > 0) ? : 0;
+    _transactionID = (i > 0) ? i : 0;
 }
 void Transaction::setTrackingCode(string s)
 {

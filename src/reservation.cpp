@@ -7,7 +7,8 @@
 #include "../include/reservation.hpp"
 using namespace std;
 
-Reservation::Reservation(DiningHall *d, Meal *m,int r, RStatus s, time_t t1, time_t t2)
+Reservation::Reservation(DiningHall* d = nullptr, Meal* m = nullptr, int r = 0,
+            RStatus s = RStatus::PENDING, time_t t1 = time(0), time_t t2 = 0)
 {
     setReservation_id(r);
     setDhall(d);

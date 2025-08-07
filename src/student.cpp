@@ -89,7 +89,7 @@ void Student::print()const
 
 void Student::reserveMeal(Meal* meal)
 {
-    Reservation* reserve;
+    Reservation* reserve = new Reservation();
     reserve->setMeal(meal);
     _reservations.push_back(reserve);
 }
