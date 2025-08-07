@@ -4,21 +4,21 @@ using namespace std;
 
 ConfigPaths::ConfigPaths()
 {
-    d_config = "config/";
-    c_students = "config/studentsCsvFile.csv";
-    d_foodservice = "config/foodservice/";
-    d_sessions = "config/sessions/";
-    j_admin_config = "config/admin_config.json";
-    j_ConfigPaths = "config/paths_config.json";
-    j_meals = "config/foodservice/meals.json";
-    j_dininghalls = "config/foodservice/dining_halls.json";
-    d_student_sessions = "config/sessions/student/";
-    d_admin_sessions = "config/sessions/admin/";
-    j_foodservice_ids = "config/foodservice/service_ids.json";
-    l_students_log_file = "logs/student.log";
-    l_admins_log_file = "logs/admin.log";
+    d_config = "../config/";
+    c_students = "../config/studentsCsvFile.csv";
+    d_foodservice = "../config/foodservice/";
+    d_sessions = "../config/sessions/";
+    j_admin_config = "../config/admin_config.json";
+    j_ConfigPaths = "../config/paths_config.json";
+    j_meals = "../config/foodservice/meals.json";
+    j_dininghalls = "../config/foodservice/dining_halls.json";
+    d_student_sessions = "../config/sessions/student/";
+    d_admin_sessions = "../config/sessions/admin/";
+    j_foodservice_ids = "../config/foodservice/service_ids.json";
+    l_students_log_file = "../logs/student.log";
+    l_admins_log_file = "../logs/admin.log";
     d_logs = "logs/";
-    t_student_transactions = "config/student_transactions.json";
+    t_student_transactions = "../config/student_transactions.json";
 }
 
 ConfigPaths& ConfigPaths::instance()
