@@ -1,9 +1,9 @@
 #ifndef SESSIONMANAGER_HPP
 #define SESSTIONMANAGER_HPP
 #include <iostream>
-#include "../include/sessionBase.hpp"
-#include "../include/student.hpp"
-#include "../include/shoppingCart.hpp"
+#include "sessionBase.hpp"
+#include "student.hpp"
+#include "shoppingCart.hpp"
 using namespace std;
 
 namespace StudentSession
