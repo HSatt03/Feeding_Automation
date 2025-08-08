@@ -9,6 +9,7 @@ using namespace std;
 class ShoppingCart
 {
 public:
+    ShoppingCart();
     Transaction confirm();
     void addReservation(Reservation);
     void removeReservation(int ID);

@@ -12,6 +12,10 @@
 
 using namespace std;
 time_t specialTime = 123456;
+ShoppingCart::ShoppingCart()
+{
+    
+}
 Transaction ShoppingCart::confirm()
 {
     float totalAmount = 0;

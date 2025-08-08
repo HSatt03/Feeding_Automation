@@ -14,7 +14,7 @@ class Reservation;
 class Student : public User
 {
 public:
-    Student(int = 0, string = "", string = "", string = "", string = "", string = "", float = 0, bool = 0);
+    Student(int = 0, string = "", string = "", string = "", string = "", string = "", string = "", float = 0, bool = 0);
 
     void setStudentId(string);
     void setEmail(string);
