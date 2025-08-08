@@ -13,7 +13,7 @@ class SessionManager : public SessionBase
 public:
     static SessionManager& instance();
 
-    int getStudentID()const
+    string getStudentID()const
     {
         return _studentID;
     }
@@ -26,12 +26,12 @@ public:
 private:
     Student* _currentStudent;
     ShoppingCart* _shopping_cart;
-    int _studentID;
+    string _studentID;
 
     SessionManager();
     SessionManager(const SessionManager&) = delete;
     SessionManager& operator=(const SessionManager&) = delete;
-    void load_session()override;
+    void load_session(string& studentID, const string& password)override;
     void save_session()override;
    
 };

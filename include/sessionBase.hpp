@@ -37,7 +37,7 @@ protected:
     time_t _createdAt;
     time_t _lasttimeLogin;
     SessionStatus _status;
-    virtual void load_session() = 0;
+    virtual void load_session(string& studentID, const string& password) = 0;
     virtual void save_session() = 0;
     
 };

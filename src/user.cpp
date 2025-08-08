@@ -3,12 +3,13 @@
 #include "../include/user.hpp"
 using namespace std;
 
-User::User(int user_id, string name, string last_name, string password)
+User::User(int user_id, string name, string last_name, string password, string phone)
 {
     setUserID(user_id);
     setName(name);
     setLastName(last_name);
     setPassword(password);
+    setPhone(phone);
 }
 
 void User::setUserID(int user_id)
@@ -51,9 +52,13 @@ void User::setLastName(string last_name)
 
 void User::setPassword(string password)
 {
-
+    _hashed_password = password;
 }
 
+void User::setPhone(string phone)
+{
+    _phone = phone;
+}
 void User::print()const
 {
     cout << "Name: " << _name << 
