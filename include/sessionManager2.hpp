@@ -29,10 +29,8 @@ class SessionManager : public SessionBase
         SessionManager(Admin, int);
         SessionManager(const SessionManager&) = delete;
         SessionManager operator=(const SessionManager&) = delete;
-        //void loadSwssion() : override
-        //void saveSession() : override
-    
-
+        void load_session(string&, const string&) override;
+        void save_session() override;
     };
 }
 #endif
