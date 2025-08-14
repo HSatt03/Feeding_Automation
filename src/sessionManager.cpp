@@ -35,7 +35,6 @@ void SessionManager::setStudentID(string studentID)
 }
 
 const string l_students_log_file = "../logs/student.log";
-LogSystem logger(l_students_log_file);
 
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
@@ -78,6 +77,8 @@ void SessionManager::load_session(string& studentNumber, const string& password)
 }
 void SessionManager::save_session()
 {
+    LogSystem logger(l_students_log_file);
+
     fs::path path = ConfigPaths::instance().getStudentSessionsDir() / ( "Student_" + _studentID + ".json");
     json j;
     j["userID"] = to_string(_currentStudent->getUserID());
@@ -88,11 +89,18 @@ void SessionManager::save_session()
     j["email"] = _currentStudent->getEmail();
     j["phone"] = _currentStudent->getPhone();
     ofstream out(path);
+    if (!out.is_open()) 
+    {
+        logger.addLog("Cannot open student session file for writing (ID: " + _studentID + ")", "ERROR");
+        throw std::runtime_error("Cannot open student session file for writing.")
+    }
+    logger.addLog("Student session saved (ID: " + _studentID + ")", "INFO");
     out << j.dump(4);
 }
 
 void SessionManager::login(string studentNumber, string password)
 {
+    LogSystem logger(l_students_log_file);
     // فرض: _studentID و پسورد هش شده در این کلاس ست شده اند
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     fs::path existStudentSessionDir = ConfigPaths::instance().getStudentSessionsDir();
@@ -171,6 +179,7 @@ void SessionManager::login(string studentNumber, string password)
 }
 void SessionManager::logout()
 {
+    LogSystem logger(l_students_log_file);
     // پاک کردن شی دانشجو و سبد خرید (اگر داینامیک ساختی)
     delete _currentStudent;
     _currentStudent = nullptr;
