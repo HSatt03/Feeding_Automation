@@ -8,8 +8,8 @@
 using namespace std;
 using json = nlohmann::json;
 
-Admin::Admin(int user_id, string first_name, string last_name, string Passsword, string phone) 
-: User(user_id, first_name, last_name, Passsword, phone) {}
+Admin::Admin(int user_id, string first_name, string last_name, string hashedPasssword, string phone) 
+: User(user_id, first_name, last_name, hashedPasssword, phone) {}
 
 bool Admin::isThereAnyAdmin()
 {   

@@ -40,7 +40,16 @@ LogSystem logger(l_students_log_file);
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
 
-
+    fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
+    ifstream file(sessionFile);
+    if (!file.is_open())
+    {
+        logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
+        throw runtime_error("Cannot open session file.");
+    }
+    json j;
+    file >> j;
+    file.close();
     //بررسی پسوورد
     string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass))
@@ -50,18 +59,6 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     }
     else
     {
-        // فرض: _studentID و پسورد هش شده در این کلاس ست شده اند
-        fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
-        // باز کردن فایل و خواندن json
-        ifstream file(sessionFile);
-        if (!file.is_open())
-        {
-            logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
-            throw runtime_error("Cannot open session file.");
-        }
-        json j;
-        file >> j;
-        file.close();
         // استخراج داده‌ها از JSON
         int userID = j["userID"];
         string firstName = j["firstName"];
@@ -87,7 +84,7 @@ void SessionManager::save_session()
     j["studentID"] = _studentID;
     j["name"] = _currentStudent->getName();
     j["lastname"] = _currentStudent->getLastName();
-    j["hashpassword"] = _currentStudent->getPasssword();
+    j["hashpassword"] = _currentStudent->getHashedPasssword();
     j["email"] = _currentStudent->getEmail();
     j["phone"] = _currentStudent->getPhone();
     ofstream out(path);

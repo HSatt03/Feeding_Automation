@@ -40,7 +40,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     file >> j;
     file.close();
 
-    string storedHashedPass = j["hashedPassword"];
+    string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
         //logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
@@ -62,13 +62,12 @@ void SessionManager::load_session(string& studentNumber, const string& password)
 void SessionManager::save_session()
 {
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
-    string hashedPassword = bcrypt::generateHash(_currentAdmin->getPasssword());
     
     json j;
     j["userID"] = _adminID;
     j["firstName"] = _currentAdmin->getName();
     j["lastName"] = _currentAdmin->getLastName();
-    j["hashedPassword"] = hashedPassword;  
+    j["hashedPassword"] = _currentAdmin->getHashedPasssword();  
     j["phone"] = _currentAdmin->getPhone();
     
     ofstream out(path);
@@ -100,7 +99,6 @@ void SessionManager::login(string studentNumber, string password)
     {
         cout << "No admin found. Registering first admin..." << endl;
         Admin::sign_in(studentNumber, password);
-        cout << "First admin registered successfully." << endl;
         return;
     }
 

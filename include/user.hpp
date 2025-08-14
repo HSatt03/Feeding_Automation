@@ -30,7 +30,7 @@ public:
     {
         return _last_name;
     }
-    string getPasssword()const
+    string getHashedPasssword()const
     {
         return _hashed_password;
     }
