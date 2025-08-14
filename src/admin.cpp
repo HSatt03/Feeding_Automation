@@ -34,12 +34,7 @@ bool Admin::isThereAnyAdmin()
     return false;
 }
 
-bool Admin::sign_in()
-{
-    return !isThereAnyAdmin();
-}
-
-void SessionManager::register_admin(string& studentNumber, string& password)
+void SessionManager::sign_in(string& studentNumber, string& password)
 {
     fs::path csvPath = ConfigPaths::instance().getStudentsCsv();
     ifstream file(csvPath);
@@ -73,10 +68,10 @@ void SessionManager::register_admin(string& studentNumber, string& password)
 
             int adminID = stoi(userIDStr);
 
-            _currentAdmin = new Admin(adminID, firstName, lastName, password, phone);
-            _adminID = adminID;
+            Admin currentAdmin = new Admin(adminID, firstName, lastName, password, phone);
+            int adminID = adminID;
 
-            save_session();
+            sessionManager::save_session();
 
             cout << "Admin registered successfully." << endl;
             break;
