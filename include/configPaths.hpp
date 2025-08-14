@@ -36,8 +36,8 @@ private:
     fs::path d_sessions;
     fs::path j_admin_config;
     fs::path j_ConfigPaths;
-    fs::path j_meals;
-    fs::path j_dininghalls;
+    fs::path c_meals;
+    fs::path c_dininghalls;
     fs::path d_student_sessions;
     fs::path d_admin_sessions;
     fs::path j_foodservice_ids;
