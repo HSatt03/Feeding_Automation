@@ -72,7 +72,7 @@ void Admin::sign_in(string& studentNumber, string& password)
             Admin *currentAdmin = new Admin(adminID, firstName, lastName, password, phone);
             //int adminID = adminID;
 
-            adminSession.currentAdmin();
+            adminSession.setCurrentAdmin(currentAdmin, adminID);
 
             adminSession.save_session();
 

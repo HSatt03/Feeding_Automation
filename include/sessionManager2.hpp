@@ -17,10 +17,7 @@ class SessionManager : public SessionBase
         static SessionManager& instance();
         void load_session(string&, const string&) override;
         void save_session() override;
-        Admin getCurrentAdmin()const
-        {
-            return *_currentAdmin;
-        }
+        void setCurrentAdmin(Admin*, int);
         int getAdminID()const
         {
             return _adminID;

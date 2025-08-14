@@ -47,7 +47,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     file >> j;
     file.close();
 
-    string storedHashedPass = j["hashpassword"];
+    string storedHashedPass = j["hashedPassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
         logger.addLog("Failed login attempt (incorrect password) for admin " + studentNumber, "WARNING");
@@ -72,12 +72,13 @@ void SessionManager::save_session()
     LogSystem logger(l_admins_log_file);
 
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
+    string hashedPassword = bcrypt::generateHash(_currentAdmin->getPasssword());
     
     json j;
     j["userID"] = _adminID;
     j["firstName"] = _currentAdmin->getName();
     j["lastName"] = _currentAdmin->getLastName();
-    j["hashedPassword"] = _currentAdmin->getHashedPasssword();  
+    j["hashedPassword"] = hashedPassword;  
     j["phone"] = _currentAdmin->getPhone();
     
     ofstream out(path);
@@ -117,14 +118,8 @@ void SessionManager::login(string studentNumber, string password)
         cout << "No admin found. Registering first admin..." << endl;
         logger.addLog("No admin found, registering first admin (" + studentNumber + ")", "INFO");
         Admin::sign_in(studentNumber, password);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
         logger.addLog("First admin registered successfully", "INFO");
         cout << "First admin registered successfully." << endl;
->>>>>>> Stashed changes
         return;
     }
 
