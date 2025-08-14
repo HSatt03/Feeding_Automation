@@ -1,42 +1,465 @@
 #include <iostream>
 #include <filesystem>
+#include <windows.h>
+#include <conio.h>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
 #include "adminPanel.hpp"
+#include "meal.hpp"
+#include "diningHall.hpp"
 #include "configPaths.hpp"
 using namespace std;
 namespace fs = std::filesystem;
+
+void drawBox(int x, int y, int width, int height)
+{
+    // گوشه‌ها
+    gotoxy(x, y); cout << "+";
+    gotoxy(x + width, y); cout << "+";
+    gotoxy(x, y + height); cout << "+";
+    gotoxy(x + width, y + height); cout << "+";
+
+    // خطوط افقی
+    for (int i = 1; i < width; ++i) {
+        gotoxy(x + i, y); cout << "-";
+        gotoxy(x + i, y + height); cout << "-";
+    }
+
+    // خطوط عمودی
+    for (int i = 1; i < height; ++i) {
+        gotoxy(x, y + i); cout << "|";
+        gotoxy(x + width, y + i); cout << "|";
+    }
+}
+
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
 fs::path AdminPanel::chooseCsvFile()
 {
     fs::path csvPath = ConfigPaths::instance().getStudentsCsv();
     return csvPath;
 }
+
 void displayAllMeals()
 {
+    string csvFile = "../meals.csv"; // مسیر فایل CSV
+    ifstream file(csvFile);
 
+    if (!file.is_open()) {
+        cerr << "Cannot open meals CSV file." << endl;
+        return;
+    }
+
+    string line;
+    vector<Meal> meals;
+
+    // خواندن هدر
+    getline(file, line);
+
+    while (getline(file, line)) 
+    {
+        stringstream ss(line);
+        string field;
+        int mealID;
+        string name;
+        float price;
+        string mealtypeStr, reservedayStr;
+
+        getline(ss, field, ',');
+        mealID = stoi(field);
+
+        getline(ss, name, ',');
+
+        getline(ss, field, ',');
+        price = stof(field);
+
+        getline(ss, mealtypeStr, ',');
+
+        getline(ss, reservedayStr, ',');
+
+        MealType mealType = Meal::stringToMealType(mealtypeStr);
+        ReserveDay reserveDay = Meal::stringToReserveDay(reservedayStr);
+
+        Meal m(mealID, name, price, mealType, reserveDay);
+        meals.push_back(m);
+    }
+
+    file.close();
+
+    // چاپ همه غذاها
+    cout << "=== All Meals ===" << endl;
+    for (const auto& m : meals) {
+        m.print();  // فرض می‌کنیم متد print() داخل کلاس Meal چاپ مناسب انجام میده
+    }
 }
+
 void displayAllDininigHalls()
 {
+    string csvFile = "../dining_halls.csv"; // مسیر فایل CSV
+    ifstream file(csvFile);
 
+    if (!file.is_open()) 
+    {
+        cerr << "Cannot open dining halls CSV file." << endl;
+        return;
+    }
+
+    vector<DiningHall> halls;
+    string line;
+
+    // خواندن هدر
+    getline(file, line);
+
+    // خواندن هر خط و ساخت آبجکت DiningHall
+    while (getline(file, line)) 
+    {
+        stringstream ss(line);
+        string field;
+        int hallID, capacity;
+        string name, gender, address;
+
+        getline(ss, field, ',');
+        hallID = stoi(field);
+
+        getline(ss, name, ',');
+
+        getline(ss, gender, ','); // اینجا می‌تونیم بعداً استفاده کنیم یا نادیده بگیریم
+
+        getline(ss, address, ',');
+
+        getline(ss, field, ',');
+        capacity = stoi(field);
+
+        Gender gender = DiningHall::stringToGender(gender);
+
+        DiningHall hall(hallID, name, address, capacity);
+        halls.push_back(hall);
+    }
+
+    file.close();
+
+    // نمایش همه سالن‌ها با متد print
+    cout << "=== All Dining Halls ===" << endl;
+    for (const auto& hall : halls) 
+    {
+        hall.print();
+    }
 }
 void addNewMealIntractive()
 {
+    int id;
+    string name;
+    float price;
 
+    cout << "Enter meal ID: ";
+    cin >> id;
+    cin.ignore(); // برای گرفتن کاراکتر newline بعد از عدد
+
+    cout << "Enter meal name: ";
+    getline(cin, name);
+
+    cout << "Enter meal price: ";
+    cin >> price;
+
+    MealType type = Meal::selectMealType();
+    ReserveDay day = Meal::selectReserveDay();
+
+    // ساخت آبجکت Meal
+    Meal newMeal(id, name, price, type, day);
+
+    cout << "\nMeal created successfully!\n";
+    newMeal.print(); // نمایش اطلاعات غذا
+    // اضافه کردن به فایل CSV
+    string csvFile = "../mealsCsvFile.csv";
+    ofstream file(csvFile, ios::app); // append mode
+    if(!file.is_open()) 
+    {
+        cerr << "Cannot open meals CSV file for writing." << endl;
+        return;
+    }
+
+    // تبدیل enum به string برای ذخیره در CSV
+    string mealTypeStr;
+    switch(type) 
+    {
+        case MealType::BREAKFAST: mealTypeStr = "BREAKFAST"; break;
+        case MealType::LUNCH: mealTypeStr = "LUNCH"; break;
+        case MealType::DINNER: mealTypeStr = "DINNER"; break;
+    }
+
+    string reserveDayStr;
+    switch(day) 
+    {
+        case ReserveDay::SATURDAY: reserveDayStr = "SATURDAY"; break;
+        case ReserveDay::SUNDAY: reserveDayStr = "SUNDAY"; break;
+        case ReserveDay::MONDAY: reserveDayStr = "MONDAY"; break;
+        case ReserveDay::TUESDAY: reserveDayStr = "TUESDAY"; break;
+        case ReserveDay::WEDNESDAY: reserveDayStr = "WEDNESDAY"; break;
+        case ReserveDay::THURSDAY: reserveDayStr = "THURSDAY"; break;
+    }
+
+    // نوشتن خط جدید در فایل CSV
+    file << newMeal.getMeal_id() << ","
+         << newMeal.getName() << ","
+         << newMeal.getPrice() << ","
+         << mealTypeStr << ","
+         << reserveDayStr << "\n";
+
+    file.close();
+
+    cout << "Meal added to CSV file successfully!\n";
 }
 void addNewDiningHallIntractive()
 {
+    int hallID;
+    string name, gender, address;
+    int capacity;
 
+    cout << "Enter hall ID: ";
+    cin >> hallID;
+    cin.ignore(); // گرفتن newline بعد از عدد
+
+    cout << "Enter hall name: ";
+    getline(cin, name);
+
+    cout << "Enter hall address: ";
+    getline(cin, address);
+
+    cout << "Enter hall capacity: ";
+    cin >> capacity;
+
+    cout << "Enter gender: ";
+    Gender gender = DiningHall::selectGender();
+
+    // ساخت آبجکت DiningHall
+    DiningHall newHall(hallID, name, address, capacity);
+
+    cout << "\nDining hall created successfully!\n";
+    newHall.print();
+
+    // اضافه کردن به فایل CSV
+    string csvFile = "../diningHallsCsvFile.csv";
+    ofstream file(csvFile, ios::app); // append mode
+    if (!file.is_open()) 
+    {
+        cerr << "Cannot open dining halls CSV file for writing." << endl;
+        return;
+    }
+
+    // نوشتن خط جدید در فایل CSV
+    file << hallID << ","
+         << name << ","
+         << gender << ","
+         << address << ","
+         << capacity << "\n";
+
+    file.close();
+
+    cout << "Dining hall added to CSV file successfully!\n";
 }
-void removeMeal(int)
+void removeMeal(int mealIDToRemove)
 {
+    string csvFile = "../mealsCsvFile.csv";
+    string tempFile = "../temp.csv";
 
+    ifstream inFile(csvFile);
+    ofstream outFile(tempFile);
+
+    if(!inFile.is_open() || !outFile.is_open())
+    {
+        cerr << "Cannot open meals CSV file." << endl;
+        return;
+    }
+
+    string line;
+    bool removed = false;
+
+    // خواندن هدر و نوشتن در فایل موقت
+    if(getline(inFile, line)) 
+    {
+        outFile << line << endl;
+    }
+
+    // خواندن هر خط و فیلتر کردن
+    while(getline(inFile, line))
+    {
+        stringstream ss(line);
+        string field;
+        getline(ss, field, ',');
+        int id = stoi(field);
+
+        if (id != mealIDToRemove) 
+        {
+            outFile << line << endl; // فقط غذاهای غیر از mealID مورد نظر ذخیره میشن
+        }   else {
+            removed = true;
+        }
+    }
+
+    inFile.close();
+    outFile.close();
+
+    // جایگزینی فایل اصلی با فایل موقت
+    if(removed)
+    {
+        remove(csvFile.c_str());
+        rename(tempFile.c_str(), csvFile.c_str());
+        cout << "Meal with ID " << mealIDToRemove << " removed successfully.\n";
+    } 
+    else
+    {
+        remove(tempFile.c_str());
+        cout << "Meal with ID " << mealIDToRemove << " not found.\n";
+    }
 }
-void removeDiningHall(int)
+
+void removeDiningHall(int hallIDToRemove)
 {
+    string csvFile = "../diningHallsCsvFile.csv";
+    string tempFile = "../temp.csv";
 
+    ifstream inFile(csvFile);
+    ofstream outFile(tempFile);
+
+    if(!inFile.is_open() || !outFile.is_open()) 
+    {
+        cerr << "Cannot open dining halls CSV file." << endl;
+        return;
+    }
+
+    string line;
+    bool removed = false;
+
+    // خواندن هدر و نوشتن در فایل موقت
+    if(getline(inFile, line))
+    {
+        outFile << line << endl;
+    }
+
+    // خواندن هر خط و فیلتر کردن بر اساس hallID
+    while(getline(inFile, line))
+    {
+        stringstream ss(line);
+        string field;
+        getline(ss, field, ',');
+        int id = stoi(field);
+
+        if (id != hallIDToRemove) 
+        {
+            outFile << line << endl; // فقط سالن‌های غیر از hallID مورد نظر ذخیره میشن
+        } 
+        else 
+        {
+            removed = true;
+        }
+    }
+
+    inFile.close();
+    outFile.close();
+
+    // جایگزینی فایل اصلی با فایل موقت
+    if(removed)
+    {
+        remove(csvFile.c_str());
+        rename(tempFile.c_str(), csvFile.c_str());
+        cout << "Dining hall with ID " << hallIDToRemove << " removed successfully.\n";
+    } 
+    else 
+    {
+        remove(tempFile.c_str());
+        cout << "Dining hall with ID " << hallIDToRemove << " not found.\n";
+    }
 }
+
 void showMenu()
 {
+    int hightMM, widthMM;
+    int n,i,j,y_start;
+    bool sw_MainMenu;
+    char ch;
+    sw_MainMenu = false;
+    hightMM = 33;
+    widthMM = 28;
+    y_start = 3;
+    gotoxy(5,y_start);
+    for(int i=0 ; i<=widthMM-1 ; i++)
+    {
+        if(i%2==0)
+        {
+            cout<<"* ";
+        }
+        else
+        {
+            cout <<"* ";
+        }
+    }
+    for(int i=1 ; i<hightMM-1 ; i++)
+    {
+        gotoxy(5,y_start+i);
+        cout<<"* ";
+        for(int j=1 ; j<widthMM-1 ; j++)
+            cout<<"  ";
+        cout<<"*";
+    }
+    gotoxy(5,y_start+i);
+    for(int i=0 ; i<=widthMM-1 ; i++)
+    {
+        if(i%2==0)
+        {
+            cout <<"* ";
+        }
+        else
+        {
+            cout <<"* ";
+        }
+    }
+    gotoxy(12,y_start+2);
+    cout <<"Admin Menu    ---  <<Feeding atuomation>>";
+    gotoxy(12, y_start+5);
+    cout <<"1 _ Display all meals";
 
+    gotoxy(12, y_start+7);
+    cout <<"2 _ Display all diningHalls";
+
+    gotoxy(12, y_start+9);
+    cout <<"3 _ Add meal";
+
+    gotoxy(12, y_start+11);
+    cout << "4 _ Add diningHall";
+
+    gotoxy(12, y_start+13);
+    cout <<"5 _ Remove meal";
+
+    gotoxy(12, y_start+15);
+    cout << "6 _ Remove diningHall";
+
+    gotoxy(12, y_start+17);
+    cout << "7 _ exit";
+
+    gotoxy(12, y_start+19);
+    cout<<"Enter Keys : ( 1 to 7 ) ";
+
+    while (!sw_MainMenu)
+    {
+      if (kbhit())
+      {
+          n = getch();
+          if(n >= 1 && n <= 9)
+            Action(n);
+        else
+            gotoxy(12,y_start+31);
+            cout << "The number is not valid!";
+
+      }
+    }
 }
 void action(int)
 {

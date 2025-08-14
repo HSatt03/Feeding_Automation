@@ -89,7 +89,19 @@ void SessionManager::login(string studentNumber, string password)
 {
     // فرض: _studentID و پسورد هش شده در این کلاس ست شده اند
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
-
+    fs::path existStudentSessionDir = ConfigPaths::instance().getStudentSessionsDir();
+    if (!fs::exists(existStudentSessionDir)) 
+    {
+        try 
+        {
+            fs::create_directories(existStudentSessionDir);
+            cout << "Session directory created: " << existStudentSessionDir << endl;
+        }
+        catch (const fs::filesystem_error& e) {
+            cerr << "Error creating directory: " << e.what() << endl;
+            throw;
+        }
+    }
     if (fs::exists(sessionFile))
     {
         load_session(studentNumber, password);
