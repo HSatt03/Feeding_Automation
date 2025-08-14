@@ -10,10 +10,13 @@ namespace AdminSession
 class SessionManager : public SessionBase
     {
     public:
+        SessionManager(){}
         void login(string, string) override;
         void logout() override;
         Admin currentAdmin();
         static SessionManager& instance();
+        void load_session(string&, const string&) override;
+        void save_session() override;
         Admin getCurrentAdmin()const
         {
             return *_currentAdmin;
@@ -29,8 +32,6 @@ class SessionManager : public SessionBase
         SessionManager(Admin, int);
         SessionManager(const SessionManager&) = delete;
         SessionManager operator=(const SessionManager&) = delete;
-        void load_session(string&, const string&) override;
-        void save_session() override;
     };
 }
 #endif
