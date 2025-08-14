@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <sstrim>
+#include <sstream>
 #include <filesystem>
 #include "../include/sessionBase.hpp"
 #include "../include/SessionManager2.hpp"
@@ -22,17 +22,24 @@ Admin SessionManager::currentAdmin()
 {
     return *_currentAdmin;
 }
+void AdminSession::SessionManager::setCurrentAdmin(Admin *a, int i)
+{
+    _currentAdmin = a;
+    _adminID = i;
+}
+
+const string l_admins_log_file = "../logs/admin.log";
 
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
-    const string l_admins_log_file = "../logs/admin.log";
-    LogSystem logger(l_students_log_file);
+    LogSystem logger(l_admins_log_file);
+
     fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
     
     ifstream file(sessionFile);
     if (!file.is_open()) 
     {
-        //logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
+        logger.addLog("Failed to open session file for admin " + studentNumber, "ERROR");
         throw runtime_error("Cannot open admin session file.");
     }
 
@@ -43,7 +50,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
-        //logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
+        logger.addLog("Failed login attempt (incorrect password) for admin " + studentNumber, "WARNING");
         throw runtime_error("Incorrect admin password.");
     }
 
@@ -56,11 +63,14 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     _currentAdmin = new Admin(userID, firstName, lastName, password, phone);
     //Admin* _currentAdmin;
     _adminID = userID;
+    logger.addLog("Session loaded successfully for admin " + studentNumber, "INFO");
     cout << "Session loaded successfully." << endl;
 }
 
 void SessionManager::save_session()
 {
+    LogSystem logger(l_admins_log_file);
+
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
     
     json j;
@@ -73,13 +83,18 @@ void SessionManager::save_session()
     ofstream out(path);
     if (!out.is_open()) 
     {
+        logger.addLog("Cannot open admin session file for writing (ID: " + to_string(_adminID) + ")", "ERROR");
         throw std::runtime_error("Cannot open admin session file for writing.");
     }
+
+    logger.addLog("Admin session saved (ID: " + to_string(_adminID) + ")", "INFO");
     out << j.dump(4); // 4 = فاصله برای خوانایی بیشتر
 }
 
 void SessionManager::login(string studentNumber, string password)
 {
+    LogSystem logger(l_admins_log_file);
+
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
     fs::path existAdminSessionDir = ConfigPaths::instance().getAdminSessionsDir();
     if (!fs::exists(existAdminSessionDir)) 
@@ -87,10 +102,12 @@ void SessionManager::login(string studentNumber, string password)
         try 
         {
             fs::create_directories(existAdminSessionDir);
+            LogSystem logger(l_admins_log_file);
             cout << "Session directory created: " << existAdminSessionDir << endl;
         }
         catch (const fs::filesystem_error& e) 
         {
+            logger.addLog("Error creating admin sessions directory: " + string(e.what()), "ERROR");
             cerr << "Error creating directory: " << e.what() << endl;
             throw;
         }
@@ -98,7 +115,16 @@ void SessionManager::login(string studentNumber, string password)
     if (!Admin::isThereAnyAdmin()) 
     {
         cout << "No admin found. Registering first admin..." << endl;
+        logger.addLog("No admin found, registering first admin (" + studentNumber + ")", "INFO");
         Admin::sign_in(studentNumber, password);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+        logger.addLog("First admin registered successfully", "INFO");
+        cout << "First admin registered successfully." << endl;
+>>>>>>> Stashed changes
         return;
     }
 
@@ -107,18 +133,23 @@ void SessionManager::login(string studentNumber, string password)
 
     if (!fs::exists(sessionFile))
     {
+        logger.addLog("Admin session file not found for " + studentNumber, "WARNING");
         throw std::runtime_error("Admin session file not found.");
     }
 
     // اگر فایل بود، بارگذاری سشن و چک کردن پسورد
     load_session(studentNumber, password);
+    logger.addLog("Admin " + studentNumber + " logged in successfully", "INFO");
     std::cout << "Admin login successful." << std::endl;
 }
 
 void SessionManager::logout()
 {
+    LogSystem logger(l_admins_log_file);
+
     if (_currentAdmin == nullptr) 
     {
+        logger.addLog("Logout attempt with no active admin session", "WARNING");
         cout << "No admin is currently logged in." << endl;
         return;
     }
@@ -128,6 +159,8 @@ void SessionManager::logout()
     {
         fs::remove(sessionFile);
     }
+        
+    logger.addLog("Admin " + to_string(_adminID) + " logged out", "INFO");
 
     delete _currentAdmin;
     _currentAdmin = nullptr;
