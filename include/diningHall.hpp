@@ -42,6 +42,9 @@ public:
         return _capacity;
     }
 
+    static Gender stringToGender(const string&);
+    static Gender selectGender();
+
 private:
     int _hall_id;
     string _name;

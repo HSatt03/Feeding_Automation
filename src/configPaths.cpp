@@ -5,7 +5,7 @@ using namespace std;
 ConfigPaths::ConfigPaths()
 {
     d_config = "../config/";
-    c_students = "../config/studentsCsvFile.csv";
+    c_students = "../studentsCsvFile.csv";
     d_foodservice = "../config/foodservice/";
     d_sessions = "../config/sessions/";
     j_admin_config = "../config/admin_config.json";

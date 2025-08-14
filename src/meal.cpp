@@ -151,3 +151,82 @@ bool Meal::deactivate()
     isActive(0);
     return true;
 }
+
+MealType stringToMealType(const string& s) 
+{
+    if(s == "BREAKFAST")
+    { 
+        return MealType::BREAKFAST;
+    }
+    if(s == "LUNCH")
+    { 
+        return MealType::LUNCH;
+    }
+    if(s == "DINNER") 
+    { 
+        return MealType::DINNER;
+    }
+    return MealType::BREAKFAST; // پیش‌فرض
+}
+
+ReserveDay stringToReserveDay(const string& s) 
+{
+    if(s == "SATURDAY")
+    { 
+        return ReserveDay::SATURDAY;
+    }
+    if(s == "SUNDAY")
+    {
+        return ReserveDay::SUNDAY;
+    }
+    if(s == "MONDAY")
+    {
+        return ReserveDay::MONDAY;
+    }
+    if(s == "TUESDAY")
+    { 
+        return ReserveDay::TUESDAY;
+    }
+    if(s == "WEDNESDAY")
+    { 
+        return ReserveDay::WEDNESDAY;
+    }
+    if(s == "THURSDAY")
+    { 
+        return ReserveDay::THURSDAY;
+    }
+    return ReserveDay::SATURDAY; // پیش‌فرض
+}
+
+MealType selectMealType() 
+{
+    int choice;
+    cout << "Select meal type:\n1. BREAKFAST\n2. LUNCH\n3. DINNER\nChoice: ";
+    cin >> choice;
+    switch (choice) {
+        case 1: return MealType::BREAKFAST;
+        case 2: return MealType::LUNCH;
+        case 3: return MealType::DINNER;
+        default: 
+            cout << "Invalid choice, default BREAKFAST selected.\n";
+            return MealType::BREAKFAST;
+    }
+}
+
+ReserveDay selectReserveDay() 
+{
+    int choice;
+    cout << "Select reserve day:\n1. SATURDAY\n2. SUNDAY\n3. MONDAY\n4. TUESDAY\n5. WEDNESDAY\n6. THURSDAY\nChoice: ";
+    cin >> choice;
+    switch(choice) {
+        case 1: return ReserveDay::SATURDAY;
+        case 2: return ReserveDay::SUNDAY;
+        case 3: return ReserveDay::MONDAY;
+        case 4: return ReserveDay::TUESDAY;
+        case 5: return ReserveDay::WEDNESDAY;
+        case 6: return ReserveDay::THURSDAY;
+        default:
+            cout << "Invalid choice, default SATURDAY selected.\n";
+            return ReserveDay::SATURDAY;
+    }
+}
