@@ -21,9 +21,9 @@ Admin SessionManager::currentAdmin()
     return *_currentAdmin;
 }
 
-void SessionManager::load_session(string& username, const string& password)
+void SessionManager::load_session(string& studentNumber, const string& password)
 {
-    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + username + ".json");
+    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
     
     ifstream file(sessionFile);
     if (!file.is_open()) 
@@ -71,4 +71,49 @@ void SessionManager::save_session()
         throw std::runtime_error("Cannot open admin session file for writing.");
     }
     out << j.dump(4); // 4 = فاصله برای خوانایی بیشتر
+}
+
+void SessionManager::login(string studentNumber, string password)
+{
+    fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
+    if (!Admin::isThereAnyAdmin()) 
+    {
+        cout << "No admin found. Registering first admin..." << endl;
+        Admin::sign_in(studentNumber, password);
+        cout << "First admin registered successfully." << endl;
+        return;
+    }
+
+    // اگر ادمین وجود داشت، مسیر فایل سشن ادمین مربوط به username
+    fs::path sessionFile = adminSessionsDir / ("Admin_" + studentNumber + ".json");
+
+    if (!fs::exists(sessionFile))
+    {
+        throw std::runtime_error("Admin session file not found.");
+    }
+
+    // اگر فایل بود، بارگذاری سشن و چک کردن پسورد
+    load_session(studentNumber, password);
+    std::cout << "Admin login successful." << std::endl;
+}
+
+void SessionManager::logout()
+{
+    if (_currentAdmin == nullptr) 
+    {
+        cout << "No admin is currently logged in." << endl;
+        return;
+    }
+
+    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
+    if (fs::exists(sessionFile)) 
+    {
+        fs::remove(sessionFile);
+    }
+
+    delete _currentAdmin;
+    _currentAdmin = nullptr;
+    _adminID = 0;
+
+    cout << "Admin logged out successfully." << endl;
 }
