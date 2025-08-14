@@ -2,7 +2,24 @@
 #include <string>
 #include "../include/diningHall.hpp"
 using namespace std;
-DiningHall::DiningHall(int hall_id = 2, string name = "Sadaf", string address = "Next to the Central Library", int capacity = 100)
+ostream& operator<<(ostream& os, const Gender& gender)
+{
+    if(gender == Gender::MALE)
+    {
+        os << "Male";
+    }
+    else if(gender == Gender::FEMALE)
+    {
+        os << "Female";
+    }
+    else
+    {
+        os << "Female";
+    }
+    return os;
+} 
+
+DiningHall::DiningHall(int hall_id, string name, string address, int capacity)
 {
     _hall_id = hall_id;
     _name = name;
@@ -59,7 +76,7 @@ void DiningHall::print()const
     cout << "Name: " << _name << 
                             "\nHall Id: " << _hall_id << 
                                                     "\nAddress: " << _address << 
-                                                                            "\nCapacity: " << _capacity << endl;            
+                                                                            "\nCapacity: " << _capacity << "\nGender: " << _gender << endl;            
 }
 
 Gender stringToGender(const string& s) 
@@ -88,3 +105,4 @@ Gender selectGender()
             return Gender::FEMALE;
     }
 }
+

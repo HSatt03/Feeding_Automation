@@ -45,6 +45,8 @@ public:
     static Gender stringToGender(const string&);
     static Gender selectGender();
 
+    friend ostream& operator<<(ostream& os, const Gender&);
+
 private:
     int _hall_id;
     string _name;
