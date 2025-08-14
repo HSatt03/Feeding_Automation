@@ -4,12 +4,19 @@
 #include <string>
 using namespace std;
 
+enum class Gender
+{
+    MALE,
+    FEMALE
+};
+
 class DiningHall
 {
 public:
     DiningHall(int = 1, string = "Sadaf", string = "Next to the central library", int = 100);
     void setHallId(int);
     void setName(string);
+    void setGender(Gender);
     void setAddress(string);
     void setCapacity(int);
     void print()const;
@@ -21,6 +28,10 @@ public:
     string getName()
     {
         return _name;
+    }
+    Gender getGender()
+    {
+        return _gender;
     }
     string getAddress()
     {
@@ -34,6 +45,7 @@ public:
 private:
     int _hall_id;
     string _name;
+    Gender _gender;
     string _address;
     int _capacity;
 };
