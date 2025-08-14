@@ -13,6 +13,18 @@ class SessionManager : public SessionBase
 public:
     static SessionManager& instance();
 
+    void setCurrentStudent(Student*);
+    void setShoppingCart(ShoppingCart*);
+    void setStudentID(string);
+
+    Student* currentStudent()const
+    {
+        return _currentStudent;
+    }
+    ShoppingCart* shoppingCart()const
+    {
+        return _shopping_cart;
+    }
     string getStudentID()const
     {
         return _studentID;
@@ -20,8 +32,6 @@ public:
 
     void login(string, string)override;
     void logout()override;
-    Student* currentStudent();
-    ShoppingCart* shoppingCart();
 
 private:
     Student* _currentStudent;
