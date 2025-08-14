@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <windows.h>
 #include <conio.h>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -452,8 +453,8 @@ void showMenu()
       if (kbhit())
       {
           n = getch();
-          if(n >= 1 && n <= 9)
-            Action(n);
+          if(n >= 1 && n <= 7)
+            action(n);
         else
             gotoxy(12,y_start+31);
             cout << "The number is not valid!";
@@ -461,7 +462,38 @@ void showMenu()
       }
     }
 }
-void action(int)
+void action(int number)
 {
-    
+    switch(number)
+    {
+        case 1:
+            displayAllMeals();
+            break;
+        case 2:
+            displayAllDininigHalls();
+            break;
+        case 3:
+            addNewMealIntractive();
+            break;
+        case 4:
+            addNewDiningHallIntractive();
+            break;
+        case 5:
+            int ID;
+            cout << "Which meal do you want to remove? please enter its ID: ";
+            cin >> ID;
+            removeMeal(ID);
+            break;
+        case 6:
+            int ID;
+            cout << "Which diningHall do you want to remove? please enter its ID: ";
+            cin >> ID;
+            removeDiningHall(ID);
+            break;
+        case 7:
+            exit(0);
+            break;
+        default:
+            cout << "You have selected an out-of-range option.";
+    }
 }
