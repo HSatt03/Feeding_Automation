@@ -5,6 +5,7 @@
 #include "student.hpp"
 #include "sessionBase.hpp"
 #include "sessionManager.hpp"
+#include "logsystem.hpp"
 #include <configPaths.hpp>
 #include "json.hpp"
 #include "../Bcrypt.cpp/include/bcrypt.h"
@@ -33,12 +34,18 @@ void SessionManager::setStudentID(string studentID)
     _studentID = studentID;
 }
 
+const string l_students_log_file = "../logs/student.log";
+LogSystem logger(l_students_log_file);
+
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
+
+
     //بررسی پسوورد
     string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass))
     {
+        logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
         throw runtime_error("Incorrect password.");
     }
     else
@@ -49,6 +56,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
         ifstream file(sessionFile);
         if (!file.is_open())
         {
+            logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
             throw runtime_error("Cannot open session file.");
         }
         json j;
@@ -67,6 +75,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
         // ایجاد یک shopping cart جدید
         _shopping_cart = new ShoppingCart();
         _studentID = studentID;
+        logger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
         cout << "Session loaded successfully." << endl;
     }    
 }
@@ -106,6 +115,7 @@ void SessionManager::login(string studentNumber, string password)
     if (fs::exists(sessionFile))
     {
         load_session(studentNumber, password);
+        logger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
     }
     else
     {
@@ -113,6 +123,7 @@ void SessionManager::login(string studentNumber, string password)
         ifstream file(csvPath);
         if(!file.is_open()) 
         {
+            logger.addLog("Cannot open students CSV file", "ERROR");
             throw runtime_error("Cannot open students CSV file.");
         }
         string line;
@@ -136,6 +147,7 @@ void SessionManager::login(string studentNumber, string password)
                 string pass = password;
                 if(!bcrypt::validatePassword(password, hashedPassword))
                 {
+                    logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
                     throw runtime_error("Incorrect password.");
                 }
                 else
@@ -147,6 +159,7 @@ void SessionManager::login(string studentNumber, string password)
 
 
                     save_session();
+                    logger.addLog("Student " + studentID + " logged in successfully", "INFO");
                     cout << "Login successful." << endl;
                     break;
                 }
@@ -154,6 +167,7 @@ void SessionManager::login(string studentNumber, string password)
         }
         if(!found) 
         {
+            logger.addLog("Login attempt for non-existing student " + studentNumber, "WARNING");
             throw runtime_error("Student ID not found.");
         }
     }
@@ -178,6 +192,8 @@ void SessionManager::logout()
     {
         fs::remove(path);
     }
+
+    logger.addLog("Student " + studentID + " logged out", "INFO");
 }
 
 SessionManager& SessionManager::instance()
