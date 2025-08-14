@@ -225,65 +225,9 @@ void Panel::viewShappingCart(StudentSession::SessionManager& s)
 
 void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 {
-    /*system("cls");
+    system("cls");
     drawBox(0, 0, 50, 20);
-   
-    vector<DiningHall> diningHalls = {
-        DiningHall(1, "ُPardis", "Next to the Central Library", 200),
-        DiningHall(2, "Baran", "Next to the Sadaf shrine", 100)
-    };
     
-    vector<Meal> meals = {
-        Meal(1, "Cheese, walnuts, bread", 12000, "breakfast"),
-        Meal(2, "ساندویچ", 15000, "ناهار"),
-        Meal(3, "سوپ", 12000, "شام")
-    };
-    
-    cout << "لیست سالن‌ها:\n";
-    for (size_t i = 0; i < diningHalls.size(); i++)
-    {
-        cout << i+1 << ". " << diningHalls[i].getName() 
-             << " - آدرس: " << diningHalls[i].getAddress() 
-             << " - ظرفیت: " << diningHalls[i].getCapacity() << "\n";
-    }
-    
-    cout << "\nشماره سالن مورد نظر را وارد کنید: ";
-    int hallChoice;
-    cin >> hallChoice;
-    if (hallChoice < 1 || hallChoice > (int)diningHalls.size())
-    {
-        cout << "سالن نامعتبر است!\n";
-        return;
-    }
-    
-    cout << "\nلیست غذاها:\n";
-    for (size_t i = 0; i < meals.size(); i++)
-    {
-        cout << i+1 << ". " << meals[i].getName() 
-             << " - قیمت: " << meals[i].getPrice() 
-             << " - نوع: " << meals[i].getMeal_type() << "\n";
-    }
-    
-    cout << "\nشماره غذای مورد نظر را وارد کنید: ";
-    int mealChoice;
-    cin >> mealChoice;
-    if (mealChoice < 1 || mealChoice > (int)meals.size())
-    {
-        cout << "غذای نامعتبر است!\n";
-        return;
-    }
-    
-    // ساخت رزرو
-    static int reservationID = 1;
-    DiningHall* selectedHall = &diningHalls[hallChoice - 1];
-    Meal* selectedMeal = &meals[mealChoice - 1];
-    
-    Reservation newReservation(selectedHall, selectedMeal, reservationID++, RStatus::NOT_PAID, time(0));
-    
-    // اضافه کردن به سبد خرید کاربر
-    s.shoppingCart()->addReservation(newReservation);
-    
-    cout << "\nرزرو با موفقیت به سبد خرید اضافه شد!\n";*/
 }
 
 void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
