@@ -76,6 +76,20 @@ void SessionManager::save_session()
 void SessionManager::login(string studentNumber, string password)
 {
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
+    fs::path existAdminSessionDir = ConfigPaths::instance().getAdminSessionsDir();
+    if (!fs::exists(existAdminSessionDir)) 
+    {
+        try 
+        {
+            fs::create_directories(existAdminSessionDir);
+            cout << "Session directory created: " << existAdminSessionDir << endl;
+        }
+        catch (const fs::filesystem_error& e) 
+        {
+            cerr << "Error creating directory: " << e.what() << endl;
+            throw;
+        }
+    }
     if (!Admin::isThereAnyAdmin()) 
     {
         cout << "No admin found. Registering first admin..." << endl;

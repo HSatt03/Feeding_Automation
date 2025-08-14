@@ -97,7 +97,8 @@ void SessionManager::login(string studentNumber, string password)
             fs::create_directories(existStudentSessionDir);
             cout << "Session directory created: " << existStudentSessionDir << endl;
         }
-        catch (const fs::filesystem_error& e) {
+        catch (const fs::filesystem_error& e) 
+        {
             cerr << "Error creating directory: " << e.what() << endl;
             throw;
         }
