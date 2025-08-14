@@ -1,9 +1,11 @@
 #include <iostream>
 #include <fstream>
+#include <sstrim>
 #include <filesystem>
 #include "../include/sessionBase.hpp"
 #include "../include/SessionManager2.hpp"
 #include "../include/admin.hpp"
+#include "../include/logsystem.hpp"
 #include <configPaths.hpp>
 #include "json.hpp"
 #include "../Bcrypt.cpp/include/bcrypt.h"
@@ -23,11 +25,14 @@ Admin SessionManager::currentAdmin()
 
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
+    const string l_admins_log_file = "../logs/admin.log";
+    LogSystem logger(l_students_log_file);
     fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
     
     ifstream file(sessionFile);
     if (!file.is_open()) 
     {
+        //logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
         throw runtime_error("Cannot open admin session file.");
     }
 
@@ -38,6 +43,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     string storedHashedPass = j["hashedPassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
+        //logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
         throw runtime_error("Incorrect admin password.");
     }
 
