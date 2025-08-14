@@ -61,3 +61,30 @@ void DiningHall::print()const
                                                     "\nAddress: " << _address << 
                                                                             "\nCapacity: " << _capacity << endl;            
 }
+
+Gender stringToGender(const string& s) 
+{
+    if(s == "Male")
+    { 
+        return Gender::MALE;
+    }
+    if(s == "FEMALE")
+    { 
+        return Gender::FEMALE;
+    }
+    return Gender::FEMALE; // پیش‌فرض
+}
+
+Gender selectGender() 
+{
+    int choice;
+    cout << "Select gender:\n1. Male\n2. Female\nChoice: ";
+    cin >> choice;
+    switch (choice) {
+        case 1: return Gender::MALE;
+        case 2: return Gender::FEMALE;
+        default: 
+            cout << "Invalid choice, default BREAKFAST selected.\n";
+            return Gender::FEMALE;
+    }
+}
