@@ -19,6 +19,20 @@ SessionManager::SessionManager()
    _shopping_cart = nullptr;
    _studentID = "";
 }
+
+void SessionManager::setCurrentStudent(Student* student)
+{
+    _currentStudent = student;
+}
+void SessionManager::setShoppingCart(ShoppingCart* shopping_cart)
+{
+    _shopping_cart = shopping_cart;
+}
+void SessionManager::setStudentID(string studentID)
+{
+    _studentID = studentID;
+}
+
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
     //بررسی پسوورد
@@ -140,11 +154,12 @@ void SessionManager::logout()
     delete _shopping_cart;
     _shopping_cart = nullptr;
 
+    string studentID = _studentID;
     _studentID = "";
 
     // حذف فایل سشن مربوط به این دانشجو
     fs::path path = ConfigPaths::instance().getStudentSessionsDir()
-                    / ("Student_" + _studentID + ".json");
+                    / ("Student_" + studentID + ".json");
 
     if (fs::exists(path))
     {
@@ -152,14 +167,6 @@ void SessionManager::logout()
     }
 }
 
-Student* SessionManager::currentStudent()
-{
-    return _currentStudent;
-}
-ShoppingCart* SessionManager::shoppingCart()
-{
-    return _shopping_cart;
-}
 SessionManager& SessionManager::instance()
 {
     static SessionManager instance;

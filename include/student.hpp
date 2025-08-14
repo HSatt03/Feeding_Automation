@@ -24,6 +24,7 @@ public:
 
     void print()const;
     void reserveMeal(Meal*);
+    void view_recent_transactions();
     bool cancelReservation(Reservation*);
     bool isActive();
     void activate();

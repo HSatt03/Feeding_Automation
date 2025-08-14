@@ -94,6 +94,11 @@ void Student::reserveMeal(Meal* meal)
     _reservations.push_back(reserve);
 }
 
+void Student::view_recent_transactions()
+{
+    
+}
+
 bool Student::cancelReservation(Reservation* reserve)
 {
     bool success = false;
