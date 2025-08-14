@@ -93,7 +93,7 @@ void SessionManager::save_session()
     if (!out.is_open()) 
     {
         logger.addLog("Cannot open student session file for writing (ID: " + _studentID + ")", "ERROR");
-        throw std::runtime_error("Cannot open student session file for writing.")
+        throw std::runtime_error("Cannot open student session file for writing.");
     }
     logger.addLog("Student session saved (ID: " + _studentID + ")", "INFO");
     out << j.dump(4);
