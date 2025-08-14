@@ -32,6 +32,17 @@ void DiningHall::setName(string name)
     }
     _name = name;
 }
+void DiningHall::setGender(Gender g)
+{
+    if(g == Gender::MALE || g == Gender::FEMALE)
+    {
+        _gender = g;
+    }
+    else
+    {
+        throw invalid_argument("Incorrect value for gender!!!");
+    }
+}
 void DiningHall::setAddress(string address)
 {
     _address = address;
