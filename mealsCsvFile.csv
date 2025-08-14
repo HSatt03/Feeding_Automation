@@ -1,0 +1,37 @@
+mealID,name,price,mealtype,reserveday
+0,cheese and bread and walnuts,11000,BREAKFAST,SATURDAY
+1,fried eggs,10000,BREAKFAST,SATURDAY
+2,butter and honey,12000,BREAKFAST,SUNDAY
+3,butter and bread,10000,BREAKFAST,SUNDAY
+4,honey and bread,11000,BREAKFAST,MONDAY
+5,adasi,15000,BREAKFAST,MONDAY
+6,jam and bread,10000,BREAKFAST,TUESDAY
+7,cheese and cucumber,10000,BREAKFAST,TUESDAY
+8,Boiled eggs,10000,BREAKFAST,WEDNESDAY
+9,bean feed,14000,BREAKFAST,WEDNESDAY
+10,omlet,11000,BREAKFAST,THURSDAY
+11,butter and jam,10000,BREkfast,THURSDAY
+12,ghormeh sabzi,45000,LUNCH,SATURDAY
+13,zereshk polo ba morgh,40000,LUNCH,SATURDAY
+14,khoresh gheimeh,42000,LUNCH,SUNDAY
+15,adass polo,38000,LUNCH,SUNDAY
+16,kabab koobideh,50000,LUNCH,MONDAY
+17,baghali polo ba mahiche,65000,LUNCH,MONDAY
+18,fesenjan,55000,LUNCH,TUESDAY
+19,loobia polo,39000,LUNCH,TUESDAY
+20,khoresht karafs,43000,LUNCH,WEDNESDAY
+21,ghaymeh bademjan,44000,LUNCH,WEDNESDAY
+22,joojeh kabab,48000,LUNCH,THURSDAY
+23,morgh shekam por,52000,LUNCH,THURSDAY
+24,ash reshteh,25000,DINNER,SATURDAY
+25,kuku sabzi,22000,DINNER,SATURDAY
+26,sabzi polo ba mahi,40000,DINNER,SUNDAY
+27,tahchin morgh,45000,DINNER,SUNDAY
+28,mirza ghasemi,30000,DINNER,MONDAY
+29,sholeh zard,20000,DINNER,MONDAY
+30,ghormeh sabzi light,35000,DINNER,TUESDAY
+31,adassi,28000,DINNER,TUESDAY
+32,kashk e bademjan,32000,DINNER,WEDNESDAY
+33,tabbouleh,25000,DINNER,WEDNESDAY
+34,mirza ghasemi light,30000,DINNER,THURSDAY
+35,salmon grilled,50000,DINNER,THURSDAY
