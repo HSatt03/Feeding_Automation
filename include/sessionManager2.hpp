@@ -10,8 +10,8 @@ namespace AdminSession
 class SessionManager : public SessionBase
     {
     public:
-        //void login(string, string) : override
-        //void logout() : override
+        void login(string, string) override;
+        void logout() override;
         Admin currentAdmin();
         static SessionManager& instance();
         Admin getCurrentAdmin()const
