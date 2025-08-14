@@ -11,8 +11,7 @@ public:
     void print()const;
     string getType();
     static bool isThereAnyAdmin();
-    static bool sign_in();
-    static void register_admin(string&, string&);
+    static void sign_in(string&, string&);
 
 private:
 };
