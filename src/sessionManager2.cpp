@@ -119,7 +119,10 @@ void SessionManager::login(string studentNumber, string password)
         Admin::sign_in(studentNumber, password);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         logger.addLog("First admin registered successfully", "INFO");
