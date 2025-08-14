@@ -38,6 +38,7 @@ const string l_students_log_file = "../logs/student.log";
 
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
+    LogSystem logger(l_students_log_file);
 
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     ifstream file(sessionFile);
