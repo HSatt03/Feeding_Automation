@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <stdexcept>
 #include "../include/diningHall.hpp"
 using namespace std;
 ostream& operator<<(ostream& os, const Gender& gender)
@@ -105,4 +107,33 @@ Gender selectGender()
             return Gender::FEMALE;
     }
 }
+
+static inline void trim_inplace(string& s) {
+    auto not_space = [](int ch){ return !isspace(ch); };
+    s.erase(s.begin(), find_if(s.begin(), s.end(), not_space));
+    s.erase(find_if(s.rbegin(), s.rend(), not_space).base(), s.end());
+}
+
+static inline string upper_copy(std::string s) {
+    transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c){ return toupper(c); });
+    return s;
+}
+
+Gender DiningHall::stringToGender(const string& in) {
+    string s = in;
+    trim_inplace(s);
+    s = upper_copy(s);
+
+    if (s == "MALE"   || s == "M") return Gender::MALE;
+    if (s == "FEMALE" || s == "F") return Gender::FEMALE;
+
+    throw invalid_argument("Invalid gender: " + in);
+}
+
+/*std::ostream& operator<<(ostream& os, const Gender& g) {
+    os << (g == Gender::MALE ? "Male" : "Female");
+    return os;
+}*/
+
 

@@ -84,6 +84,8 @@ public:
     static ReserveDay stringToReserveDay(const string& s); 
     static MealType selectMealType();
     static ReserveDay selectReserveDay(); 
+    MealType stringToMealType(const string&);
+    ReserveDay stringToReserveDay(const string&);
 
 private:
     int _meal_id;
