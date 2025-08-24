@@ -81,20 +81,23 @@ void DiningHall::print()const
                                                                             "\nCapacity: " << _capacity << "\nGender: " << _gender << endl;            
 }
 
-Gender stringToGender(const string& s) 
+Gender DiningHall::stringToGender(const string& s) 
 {
     if(s == "Male")
     { 
         return Gender::MALE;
     }
-    if(s == "FEMALE")
+    else if(s == "Female")
     { 
         return Gender::FEMALE;
     }
-    return Gender::FEMALE; // پیش‌فرض
+    else
+    {
+        return Gender::FEMALE; // پیش‌فرض
+    }
 }
 
-Gender selectGender() 
+Gender DiningHall::selectGender() 
 {
     int choice;
     cout << "Select gender:\n1. Male\n2. Female\nChoice: ";

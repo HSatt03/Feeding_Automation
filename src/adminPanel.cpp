@@ -125,21 +125,21 @@ void displayAllDininigHalls()
         stringstream ss(line);
         string field;
         int hallID, capacity;
-        string name, gender, address;
+        string name, genderStr, address;
 
         getline(ss, field, ',');
         hallID = stoi(field);
 
         getline(ss, name, ',');
 
-        getline(ss, gender, ','); // اینجا می‌تونیم بعداً استفاده کنیم یا نادیده بگیریم
+        getline(ss, genderStr, ','); // اینجا می‌تونیم بعداً استفاده کنیم یا نادیده بگیریم
 
         getline(ss, address, ',');
 
         getline(ss, field, ',');
         capacity = stoi(field);
 
-        Gender gender = DiningHall::stringToGender(gender);
+        Gender gender = DiningHall::stringToGender(genderStr);
 
         DiningHall hall(hallID, name, address, capacity);
         halls.push_back(hall);
