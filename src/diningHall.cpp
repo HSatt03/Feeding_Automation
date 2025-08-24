@@ -73,6 +73,22 @@ void DiningHall::setCapacity(int capacity)
         _capacity = capacity;
     }
 }
+
+void DiningHall::inputHalls()
+{
+    cout << "DiningHall ID: ";
+    cin >> _hall_id;
+    cin.ignore();
+    cout << "DiningHall Name: ";
+    getline(cin, _name);
+    cout << "Gender: ";
+    _gender = selectGender();
+    cout << "DiningHall Address: ";
+    getline(cin, _address);
+    cout << "DiningHall Capacity: ";
+    cin >> _capacity;
+}
+
 void DiningHall::print()const
 {
     cout << "Name: " << _name << 
@@ -96,6 +112,18 @@ Gender DiningHall::stringToGender(const string& s)
         return Gender::FEMALE; // پیش‌فرض
     }
 }
+
+string DiningHall::genderToString(Gender g) 
+{
+    switch (g) 
+    {
+        case Gender::FEMALE:
+            return "FEMALE";
+        case Gender::MALE:
+            return "MALE";
+    }
+    return "UNKNOWN";
+} 
 
 Gender DiningHall::selectGender() 
 {

@@ -188,52 +188,35 @@ void addNewMealIntractive()
 
 void addNewDiningHallIntractive()
 {
-    int hallID;
-    string name, gender, address;
-    int capacity;
-
-    cout << "Enter hall ID: ";
-    cin >> hallID;
-    cin.ignore(); // گرفتن newline بعد از عدد
-
-    cout << "Enter hall name: ";
-    getline(cin, name);
-
-    cout << "Enter hall address: ";
-    getline(cin, address);
-
-    cout << "Enter hall capacity: ";
-    cin >> capacity;
-
-    cout << "Enter gender: ";
-    Gender gender = DiningHall::selectGender();
-
-    // ساخت آبجکت DiningHall
-    DiningHall newHall(hallID, name, address, capacity);
-
-    cout << "\nDining hall created successfully!\n";
-    newHall.print();
-
-    // اضافه کردن به فایل CSV
-    string csvFile = "../diningHallsCsvFile.csv";
-    ofstream file(csvFile, ios::app); // append mode
-    if (!file.is_open()) 
+    int n;
+    cout << "How many diningHalls do you want to add to the list?";
+    cin >> n;
+    cin.ignore();
+    json jArray = json::array();
+     // اگه فایل قبلی موجوده، اول بخونیم تا داده‌ها حفظ بشن
+    ifstream inFile("diningHalls.json");
+    if (inFile.is_open() && inFile.peek() != EOF) 
     {
-        cerr << "Cannot open dining halls CSV file for writing." << endl;
-        return;
+        inFile >> jArray;
     }
-
-    // نوشتن خط جدید در فایل CSV
-    file << hallID << ","
-         << name << ","
-         << gender << ","
-         << address << ","
-         << capacity << "\n";
-
-    file.close();
-
+    for(int i = 0;  i < n; i++)
+    {
+        DiningHall hall;
+        cout << i + 1 << ". \n";
+        hall.inputHalls();
+        jArray.push_back(hall);
+    }
+    ofstream outFile("diningHalls.json");
+    if(!outFile)
+    {
+        cerr << "The file does not open!!!";
+        exit(0);
+    }
+    outFile << setw(4) << jArray << endl; // نوشتن JSON مرتب
+    outFile.close();
     cout << "Dining hall added to CSV file successfully!\n";
 }
+
 void removeMeal(int mealIDToRemove)
 {
     string csvFile = "../mealsCsvFile.csv";
