@@ -10,8 +10,8 @@ ConfigPaths::ConfigPaths()
     d_sessions = "../config/sessions/";
     //j_admin_config = "../config/admin_config.json";
     //j_ConfigPaths = "../config/paths_config.json";
-    c_meals = "../mealsCsvFile.csv";
-    c_dininghalls = "../diningHallsCsvFile.csv";
+    j_meals = "../meals.json";
+    j_dininghalls = "../diningHalls.json";
     d_student_sessions = "../config/sessions/student/";
     d_admin_sessions = "../config/sessions/admin/";
     //j_foodservice_ids = "../config/foodservice/service_ids.json";
@@ -54,11 +54,11 @@ fs::path ConfigPaths::getConfigPathsFile() const
 }
 fs::path ConfigPaths::getMealsJson() const 
 { 
-    return c_meals; 
+    return j_meals; 
 }
 fs::path ConfigPaths::getDiningHallsJson() const 
 { 
-    return c_dininghalls; 
+    return j_dininghalls; 
 }
 fs::path ConfigPaths::getStudentSessionsDir() const 
 { 
