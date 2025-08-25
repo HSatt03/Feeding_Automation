@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iomanip>
 #include "adminPanel.hpp"
 #include "meal.hpp"
 #include "diningHall.hpp"

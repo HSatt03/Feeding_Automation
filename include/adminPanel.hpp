@@ -1,7 +1,10 @@
 #ifndef ADMINPANEL_HPP
 #define ADMINPANEL_HPP
 #include <iostream>
+#include <filesystem>
+
 using namespace std;
+namespace fs = std::filesystem;
 class AdminPanel
 {
 public:
@@ -16,4 +19,5 @@ public:
     void showMenu();
     void action(int);
 };
+
 #endif 
