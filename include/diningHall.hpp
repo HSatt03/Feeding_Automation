@@ -59,7 +59,6 @@ private:
     string _address;
     int _capacity;
 };
-
 namespace nlohmann
 {
     template<>
