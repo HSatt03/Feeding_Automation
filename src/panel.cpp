@@ -234,10 +234,10 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     system("cls");
     drawBox(0, 0, 50, 20);
     // ---------- Read meals file ----------
-    std::string mealsFile = ConfigPaths::instance().getMealsJson().string();
-    std::ifstream mealStream(mealsFile);
+    string mealsFile = ConfigPaths::instance().getMealsJson().string();
+    ifstream mealStream(mealsFile);
     if (!mealStream.is_open()) {
-        std::cerr << "Error opening meals file: " << mealsFile << "\n";
+        cerr << "Error opening meals file: " << mealsFile << "\n";
         delete selectedHall;
         return;
     }
@@ -245,20 +245,20 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     std::vector<Meal> meals;
 
     // Skip header
-    std::getline(mealStream, line);
+    getline(mealStream, line);
 
-    while (std::getline(mealStream, line)) {
-        std::stringstream ss(line);
-        std::string idStr, name, priceStr, mealTypeStr, dayStr;
+    while (getline(mealStream, line)) {
+        stringstream ss(line);
+        string idStr, name, priceStr, mealTypeStr, dayStr;
 
-        std::getline(ss, idStr, ',');
-        std::getline(ss, name, ',');
-        std::getline(ss, priceStr, ',');
-        std::getline(ss, mealTypeStr, ',');
-        std::getline(ss, dayStr, ',');
+        getline(ss, idStr, ',');
+        getline(ss, name, ',');
+        getline(ss, priceStr, ',');
+        getline(ss, mealTypeStr, ',');
+        getline(ss, dayStr, ',');
 
-        int id = std::stoi(idStr);
-        float price = std::stof(priceStr);
+        int id = stoi(idStr);
+        float price = stof(priceStr);
         MealType mealType = Meal::stringToMealType(mealTypeStr);
         ReserveDay day = Meal::stringToReserveDay(dayStr);
 
@@ -268,7 +268,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     // ---------- Select meal ----------
     std::cout << "\nAvailable meals:\n";
     for (auto& meal : meals) {
-        std::cout << meal.getMeal_id() << " - " << meal.getName()
+        cout << meal.getMeal_id() << " - " << meal.getName()
                   << " (" << meal.getPrice() << " Toman)\n";
     }
 
