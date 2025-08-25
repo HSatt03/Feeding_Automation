@@ -2,11 +2,11 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
-#include "../include/sessionBase.hpp"
-#include "../include/SessionManager2.hpp"
-#include "../include/admin.hpp"
-#include "../include/logsystem.hpp"
-#include <configPaths.hpp>
+#include "sessionBase.hpp"
+#include "sessionManager2.hpp"
+#include "admin.hpp"
+#include "logsystem.hpp"
+#include "configPaths.hpp"
 #include "json.hpp"
 #include "../Bcrypt.cpp/include/bcrypt.h"
 using namespace std;
@@ -72,7 +72,7 @@ void SessionManager::save_session()
     LogSystem logger(l_admins_log_file);
 
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
-    string hashedPassword = bcrypt::generateHash(_currentAdmin->getPasssword());
+    string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());
     
     json j;
     j["userID"] = _adminID;
