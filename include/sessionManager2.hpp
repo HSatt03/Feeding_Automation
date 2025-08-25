@@ -1,8 +1,8 @@
 #ifndef SESSIONMANAGER_HPP
 #define SESSTIONMANAGER_HPP
 #include <iostream>
-#include "../include/sessionBase.hpp"
-#include "../include/admin.hpp"
+#include "sessionBase.hpp"
+#include "admin.hpp"
 using namespace std;
 
 namespace AdminSession

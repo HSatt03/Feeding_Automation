@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/configPaths.hpp"
+#include "configPaths.hpp"
 using namespace std;
 
 ConfigPaths::ConfigPaths()

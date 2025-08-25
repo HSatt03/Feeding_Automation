@@ -2,8 +2,8 @@
 #include <string>
 #include <filesystem>
 #include <string>
-#include "../include/configPaths.hpp"
-#include "../include/user.hpp"
+#include "configPaths.hpp"
+#include "user.hpp"
 using namespace std;
 
 User::User(int user_id, string name, string last_name, string password, string phone)
@@ -74,13 +74,6 @@ string User::getType()
 {
     return "User";
 }
-
-enum class UserType 
-{
-    STUDENT,
-    ADMIN,
-    UNKNOWN
-};
 
 UserType detectUserType(const string& studentNumber) 
 {

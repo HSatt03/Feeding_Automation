@@ -4,11 +4,11 @@
 #include <ctime>
 #include <cstdlib>
 #include <vector>
-#include "../include/shoppingCart.hpp"
-#include "../include/reservation.hpp"
-#include "../include/transaction.hpp"
-#include "../include/student.hpp"
-#include "../include/sessionManager.hpp"
+#include "shoppingCart.hpp"
+#include "reservation.hpp"
+#include "transaction.hpp"
+#include "student.hpp"
+#include "sessionManager.hpp"
 
 using namespace std;
 time_t specialTime = 123456;

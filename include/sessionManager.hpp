@@ -31,7 +31,7 @@ public:
     }
 
     void login(string, string)override;
-    void logout()override;
+    void logout(string, string)override;
 
 private:
     Student* _currentStudent;
@@ -41,8 +41,8 @@ private:
     SessionManager();
     SessionManager(const SessionManager&) = delete;
     SessionManager& operator=(const SessionManager&) = delete;
-    void load_session(string& studentID, const string& password)override;
-    void save_session()override;
+    void load_session(string&, const string&)override;
+    void save_session(string&, const string&)override;
    
 };
 }

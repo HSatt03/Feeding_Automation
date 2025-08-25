@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 #include <ctime>
-#include "../include/meal.hpp"
-#include "../include/diningHall.hpp"
-#include "../include/reservation.hpp"
+#include "meal.hpp"
+#include "diningHall.hpp"
+#include "reservation.hpp"
 using namespace std;
 
 Reservation::Reservation(DiningHall* d = nullptr, Meal* m = nullptr, int r = 0,
@@ -86,9 +86,9 @@ void Reservation::print()const
 {
     cout << "reservation id : " << _reservation_id;
     cout << endl;
-    _dHall->print()
+    _dHall->print();
     cout << endl;
-    _meal->print()
+    _meal->print();
     cout << "\nstatus : " << _status;
     cout << "\ncreaded at : ";
     tm* localTime = localtime(&_created_at);
