@@ -5,7 +5,7 @@
 #include "sessionManager2.hpp"
 #include "configPaths.hpp"
 #include "json.hpp"
-#include "../Bcrypt.cpp/include/bcrypt.h"
+#include "bcrypt.h"
 using namespace std;
 using json = nlohmann::json;
 

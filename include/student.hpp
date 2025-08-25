@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include "transaction.hpp"
 #include "meal.hpp"
 #include "user.hpp"
 using namespace std;
