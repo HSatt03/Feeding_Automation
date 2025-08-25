@@ -2,12 +2,18 @@
 #include <windows.h>
 #include <conio.h>
 #include <ctime>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
 #include "../include/panel.hpp"
 #include "../include/reservation.hpp"
 #include "../include/shoppingCart.hpp"
 #include "../include/sessionManager.hpp"
 #include "../include/transaction.hpp"
 #include "../include/student.hpp"
+#include "../include/meal.hpp"
+#include "../include/diningHall.hpp"
+#include "../include/configPaths.hpp"
 using namespace std;
 using namespace StudentSession;
 
@@ -227,7 +233,125 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 {
     system("cls");
     drawBox(0, 0, 50, 20);
-    
+    // ---------- Read meals file ----------
+    std::string mealsFile = ConfigPaths::instance().getMealsJson().string();
+    std::ifstream mealStream(mealsFile);
+    if (!mealStream.is_open()) {
+        std::cerr << "Error opening meals file: " << mealsFile << "\n";
+        delete selectedHall;
+        return;
+    }
+
+    std::vector<Meal> meals;
+
+    // Skip header
+    std::getline(mealStream, line);
+
+    while (std::getline(mealStream, line)) {
+        std::stringstream ss(line);
+        std::string idStr, name, priceStr, mealTypeStr, dayStr;
+
+        std::getline(ss, idStr, ',');
+        std::getline(ss, name, ',');
+        std::getline(ss, priceStr, ',');
+        std::getline(ss, mealTypeStr, ',');
+        std::getline(ss, dayStr, ',');
+
+        int id = std::stoi(idStr);
+        float price = std::stof(priceStr);
+        MealType mealType = Meal::stringToMealType(mealTypeStr);
+        ReserveDay day = Meal::stringToReserveDay(dayStr);
+
+        meals.emplace_back(id, name, price, mealType, day, true);
+    }
+
+    // ---------- Select meal ----------
+    std::cout << "\nAvailable meals:\n";
+    for (auto& meal : meals) {
+        std::cout << meal.getMeal_id() << " - " << meal.getName()
+                  << " (" << meal.getPrice() << " Toman)\n";
+    }
+
+    int mealChoice;
+    std::cout << "Enter meal ID: ";
+    std::cin >> mealChoice;
+
+    auto mealIt = std::find_if(meals.begin(), meals.end(), [mealChoice](Meal& m){
+        return m.getMeal_id() == mealChoice;
+    });
+    if (mealIt == meals.end()) {
+        std::cout << "Invalid meal selected!\n";
+        delete selectedHall;
+        return;
+    }
+    Meal* selectedMeal = new Meal(*mealIt);
+
+    // ---------- Read dining halls file ----------
+    std::string hallFile = ConfigPaths::instance().getDiningHallsJson().string();
+    std::ifstream hallStream(hallFile);
+    if (!hallStream.is_open()) {
+        std::cerr << "Error opening dining halls file: " << hallFile << "\n";
+        return;
+    }
+
+    std::vector<DiningHall> halls;
+    std::string line;
+
+    // Skip header
+    std::getline(hallStream, line);
+
+    while (std::getline(hallStream, line)) {
+        std::stringstream ss(line);
+        std::string idStr, name, genderStr, address, capStr;
+
+        std::getline(ss, idStr, ',');
+        std::getline(ss, name, ',');
+        std::getline(ss, genderStr, ',');
+        std::getline(ss, address, ',');
+        std::getline(ss, capStr, ',');
+
+        int id = std::stoi(idStr);
+        int cap = std::stoi(capStr);
+        Gender g = DiningHall::stringToGender(genderStr);
+
+        halls.emplace_back(id, name, address, cap);
+        halls.back().setGender(g);
+    }
+
+    // ---------- Select dining hall ----------
+    std::cout << "\nAvailable dining halls:\n";
+    for (auto& hall : halls) {
+        std::cout << hall.getHallId() << " - " << hall.getName()
+                  << " (" << (hall.getGender() == Gender::MALE ? "Male" : "Female") << ")\n";
+    }
+
+    int hallChoice;
+    std::cout << "Enter dining hall ID: ";
+    std::cin >> hallChoice;
+
+    auto hallIt = std::find_if(halls.begin(), halls.end(), [hallChoice](DiningHall& h){
+        return h.getHallId() == hallChoice;
+    });
+    if (hallIt == halls.end()) {
+        std::cout << "Invalid dining hall selected!\n";
+        return;
+    }
+    DiningHall* selectedHall = new DiningHall(*hallIt);
+
+    // ---------- Create reservation ----------
+    Reservation reservation(selectedHall, selectedMeal, std::rand(), RStatus::PENDING);
+
+    // ---------- Add to shopping cart ----------
+    auto& session = StudentSession::SessionManager::instance();
+    if (session.shoppingCart()) {
+        session.shoppingCart()->addReservation(reservation);
+        std::cout << "✅ Meal added to shopping cart!\n";
+    } else {
+        std::cout << "❌ Error: Shopping cart not available!\n";
+        // Free heap memory since reservation was not stored:
+        delete selectedHall;
+        delete selectedMeal;
+    }
 }
 
 void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
