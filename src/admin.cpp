@@ -75,7 +75,7 @@ void Admin::sign_in(string& studentNumber, string& password)
 
             adminSession.setCurrentAdmin(currentAdmin, adminID);
 
-            adminSession.save_session();
+            adminSession.save_session(studentNumber, password);
 
             cout << "Admin registered successfully." << endl;
             break;

@@ -67,7 +67,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     cout << "Session loaded successfully." << endl;
 }
 
-void SessionManager::save_session()
+void SessionManager::save_session(string& studentNumber, const string& password)
 {
     LogSystem logger(l_admins_log_file);
 
@@ -137,7 +137,7 @@ void SessionManager::login(string studentNumber, string password)
     std::cout << "Admin login successful." << std::endl;
 }
 
-void SessionManager::logout()
+void SessionManager::logout(string studentNumber, string password)
 {
     LogSystem logger(l_admins_log_file);
 

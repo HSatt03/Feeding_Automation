@@ -12,11 +12,11 @@ class SessionManager : public SessionBase
     public:
         SessionManager(){}
         void login(string, string) override;
-        void logout() override;
+        void logout(string, string) override;
         Admin currentAdmin();
         static SessionManager& instance();
         void load_session(string&, const string&) override;
-        void save_session() override;
+        void save_session(string&, const string&) override;
         void setCurrentAdmin(Admin*, int);
         int getAdminID()const
         {
