@@ -5,46 +5,21 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include "../include/panel.hpp"
-#include "../include/reservation.hpp"
-#include "../include/shoppingCart.hpp"
-#include "../include/sessionManager.hpp"
-#include "../include/transaction.hpp"
-#include "../include/student.hpp"
-#include "../include/meal.hpp"
-#include "../include/diningHall.hpp"
-#include "../include/configPaths.hpp"
+#include "panel.hpp"
+#include "reservation.hpp"
+#include "shoppingCart.hpp"
+#include "sessionManager.hpp"
+#include "transaction.hpp"
+#include "student.hpp"
+#include "meal.hpp"
+#include "diningHall.hpp"
+#include "configPaths.hpp"
 using namespace std;
 using namespace StudentSession;
 
-void gotoxy(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+void gotoxy(int x, int y);
 
-void drawBox(int x, int y, int width, int height)
-{
-    // گوشه‌ها
-    gotoxy(x, y); cout << "+";
-    gotoxy(x + width, y); cout << "+";
-    gotoxy(x, y + height); cout << "+";
-    gotoxy(x + width, y + height); cout << "+";
-
-    // خطوط افقی
-    for (int i = 1; i < width; ++i) {
-        gotoxy(x + i, y); cout << "-";
-        gotoxy(x + i, y + height); cout << "-";
-    }
-
-    // خطوط عمودی
-    for (int i = 1; i < height; ++i) {
-        gotoxy(x, y + i); cout << "|";
-        gotoxy(x + width, y + i); cout << "|";
-    }
-}
+void drawBox(int x, int y, int width, int height);
 
 bool Panel::Action(int n, StudentSession::SessionManager *Student)
 {
@@ -238,12 +213,12 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     ifstream mealStream(mealsFile);
     if (!mealStream.is_open()) {
         cerr << "Error opening meals file: " << mealsFile << "\n";
-        delete selectedHall;
+        // delete selectedHall;
         return;
     }
 
     std::vector<Meal> meals;
-
+    string line;
     // Skip header
     getline(mealStream, line);
 
@@ -281,7 +256,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     });
     if (mealIt == meals.end()) {
         std::cout << "Invalid meal selected!\n";
-        delete selectedHall;
+        // delete selectedHall();
         return;
     }
     Meal* selectedMeal = new Meal(*mealIt);

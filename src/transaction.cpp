@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "../include/transaction.hpp"
+#include "transaction.hpp"
 using namespace std;
 
 int Transaction::_transactionID = 0; 

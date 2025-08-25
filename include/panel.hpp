@@ -1,9 +1,9 @@
 #ifndef PANEL_H
 #define PANEL_H
 #include <iostream>
-#include "../include/reservation.hpp"
-#include "../include/shoppingCart.hpp"
-#include "../include/sessionManager.hpp"
+#include "reservation.hpp"
+#include "shoppingCart.hpp"
+#include "sessionManager.hpp"
 using namespace std;
 using namespace StudentSession;
 

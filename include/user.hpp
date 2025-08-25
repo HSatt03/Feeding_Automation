@@ -4,6 +4,12 @@
 #include <string>
 using namespace std;
 
+enum class UserType 
+{
+    STUDENT,
+    ADMIN,
+    UNKNOWN
+};
 class User
 {
 public:

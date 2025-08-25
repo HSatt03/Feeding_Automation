@@ -41,4 +41,4 @@ private:
     Storage operator=(const Storage&) = delete;
 };
 
-#endif4
+#endif

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <algorithm>
-#include "../include/storage.hpp"
-#include "../include/meal.hpp"
-#include "../include/diningHall.hpp"
+#include "storage.hpp"
+#include "meal.hpp"
+#include "diningHall.hpp"
 using namespace std; 
 Storage::Storage(int mealIDCounter, int diningHallIDCounter)
 {

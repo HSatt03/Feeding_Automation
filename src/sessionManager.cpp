@@ -8,7 +8,7 @@
 #include "logsystem.hpp"
 #include <configPaths.hpp>
 #include "json.hpp"
-#include "../Bcrypt.cpp/include/bcrypt.h"
+#include "bcrypt.h"
 using namespace std;
 namespace fs = std::filesystem;
 using json = nlohmann::json;
@@ -76,7 +76,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
         cout << "Session loaded successfully." << endl;
     }    
 }
-void SessionManager::save_session()
+void SessionManager::save_session(string& studentNumber, const string& password )
 {
     LogSystem logger(l_students_log_file);
 
@@ -164,7 +164,7 @@ void SessionManager::login(string studentNumber, string password)
                     _shopping_cart = new ShoppingCart();
 
 
-                    save_session();
+                    save_session(studentNumber, password);
                     logger.addLog("Student " + studentID + " logged in successfully", "INFO");
                     cout << "Login successful." << endl;
                     break;
@@ -178,7 +178,7 @@ void SessionManager::login(string studentNumber, string password)
         }
     }
 }
-void SessionManager::logout()
+void SessionManager::logout(string studentNumber, string password)
 {
     LogSystem logger(l_students_log_file);
     // پاک کردن شی دانشجو و سبد خرید (اگر داینامیک ساختی)

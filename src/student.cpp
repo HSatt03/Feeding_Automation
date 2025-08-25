@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 #include <cctype>
-#include "../include/reservation.hpp"
-#include "../include/student.hpp"
-#include "../include/meal.hpp"
-#include "../include/transaction.hpp"
+#include "reservation.hpp"
+#include "student.hpp"
+#include "meal.hpp"
+#include "transaction.hpp"
 using namespace std;
 
 
@@ -152,7 +152,7 @@ bool Student::operator==(Student ob)
     return(getUserID() == ob.getUserID()
           && getName() == ob.getName()
           && getLastName() == ob.getLastName()
-          && getPasssword() == ob.getPasssword()
+          && getHashedPasssword() == ob.getHashedPasssword()
           && _student_id == ob._student_id
           && _email == ob._email
           && _balance == ob._balance

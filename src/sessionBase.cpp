@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/sessionBase.hpp"
+#include "sessionBase.hpp"
 using namespace std;
 
 void SessionBase::setCreatedAt(time_t createdAt)

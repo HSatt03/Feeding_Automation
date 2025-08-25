@@ -4,7 +4,7 @@
 #include <cctype>
 #include <algorithm>
 #include <stdexcept>
-#include "../include/meal.hpp"
+#include "meal.hpp"
 using namespace std;
 
 Meal::Meal(int m, string n, float p, MealType mt, ReserveDay r, bool b)
