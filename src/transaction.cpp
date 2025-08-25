@@ -59,22 +59,6 @@ void Transaction::setCreatedAT(time_t t)
     }
 }
 
-void Transaction::print()
-{
-    cout << "TransactionID : " << getTransactionID();
-    cout << "\nTrackingCode : " << getTrackingCode();
-    cout << "\nAmount : " << getAmount();
-    cout << "\nType : " << getType();
-    cout << "\nStatus : " << getStatus();
-    cout << "\ncreaded at : ";
-    tm* localTime = localtime(&_createdAT);
-    char buffer1[80];
-    char buffer2[80];
-    strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
-    strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
-    cout << buffer1 <<" " << buffer2 << endl;
-}
-
 ostream& operator<<(ostream& os, const TransactionType& num)
 {
     switch(num)
@@ -108,4 +92,21 @@ ostream& operator<<(ostream& os, const TransactionStatus& num)
             os << "Unknown!!!";
     }
     return os;
+}
+
+
+void Transaction::print()
+{
+    cout << "TransactionID : " << getTransactionID();
+    cout << "\nTrackingCode : " << getTrackingCode();
+    cout << "\nAmount : " << getAmount();
+    cout << "\nType : " << getType();
+    cout << "\nStatus : " << getStatus();
+    cout << "\ncreaded at : ";
+    tm* localTime = localtime(&_createdAT);
+    char buffer1[80];
+    char buffer2[80];
+    strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
+    strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
+    cout << buffer1 <<" " << buffer2 << endl;
 }

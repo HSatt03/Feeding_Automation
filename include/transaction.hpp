@@ -27,6 +27,8 @@ public:
     void setStatus(TransactionStatus);
     void setCreatedAT(time_t);
     void print();
+    friend ostream& operator<<(ostream&, const TransactionStatus&);
+    friend ostream& operator<<(ostream& os, const TransactionType& num);
 
     int getTransactionID()const
     {

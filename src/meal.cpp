@@ -102,6 +102,54 @@ void Meal::inputMeals()
     cout << "Reserve Day: ";
     _reserve_day = selectReserveDay();
 }
+
+ostream& operator<<(ostream& os, const MealType& num)
+{
+    switch(num)
+    {
+        case MealType::BREAKFAST:
+            os << "BREAKFAST";
+            break;
+        case MealType::LUNCH:
+            os << "LUNCH";
+            break;
+        case MealType::DINNER:
+            os << "DINNER";
+            break;
+        default:
+            os << "Unknown!!!";
+    }
+    return os;
+}
+
+ostream& operator<<(ostream& os, const ReserveDay& num)
+{
+    switch(num)
+    {
+        case ReserveDay::SATURDAY:
+            os << "SATURDAY";
+            break;
+        case ReserveDay::SUNDAY:
+            os << "SUNDAY";
+            break;
+        case ReserveDay::MONDAY:
+            os << "MONDAY";
+            break;
+        case ReserveDay::TUESDAY:
+            os << "TUESDAY";
+            break;
+        case ReserveDay::WEDNESDAY:
+            os << "WEDNESDAY";
+            break;
+        case ReserveDay::THURSDAY:
+            os << "THURSDAY";
+            break;
+        default:
+            os << "Unknown!!!";
+    }
+    return os;
+}
+
 void Meal::print()const
 {
     cout << "Meal id : " << _meal_id;
@@ -167,53 +215,6 @@ string to_string(ReserveDay day)
             return "THURSDAY";
     }
     return "UNKNOWN";
-}
-
-ostream& operator<<(ostream& os, const MealType& num)
-{
-    switch(num)
-    {
-        case MealType::BREAKFAST:
-            os << "BREAKFAST";
-            break;
-        case MealType::LUNCH:
-            os << "LUNCH";
-            break;
-        case MealType::DINNER:
-            os << "DINNER";
-            break;
-        default:
-            os << "Unknown!!!";
-    }
-    return os;
-}
-
-ostream& operator<<(ostream& os, const ReserveDay& num)
-{
-    switch(num)
-    {
-        case ReserveDay::SATURDAY:
-            os << "SATURDAY";
-            break;
-        case ReserveDay::SUNDAY:
-            os << "SUNDAY";
-            break;
-        case ReserveDay::MONDAY:
-            os << "MONDAY";
-            break;
-        case ReserveDay::TUESDAY:
-            os << "TUESDAY";
-            break;
-        case ReserveDay::WEDNESDAY:
-            os << "WEDNESDAY";
-            break;
-        case ReserveDay::THURSDAY:
-            os << "THURSDAY";
-            break;
-        default:
-            os << "Unknown!!!";
-    }
-    return os;
 }
 
 void Meal::isActive(bool b)
