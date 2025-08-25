@@ -92,13 +92,14 @@ void Meal::inputMeals()
 {
     cout << "Meal ID: ";
     cin >> _meal_id;
+    cin.ignore();
     cout << "Meal Name: ";
     getline(cin, _name);
     cout << "Meal Price: ";
     cin >> _price;
     cout << "Meal Type: ";
     _meal_type = selectMealType();
-    cout << "Reserve Dat: ";
+    cout << "Reserve Day: ";
     _reserve_day = selectReserveDay();
 }
 void Meal::print()const
@@ -248,6 +249,20 @@ MealType stringToMealType(const string& s)
     return MealType::BREAKFAST; // پیش‌فرض
 }
 
+string Meal::mealTypeToString(MealType t) 
+{
+    switch (t) 
+    {
+        case MealType::BREAKFAST:
+            return "BREAKFAST";
+        case MealType::LUNCH:
+            return "LUNCH";
+        case MealType::DINNER:    
+            return "DINNER";
+    }
+    return "UNKNOWN";
+} 
+
 ReserveDay stringToReserveDay(const string& s) 
 {
     if(s == "SATURDAY")
@@ -275,6 +290,26 @@ ReserveDay stringToReserveDay(const string& s)
         return ReserveDay::THURSDAY;
     }
     return ReserveDay::SATURDAY; // پیش‌فرض
+}
+
+string Meal::reserveDayToString(ReserveDay d) 
+{
+    switch (d) 
+    {
+        case ReserveDay::SATURDAY:
+            return "SATURDAY";
+        case ReserveDay::SUNDAY:     
+            return "SUNDAY";
+        case ReserveDay::MONDAY:     
+            return "MONDAY";
+        case ReserveDay::TUESDAY:    
+            return "TUESDAY";
+        case ReserveDay::WEDNESDAY:  
+            return "WEDNESDAY";
+        case ReserveDay::THURSDAY:   
+            return "THURSDAY";
+    }
+    return "UNKNOWN";
 }
 
 MealType selectMealType() 

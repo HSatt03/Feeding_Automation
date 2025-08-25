@@ -2,7 +2,9 @@
 #define DININGHALL_H
 #include <iostream>
 #include <string>
+#include "json.hpp"
 using namespace std;
+using json = nlohmann::json;
 
 enum class Gender
 {
@@ -19,32 +21,34 @@ public:
     void setGender(Gender);
     void setAddress(string);
     void setCapacity(int);
+    void inputHalls();
     void print()const;
     bool operator==(DiningHall);
-    int getHallId()
+    int getHallId()const
     {
         return _hall_id;
     }
-    string getName()
+    string getName()const
     {
         return _name;
     }
-    Gender getGender()
+    Gender getGender()const
     {
         return _gender;
     }
-    string getAddress()
+    string getAddress()const
     {
         return _address;
     }
-    int getCapacity()
+    int getCapacity()const
     {
         return _capacity;
     }
 
     static Gender stringToGender(const string&);
+    static string genderToString(Gender g);
     static Gender selectGender();
-    Gender stringToGender(const string&);
+    // Gender stringToGender(const string&);
 
     friend ostream& operator<<(ostream& os, const Gender&);
 
@@ -55,5 +59,31 @@ private:
     string _address;
     int _capacity;
 };
+
+namespace nlohmann
+{
+    template<>
+    struct adl_serializer<DiningHall>
+    {
+        static void to_json(json& j, const DiningHall& h)
+        {
+            j = {
+                {"hallID", h.getHallId()},
+                {"name", h.getName()},
+                {"gender", DiningHall::genderToString(h.getGender())},
+                {"address", h.getAddress()},
+                {"capacity", h.getCapacity()}
+                };
+        }
+        static void from_json(const json& j, DiningHall& h)
+        {
+            h.setHallId(j.at("hallID").get<int>());
+            h.setName(j.at("name").get<string>());
+            h.setGender(DiningHall::stringToGender(j.at("gender").get<string>()));
+            h.setAddress(j.at("address").get<string>());
+            h.setCapacity(j.at("capacity").get<int>());
+        }
+    };
+}
 
 #endif

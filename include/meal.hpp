@@ -81,11 +81,13 @@ public:
     }
 
     static MealType stringToMealType(const string&);
-    static ReserveDay stringToReserveDay(const string& s); 
+    static string mealTypeToString(MealType);
+    static ReserveDay stringToReserveDay(const string&); 
+    static string reserveDayToString(ReserveDay);
     static MealType selectMealType();
     static ReserveDay selectReserveDay(); 
-    MealType stringToMealType(const string&);
-    ReserveDay stringToReserveDay(const string&);
+    // MealType stringToMealType(const string&);
+    // ReserveDay stringToReserveDay(const string&);
 
 private:
     int _meal_id;
@@ -97,85 +99,6 @@ private:
     ReserveDay _reserve_day;
 };
 
-inline string mealTypeToString(MealType t) 
-{
-    switch (t) 
-    {
-        case MealType::BREAKFAST:
-            return "BREAKFAST";
-        case MealType::LUNCH:
-            return "LUNCH";
-        case MealType::DINNER:    
-            return "DINNER";
-    }
-    return "UNKNOWN";
-} 
-
-inline MealType stringToMealType(const string& s) 
-{
-    if (s == "BREAKFAST")
-    {
-        return MealType::BREAKFAST;
-    }
-    if (s == "LUNCH")
-    {     
-        return MealType::LUNCH;
-    }
-    if (s == "DINNER")  
-    {  
-        return MealType::DINNER;
-    }
-    throw std::invalid_argument("Invalid MealType string: " + s);
-}
-
-inline string reserveDayToString(ReserveDay d) 
-{
-    switch (d) 
-    {
-        case ReserveDay::SATURDAY:
-            return "SATURDAY";
-        case ReserveDay::SUNDAY:     
-            return "SUNDAY";
-        case ReserveDay::MONDAY:     
-            return "MONDAY";
-        case ReserveDay::TUESDAY:    
-            return "TUESDAY";
-        case ReserveDay::WEDNESDAY:  
-            return "WEDNESDAY";
-        case ReserveDay::THURSDAY:   
-            return "THURSDAY";
-    }
-    return "UNKNOWN";
-}
-
-inline ReserveDay stringToReserveDay(const string& s) 
-{
-    if (s == "SATURDAY")
-    {   
-        return ReserveDay::SATURDAY;
-    }
-    if (s == "SUNDAY")  
-    {   
-        return ReserveDay::SUNDAY;
-    }
-    if (s == "MONDAY") 
-    {    
-        return ReserveDay::MONDAY;
-    }
-    if (s == "TUESDAY")
-    {    
-        return ReserveDay::TUESDAY;
-    }
-    if (s == "WEDNESDAY")  
-    {
-        return ReserveDay::WEDNESDAY;
-    }
-    if (s == "THURSDAY")
-    {   
-        return ReserveDay::THURSDAY;
-    }
-    throw std::invalid_argument("Invalid ReserveDay string: " + s);
-}
 namespace nlohmann
 {
     template<>
@@ -187,8 +110,8 @@ namespace nlohmann
                 {"mealID", m.getMeal_id()},
                 {"name", m.getName()},
                 {"price", m.getPrice()},
-                {"mealtype", mealTypeToString(m.getMeal_type())},
-                {"reserveday", reserveDayToString(m.getReserveDay())}
+                {"mealtype", Meal::mealTypeToString(m.getMeal_type())},
+                {"reserveday", Meal::reserveDayToString(m.getReserveDay())}
                 // {"sideItems", m.getSide_item()}
                 };
         }
@@ -197,8 +120,8 @@ namespace nlohmann
             m.setMeal_id(j.at("mealID").get<int>());
             m.setName(j.at("name").get<string>());
             m.setPrice(j.at("price").get<float>());
-            m.setMeal_type(stringToMealType(j.at("mealtype").get<string>()));
-            m.setReserveDay(stringToReserveDay(j.at("reserveday").get<string>()));
+            m.setMeal_type(Meal::stringToMealType(j.at("mealtype").get<string>()));
+            m.setReserveDay(Meal::stringToReserveDay(j.at("reserveday").get<string>()));
             // m.setSide_item(j.at("sideItems").get<vector<string>>());
         }
     };
