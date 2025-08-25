@@ -82,31 +82,6 @@ void Reservation::setRemovedTime(time_t t)
     }
 }  
 
-void Reservation::print()const
-{
-    cout << "reservation id : " << _reservation_id;
-    cout << endl;
-    _dHall->print()
-    cout << endl;
-    _meal->print()
-    cout << "\nstatus : " << _status;
-    cout << "\ncreaded at : ";
-    tm* localTime = localtime(&_created_at);
-    char buffer1[80];
-    char buffer2[80];
-    strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
-    strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
-    cout << buffer1 <<" " << buffer2 << endl;
-}
-
-bool Reservation::cancel()
-{
-    if(_status == RStatus::CANCELLED)
-    return true;
-    else
-    return false;
-}
-
 bool Reservation::operator==(Reservation ob)
 {
     return(_reservation_id == ob._reservation_id
@@ -132,4 +107,29 @@ ostream& operator<<(ostream& os, const RStatus& num)
             os << "Unkown!!!";
     }
     return os;
+}
+
+void Reservation::print()const
+{
+    cout << "reservation id : " << _reservation_id;
+    cout << endl;
+    _dHall->print();
+    cout << endl;
+    _meal->print();
+    cout << "\nstatus : " << _status;
+    cout << "\ncreaded at : ";
+    tm* localTime = localtime(&_created_at);
+    char buffer1[80];
+    char buffer2[80];
+    strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
+    strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
+    cout << buffer1 <<" " << buffer2 << endl;
+}
+
+bool Reservation::cancel()
+{
+    if(_status == RStatus::CANCELLED)
+    return true;
+    else
+    return false;
 }

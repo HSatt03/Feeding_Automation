@@ -88,6 +88,8 @@ public:
     static ReserveDay selectReserveDay(); 
     // MealType stringToMealType(const string&);
     // ReserveDay stringToReserveDay(const string&);
+    friend ostream& operator<<(ostream& os, const MealType& num);
+    friend ostream& operator<<(ostream& os, const ReserveDay& num);
 
 private:
     int _meal_id;
