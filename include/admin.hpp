@@ -1,7 +1,7 @@
 #ifndef ADMIN_HPP
 #define ADMIN_HPP
 #include <iostream>
-#include "../include/user.hpp"
+#include "user.hpp"
 using namespace std;
 
 class Admin : public User

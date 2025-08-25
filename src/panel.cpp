@@ -17,6 +17,14 @@
 using namespace std;
 using namespace StudentSession;
 
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 void drawBox(int x, int y, int width, int height)
 {
     // گوشه‌ها
@@ -36,14 +44,6 @@ void drawBox(int x, int y, int width, int height)
         gotoxy(x, y + i); cout << "|";
         gotoxy(x + width, y + i); cout << "|";
     }
-}
-
-void gotoxy(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 bool Panel::Action(int n, StudentSession::SessionManager *Student)
