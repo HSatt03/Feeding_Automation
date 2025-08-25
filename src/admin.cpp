@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include "../include/admin.hpp"
-#include "../include/sessionManager2.hpp"
-#include <configPaths.hpp>
+#include "admin.hpp"
+#include "user.hpp"
+#include "sessionManager2.hpp"
+#include "configPaths.hpp"
 #include "json.hpp"
 #include "../Bcrypt.cpp/include/bcrypt.h"
 using namespace std;

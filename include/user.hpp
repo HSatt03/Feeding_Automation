@@ -17,6 +17,7 @@ public:
 
     virtual void print()const;
     virtual string getType();
+    UserType detectUserType(const string&);
     
     int getUserID()const
     {

@@ -71,9 +71,8 @@ void SessionManager::save_session()
 {
     LogSystem logger(l_admins_log_file);
 
-    fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
-    string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());
-    
+    fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
+    string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());    
     json j;
     j["userID"] = _adminID;
     j["firstName"] = _currentAdmin->getName();
@@ -149,13 +148,13 @@ void SessionManager::logout()
         return;
     }
 
-    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + to_string(_adminID) + ".json");
+    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
     if (fs::exists(sessionFile)) 
     {
         fs::remove(sessionFile);
     }
         
-    logger.addLog("Admin " + to_string(_adminID) + " logged out", "INFO");
+    logger.addLog("Admin " + studentNumber + " logged out", "INFO");
 
     delete _currentAdmin;
     _currentAdmin = nullptr;

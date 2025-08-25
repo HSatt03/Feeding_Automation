@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <filesystem>
+#include <string>
+#include "../include/configPaths.hpp"
 #include "../include/user.hpp"
 using namespace std;
 
@@ -70,4 +73,34 @@ void User::print()const
 string User::getType()
 {
     return "User";
+}
+
+enum class UserType 
+{
+    STUDENT,
+    ADMIN,
+    UNKNOWN
+};
+
+UserType detectUserType(const string& studentNumber) 
+{
+    namespace fs = filesystem;
+
+    // مسیر فایل سشن دانشجو
+    fs::path studentSession = ConfigPaths::instance().getStudentSessionsDir()
+                            / ("Student_" + studentNumber + ".json");
+
+    // مسیر فایل سشن ادمین
+    fs::path adminSession = ConfigPaths::instance().getAdminSessionsDir()
+                          / ("Admin_" + studentNumber + ".json");
+
+    if (fs::exists(adminSession)) {
+        return UserType::ADMIN;
+    }
+    else if (fs::exists(studentSession)) {
+        return UserType::STUDENT;
+    }
+    else {
+        return UserType::UNKNOWN; // یعنی اصلاً کاربر وجود نداره
+    }
 }

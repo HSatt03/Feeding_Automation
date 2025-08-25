@@ -15,6 +15,14 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 void drawBox(int x, int y, int width, int height)
 {
     // گوشه‌ها
@@ -36,21 +44,13 @@ void drawBox(int x, int y, int width, int height)
     }
 }
 
-void gotoxy(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
 fs::path AdminPanel::chooseCsvFile()
 {
     fs::path csvPath = ConfigPaths::instance().getStudentsCsv();
     return csvPath;
 }
 
-void displayAllMeals()
+void AdminPanel::displayAllMeals()
 {
     string csvFile = "../meals.json"; // مسیر فایل CSV
     ifstream file(csvFile);
@@ -103,7 +103,7 @@ void displayAllMeals()
     }
 }
 
-void displayAllDininigHalls()
+void AdminPanel::displayAllDininigHalls()
 {
     string csvFile = "../dining_halls.csv"; // مسیر فایل CSV
     ifstream file(csvFile);
@@ -156,7 +156,7 @@ void displayAllDininigHalls()
     }
 }
 
-void addNewMealIntractive()
+void AdminPanel::addNewMealIntractive()
 {
     int n;
     cout << "How many meals do you want to add to the list?";
@@ -187,7 +187,7 @@ void addNewMealIntractive()
     cout << "\nMeal added to json file successfully!\n";
 }
 
-void addNewDiningHallIntractive()
+void AdminPanel::addNewDiningHallIntractive()
 {
     int n;
     cout << "How many diningHalls do you want to add to the list?";
@@ -218,7 +218,7 @@ void addNewDiningHallIntractive()
     cout << "Dining hall added to CSV file successfully!\n";
 }
 
-void removeMeal(int mealIDToRemove)
+void AdminPanel::removeMeal(int mealIDToRemove)
 {
     string csvFile = "../mealsCsvFile.csv";
     string tempFile = "../temp.csv";
@@ -274,7 +274,7 @@ void removeMeal(int mealIDToRemove)
     }
 }
 
-void removeDiningHall(int hallIDToRemove)
+void AdminPanel::removeDiningHall(int hallIDToRemove)
 {
     string csvFile = "../diningHallsCsvFile.csv";
     string tempFile = "../temp.csv";
@@ -332,7 +332,7 @@ void removeDiningHall(int hallIDToRemove)
     }
 }
 
-void showMenu()
+void AdminPanel::showMenu()
 {
     int hightMM, widthMM;
     int n,i,j,y_start;
@@ -414,7 +414,7 @@ void showMenu()
       }
     }
 }
-void action(int number)
+void AdminPanel::action(int number)
 {
     switch(number)
     {
@@ -431,16 +431,16 @@ void action(int number)
             addNewDiningHallIntractive();
             break;
         case 5:
-            int ID;
+            int ID1;
             cout << "Which meal do you want to remove? please enter its ID: ";
-            cin >> ID;
-            removeMeal(ID);
+            cin >> ID1;
+            removeMeal(ID1);
             break;
         case 6:
-            int ID;
+            int ID2;
             cout << "Which diningHall do you want to remove? please enter its ID: ";
-            cin >> ID;
-            removeDiningHall(ID);
+            cin >> ID2;
+            removeDiningHall(ID2);
             break;
         case 7:
             exit(0);
@@ -448,11 +448,4 @@ void action(int number)
         default:
             cout << "You have selected an out-of-range option.";
     }
-}
-
-int main()
-{
-    AdminPanel admin;
-    admin.addNewMealIntractive();
-    return 0;
 }
