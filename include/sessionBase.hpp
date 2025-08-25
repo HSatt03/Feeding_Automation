@@ -15,7 +15,7 @@ class SessionBase
 public:
     
     virtual void login(string, string) = 0;
-    virtual void logout() = 0; 
+    virtual void logout(string, string) = 0; 
 
     void setCreatedAt(time_t);
     void setLasttimeLogin(time_t);
@@ -39,7 +39,7 @@ protected:
     time_t _lasttimeLogin;
     SessionStatus _status;
     virtual void load_session(string& studentID, const string& password) = 0;
-    virtual void save_session() = 0;
+    virtual void save_session(string& studentID, const string& password) = 0;
     
 };
 
