@@ -51,10 +51,10 @@ fs::path AdminPanel::chooseCsvFile()
 
 void displayAllMeals()
 {
-    string csvFile = "../meals.csv"; // مسیر فایل CSV
+    string csvFile = "../meals.json"; // مسیر فایل CSV
     ifstream file(csvFile);
-
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         cerr << "Cannot open meals CSV file." << endl;
         return;
     }
@@ -154,70 +154,38 @@ void displayAllDininigHalls()
         hall.print();
     }
 }
+
 void addNewMealIntractive()
 {
-    int id;
-    string name;
-    float price;
-
-    cout << "Enter meal ID: ";
-    cin >> id;
-    cin.ignore(); // برای گرفتن کاراکتر newline بعد از عدد
-
-    cout << "Enter meal name: ";
-    getline(cin, name);
-
-    cout << "Enter meal price: ";
-    cin >> price;
-
-    MealType type = Meal::selectMealType();
-    ReserveDay day = Meal::selectReserveDay();
-
-    // ساخت آبجکت Meal
-    Meal newMeal(id, name, price, type, day);
-
-    cout << "\nMeal created successfully!\n";
-    newMeal.print(); // نمایش اطلاعات غذا
-    // اضافه کردن به فایل CSV
-    string csvFile = "../mealsCsvFile.csv";
-    ofstream file(csvFile, ios::app); // append mode
-    if(!file.is_open()) 
+    int n;
+    cout << "How many meals do you want to add to the list?";
+    cin >> n;
+    cin.ignore();
+    json jArray = json::array();
+     // اگه فایل قبلی موجوده، اول بخونیم تا داده‌ها حفظ بشن
+    ifstream inFile("meals.json");
+    if (inFile.is_open() && inFile.peek() != EOF) 
     {
-        cerr << "Cannot open meals CSV file for writing." << endl;
-        return;
+        inFile >> jArray;
     }
-
-    // تبدیل enum به string برای ذخیره در CSV
-    string mealTypeStr;
-    switch(type) 
+    for(int i = 0;  i < n; i++)
     {
-        case MealType::BREAKFAST: mealTypeStr = "BREAKFAST"; break;
-        case MealType::LUNCH: mealTypeStr = "LUNCH"; break;
-        case MealType::DINNER: mealTypeStr = "DINNER"; break;
+        Meal meal;
+        cout << i + 1 << ". \n";
+        meal.inputMeals();
+        jArray.push_back(meal);
     }
-
-    string reserveDayStr;
-    switch(day) 
+    ofstream outFile("meals.json");
+    if(!outFile)
     {
-        case ReserveDay::SATURDAY: reserveDayStr = "SATURDAY"; break;
-        case ReserveDay::SUNDAY: reserveDayStr = "SUNDAY"; break;
-        case ReserveDay::MONDAY: reserveDayStr = "MONDAY"; break;
-        case ReserveDay::TUESDAY: reserveDayStr = "TUESDAY"; break;
-        case ReserveDay::WEDNESDAY: reserveDayStr = "WEDNESDAY"; break;
-        case ReserveDay::THURSDAY: reserveDayStr = "THURSDAY"; break;
+        cerr << "The file does not open!!!";
+        exit(0);
     }
-
-    // نوشتن خط جدید در فایل CSV
-    file << newMeal.getMeal_id() << ","
-         << newMeal.getName() << ","
-         << newMeal.getPrice() << ","
-         << mealTypeStr << ","
-         << reserveDayStr << "\n";
-
-    file.close();
-
-    cout << "Meal added to CSV file successfully!\n";
+    outFile << setw(4) << jArray << endl; // نوشتن JSON مرتب
+    outFile.close();
+    cout << "\nMeal added to json file successfully!\n";
 }
+
 void addNewDiningHallIntractive()
 {
     int hallID;
@@ -496,4 +464,11 @@ void action(int number)
         default:
             cout << "You have selected an out-of-range option.";
     }
+}
+
+int main()
+{
+    AdminPanel admin;
+    admin.addNewMealIntractive();
+    return 0;
 }
