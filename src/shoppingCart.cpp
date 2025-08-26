@@ -11,6 +11,7 @@
 #include "sessionManager.hpp"
 
 using namespace std;
+
 time_t specialTime = 123456;
 ShoppingCart::ShoppingCart()
 {

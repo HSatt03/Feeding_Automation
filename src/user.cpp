@@ -4,6 +4,7 @@
 #include <string>
 #include "configPaths.hpp"
 #include "user.hpp"
+
 using namespace std;
 
 User::User(int user_id, string name, string last_name, string password, string phone)
@@ -17,7 +18,7 @@ User::User(int user_id, string name, string last_name, string password, string p
 
 void User::setUserID(int user_id)
 {
-    if(user_id > 0)
+    if(user_id >= 0)
     {
         _user_id = user_id;
     }

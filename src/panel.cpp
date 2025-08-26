@@ -14,6 +14,8 @@
 #include "meal.hpp"
 #include "diningHall.hpp"
 #include "configPaths.hpp"
+#include "utils.hpp"
+
 using namespace std;
 using namespace StudentSession;
 

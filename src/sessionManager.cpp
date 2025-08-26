@@ -9,6 +9,7 @@
 #include <configPaths.hpp>
 #include "json.hpp"
 #include "bcrypt.h"
+
 using namespace std;
 namespace fs = std::filesystem;
 using json = nlohmann::json;
@@ -34,7 +35,7 @@ void SessionManager::setStudentID(string studentID)
     _studentID = studentID;
 }
 
-const string l_students_log_file = "../logs/student.log";
+const string l_students_log_file = "logs/student.log";
 
 void SessionManager::load_session(string& studentNumber, const string& password)
 {

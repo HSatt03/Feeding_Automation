@@ -6,11 +6,15 @@
 #include "configPaths.hpp"
 #include "json.hpp"
 #include "bcrypt.h"
+
 using namespace std;
 using json = nlohmann::json;
 
 Admin::Admin(int user_id, string first_name, string last_name, string hashedPasssword, string phone) 
-: User(user_id, first_name, last_name, hashedPasssword, phone) {}
+: User(user_id, first_name, last_name, hashedPasssword, phone) 
+{
+    
+}
 
 bool Admin::isThereAnyAdmin()
 {   
@@ -53,9 +57,9 @@ void Admin::sign_in(string& studentNumber, string& password)
         string userIDStr, firstName, lastName, studentID, hashedPassword, email, phone;
 
         getline(ss, userIDStr, ',');
+        getline(ss, studentID, ',');
         getline(ss, firstName, ',');
         getline(ss, lastName, ',');
-        getline(ss, studentID, ',');
         getline(ss, hashedPassword, ',');
         getline(ss, email, ',');
         getline(ss, phone, ',');
