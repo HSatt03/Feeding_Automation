@@ -76,7 +76,7 @@ string User::getType()
     return "User";
 }
 
-UserType detectUserType(const string& studentNumber) 
+UserType User::detectUserType(const string& studentNumber) 
 {
     namespace fs = filesystem;
 

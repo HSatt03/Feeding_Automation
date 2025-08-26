@@ -219,7 +219,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         return;
     }
 
-    std::vector<Meal> meals;
+    vector<Meal> meals;
     string line;
     // Skip header
     getline(mealStream, line);
@@ -243,49 +243,49 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     }
 
     // ---------- Select meal ----------
-    std::cout << "\nAvailable meals:\n";
+    cout << "\nAvailable meals:\n";
     for (auto& meal : meals) {
         cout << meal.getMeal_id() << " - " << meal.getName()
                   << " (" << meal.getPrice() << " Toman)\n";
     }
 
     int mealChoice;
-    std::cout << "Enter meal ID: ";
-    std::cin >> mealChoice;
+    cout << "Enter meal ID: ";
+    cin >> mealChoice;
 
-    auto mealIt = std::find_if(meals.begin(), meals.end(), [mealChoice](Meal& m){
+    auto mealIt = find_if(meals.begin(), meals.end(), [mealChoice](Meal& m){
         return m.getMeal_id() == mealChoice;
     });
     if (mealIt == meals.end()) {
-        std::cout << "Invalid meal selected!\n";
+        cout << "Invalid meal selected!\n";
         // delete selectedHall();
         return;
     }
     Meal* selectedMeal = new Meal(*mealIt);
 
     // ---------- Read dining halls file ----------
-    std::string hallFile = ConfigPaths::instance().getDiningHallsJson().string();
-    std::ifstream hallStream(hallFile);
+    string hallFile = ConfigPaths::instance().getDiningHallsJson().string();
+    ifstream hallStream(hallFile);
     if (!hallStream.is_open()) {
-        std::cerr << "Error opening dining halls file: " << hallFile << "\n";
+        cerr << "Error opening dining halls file: " << hallFile << "\n";
         return;
     }
 
-    std::vector<DiningHall> halls;
-    std::string line;
+    vector<DiningHall> halls;
+    //string line;
 
     // Skip header
-    std::getline(hallStream, line);
+    getline(hallStream, line);
 
-    while (std::getline(hallStream, line)) {
-        std::stringstream ss(line);
-        std::string idStr, name, genderStr, address, capStr;
+    while (getline(hallStream, line)) {
+        stringstream ss(line);
+        string idStr, name, genderStr, address, capStr;
 
-        std::getline(ss, idStr, ',');
-        std::getline(ss, name, ',');
-        std::getline(ss, genderStr, ',');
-        std::getline(ss, address, ',');
-        std::getline(ss, capStr, ',');
+        getline(ss, idStr, ',');
+        getline(ss, name, ',');
+        getline(ss, genderStr, ',');
+        getline(ss, address, ',');
+        getline(ss, capStr, ',');
 
         int id = std::stoi(idStr);
         int cap = std::stoi(capStr);
@@ -296,21 +296,21 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     }
 
     // ---------- Select dining hall ----------
-    std::cout << "\nAvailable dining halls:\n";
+    cout << "\nAvailable dining halls:\n";
     for (auto& hall : halls) {
-        std::cout << hall.getHallId() << " - " << hall.getName()
+        cout << hall.getHallId() << " - " << hall.getName()
                   << " (" << (hall.getGender() == Gender::MALE ? "Male" : "Female") << ")\n";
     }
 
     int hallChoice;
-    std::cout << "Enter dining hall ID: ";
-    std::cin >> hallChoice;
+    cout << "Enter dining hall ID: ";
+    cin >> hallChoice;
 
-    auto hallIt = std::find_if(halls.begin(), halls.end(), [hallChoice](DiningHall& h){
+    auto hallIt = find_if(halls.begin(), halls.end(), [hallChoice](DiningHall& h){
         return h.getHallId() == hallChoice;
     });
     if (hallIt == halls.end()) {
-        std::cout << "Invalid dining hall selected!\n";
+        cout << "Invalid dining hall selected!\n";
         return;
     }
     DiningHall* selectedHall = new DiningHall(*hallIt);
@@ -322,9 +322,9 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     auto& session = StudentSession::SessionManager::instance();
     if (session.shoppingCart()) {
         session.shoppingCart()->addReservation(reservation);
-        std::cout << "✅ Meal added to shopping cart!\n";
+        cout << "✅ Meal added to shopping cart!\n";
     } else {
-        std::cout << "❌ Error: Shopping cart not available!\n";
+        cout << "❌ Error: Shopping cart not available!\n";
         // Free heap memory since reservation was not stored:
         delete selectedHall;
         delete selectedMeal;

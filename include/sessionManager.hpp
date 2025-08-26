@@ -1,5 +1,6 @@
 #ifndef SESSIONMANAGER_HPP
 #define SESSTIONMANAGER_HPP
+#pragma once
 #include <iostream>
 #include "sessionBase.hpp"
 #include "student.hpp"
