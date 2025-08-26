@@ -6,6 +6,7 @@
 #include <ctime>
 #include "meal.hpp"
 #include "diningHall.hpp"
+
 using namespace std;
 
 enum class RStatus

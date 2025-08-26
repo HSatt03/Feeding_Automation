@@ -2,6 +2,7 @@
 #define ADMIN_HPP
 #include <iostream>
 #include "user.hpp"
+
 using namespace std;
 
 class Admin : public User

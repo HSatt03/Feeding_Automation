@@ -1,6 +1,5 @@
 #include <iostream>
 #include <filesystem>
-#include <windows.h>
 #include <conio.h>
 #include <cstdlib>
 #include <fstream>
@@ -12,6 +11,8 @@
 #include "meal.hpp"
 #include "diningHall.hpp"
 #include "configPaths.hpp"
+#include "utils.hpp"
+
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -320,14 +321,8 @@ void AdminPanel::showMenu()
     gotoxy(5,y_start);
     for(int i=0 ; i<=widthMM-1 ; i++)
     {
-        if(i%2==0)
-        {
-            cout<<"* ";
-        }
-        else
-        {
-            cout <<"* ";
-        }
+        for(int i=0; i<widthMM; i++)
+            cout << "* ";
     }
     for(int i=1 ; i<hightMM-1 ; i++)
     {
@@ -380,11 +375,13 @@ void AdminPanel::showMenu()
       if (kbhit())
       {
           n = getch();
-          if(n >= 1 && n <= 7)
+          if(n >= '1' && n <= '7')
             action(n);
         else
+        {
             gotoxy(12,y_start+31);
             cout << "The number is not valid!";
+        }
 
       }
     }

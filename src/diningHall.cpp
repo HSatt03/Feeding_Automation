@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <stdexcept>
 #include "diningHall.hpp"
+
 using namespace std;
+
 ostream& operator<<(ostream& os, const Gender& gender)
 {
     if(gender == Gender::MALE)

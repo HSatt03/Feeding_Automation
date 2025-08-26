@@ -1,7 +1,7 @@
 #include <iostream>
-#include <windows.h>
 #include "sessionManager2.hpp"
 #include "adminPanel.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -30,11 +30,8 @@ int main()
         AdminPanel panel;
         panel.showMenu();
     }
-    // else
-    // {
-
-    // }
-
-
+    cout << "\nPress Enter to exit...";
+    cin.ignore(); // برای پاک کردن بافر
+    cin.get();    // منتظر زدن Enter می‌مونه
     return 0;
 }

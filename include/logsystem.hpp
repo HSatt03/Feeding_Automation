@@ -1,9 +1,8 @@
 #ifndef LOGSYSTEM_HPP
 #define LOGSYSTEM_HPP
-using namespace std;
-
-
 #include <string>
+
+using namespace std;
 
 class LogSystem {
 private:

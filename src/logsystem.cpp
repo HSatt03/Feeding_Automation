@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+
 using namespace std;
 
 string LogSystem::getCurrentTime() {

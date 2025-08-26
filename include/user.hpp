@@ -2,6 +2,7 @@
 #define USER_HPP
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 enum class UserType 
