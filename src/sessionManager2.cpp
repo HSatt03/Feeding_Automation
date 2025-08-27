@@ -29,11 +29,10 @@ void AdminSession::SessionManager::setCurrentAdmin(Admin *a, int i)
     _adminID = i;
 }
 
-const string l_admins_log_file = "logs/admin.log";
-
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
-    LogSystem logger(l_admins_log_file);
+    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
+
 
     fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
     
@@ -70,7 +69,7 @@ void SessionManager::load_session(string& studentNumber, const string& password)
 
 void SessionManager::save_session(string& studentNumber, const string& password)
 {
-    LogSystem logger(l_admins_log_file);
+    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
     string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());    
@@ -94,8 +93,7 @@ void SessionManager::save_session(string& studentNumber, const string& password)
 
 void SessionManager::login(string studentNumber, string password)
 {
-    LogSystem logger(l_admins_log_file);
-
+    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
     // fs::path existAdminSessionDir = ConfigPaths::instance().getAdminSessionsDir();
     if (!Admin::isThereAnyAdmin()) 
@@ -103,7 +101,7 @@ void SessionManager::login(string studentNumber, string password)
         try 
         {
             fs::create_directories(adminSessionsDir);
-            LogSystem logger(l_admins_log_file);
+            logger.addLog("Session directory created successfully for student: " + studentNumber, "INFO");
             cout << "Session directory created: " << adminSessionsDir << endl;
         }
         catch (const fs::filesystem_error& e) 
@@ -149,7 +147,7 @@ void SessionManager::login(string studentNumber, string password)
 
 void SessionManager::logout(string studentNumber, string password)
 {
-    LogSystem logger(l_admins_log_file);
+    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
     if (_currentAdmin == nullptr) 
     {

@@ -35,11 +35,9 @@ void SessionManager::setStudentID(string studentID)
     _studentID = studentID;
 }
 
-const string l_students_log_file = "logs/student.log";
-
 void SessionManager::load_session(string& studentNumber, const string& password)
 {
-    LogSystem logger(l_students_log_file);
+    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
 
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     ifstream file(sessionFile);
@@ -79,7 +77,8 @@ void SessionManager::load_session(string& studentNumber, const string& password)
 }
 void SessionManager::save_session(string& studentNumber, const string& password )
 {
-    LogSystem logger(l_students_log_file);
+    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
+
 
     fs::path path = ConfigPaths::instance().getStudentSessionsDir() / ( "Student_" + _studentID + ".json");
     json j;
@@ -102,7 +101,8 @@ void SessionManager::save_session(string& studentNumber, const string& password 
 
 void SessionManager::login(string studentNumber, string password)
 {
-    LogSystem logger(l_students_log_file);
+    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
+
     // فرض: _studentID و پسورد هش شده در این کلاس ست شده اند
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     fs::path existStudentSessionDir = ConfigPaths::instance().getStudentSessionsDir();
@@ -181,7 +181,8 @@ void SessionManager::login(string studentNumber, string password)
 }
 void SessionManager::logout(string studentNumber, string password)
 {
-    LogSystem logger(l_students_log_file);
+    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
+
     // پاک کردن شی دانشجو و سبد خرید (اگر داینامیک ساختی)
     delete _currentStudent;
     _currentStudent = nullptr;
