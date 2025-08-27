@@ -14,8 +14,7 @@
 #include "meal.hpp"
 #include "diningHall.hpp"
 #include "configPaths.hpp"
-#include "utils.hpp"
-
+#include "logsystem.hpp"
 using namespace std;
 using namespace StudentSession;
 
@@ -23,8 +22,11 @@ void gotoxy(int x, int y);
 
 void drawBox(int x, int y, int width, int height);
 
-bool Panel::Action(int n, StudentSession::SessionManager *Student)
+LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
+
+void Panel::Action(int n, StudentSession::SessionManager *Student)
 {
+
     switch (n)
     {
     case 1:
@@ -34,7 +36,7 @@ bool Panel::Action(int n, StudentSession::SessionManager *Student)
         checkBalance(*Student);
          break;
     case 3:
-         viewReservation(*Student);
+        viewReservation(*Student);
         break;
     case 4:
         viewShappingCart(*Student);
@@ -57,12 +59,13 @@ bool Panel::Action(int n, StudentSession::SessionManager *Student)
     case 10:
         cancelReservation(*Student);
         break;
-    case 11:
-        exit();
+    case 11:        
+        exit(*Student);
+        break;
     }
 }
 
-void Panel::showMenu()
+void Panel::showMenu(StudentSession::SessionManager *Student)
 {
     int hightMM, widthMM;
     int i,j,y_start;
@@ -148,28 +151,28 @@ void Panel::showMenu()
     cout<<"Enter Keys : ( 1 to 9 ) ";
 
 
-   /* while (!sw_MainMenu)
+    while (!sw_MainMenu)
     {
       if (kbhit())
       {
-          n = getch();
+          int n = getch();
           if(n >= 1 && n <= 9)
-            Action(n);
+            Action(n, Student);
         else
             gotoxy(12,y_start+31);
             cout << "The number is not valid!";
 
       }
     }
-  }*/
-//
-}
+  }
    
 void Panel::showStudentInfo(StudentSession::SessionManager& s)
 {
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
+    string studentID = s.currentStudent()->getStudentId();
+    logger.addLog("Student " + studentID + " opened student info.", "INFO");
     cout << "Student information :" << endl;
     s.currentStudent()->print();
 }
@@ -179,6 +182,8 @@ void Panel::checkBalance(StudentSession::SessionManager& s)
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
+    string studentID = s.currentStudent()->getStudentId();
+    logger.addLog("Student " + studentID + " checked balance.", "INFO");
     cout << "your balance : " << s.currentStudent()->getBalance() << "toman";
 }
 
@@ -190,6 +195,8 @@ void Panel::viewReservation(StudentSession::SessionManager& s)
     cout << "Definite reservation :";
     for (Reservation* R : s.currentStudent()->getReserves()) // روش for-each
     {
+        string studentID = s.currentStudent()->getStudentId();
+        logger.addLog("Student " + studentID + " viewed reservations.", "INFO");
         if (R) R->print(); // چک کن null نباشه
     }
 }
@@ -200,9 +207,11 @@ void Panel::viewShappingCart(StudentSession::SessionManager& s)
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
     cout <<"Temporary reservation :" << endl;
-    for (auto add = s.shoppingCart()->getReservations().begin(); add != s.shoppingCart()->getReservations().end(); add++)
+    for (auto& r : s.shoppingCart()->getReservations()) 
     {
-        add->print();
+        string studentID = s.currentStudent()->getStudentId();
+        logger.addLog("Student " + studentID + " viewed shopping cart.", "INFO");
+        r.print();
     }
 }
 
@@ -210,11 +219,13 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 {
     system("cls");
     drawBox(0, 0, 50, 20);
+    string studentID = s.currentStudent()->getStudentId();
     // ---------- Read meals file ----------
     string mealsFile = ConfigPaths::instance().getMealsJson().string();
     ifstream mealStream(mealsFile);
     if (!mealStream.is_open()) {
         cerr << "Error opening meals file: " << mealsFile << "\n";
+        logger.addLog("Student " + studentID + " failed to open meals file.", "ERROR");
         // delete selectedHall;
         return;
     }
@@ -256,7 +267,9 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     auto mealIt = find_if(meals.begin(), meals.end(), [mealChoice](Meal& m){
         return m.getMeal_id() == mealChoice;
     });
-    if (mealIt == meals.end()) {
+    if (mealIt == meals.end()) 
+    {
+        logger.addLog("Student " + studentID + " selected invalid meal ID.", "WARNING");
         cout << "Invalid meal selected!\n";
         // delete selectedHall();
         return;
@@ -266,7 +279,9 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     // ---------- Read dining halls file ----------
     string hallFile = ConfigPaths::instance().getDiningHallsJson().string();
     ifstream hallStream(hallFile);
-    if (!hallStream.is_open()) {
+    if (!hallStream.is_open()) 
+    {
+        logger.addLog("Student " + studentID + " failed to open dining halls file.", "ERROR");
         cerr << "Error opening dining halls file: " << hallFile << "\n";
         return;
     }
@@ -277,7 +292,8 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     // Skip header
     getline(hallStream, line);
 
-    while (getline(hallStream, line)) {
+    while (getline(hallStream, line)) 
+    {
         stringstream ss(line);
         string idStr, name, genderStr, address, capStr;
 
@@ -306,10 +322,13 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     cout << "Enter dining hall ID: ";
     cin >> hallChoice;
 
-    auto hallIt = find_if(halls.begin(), halls.end(), [hallChoice](DiningHall& h){
+    auto hallIt = find_if(halls.begin(), halls.end(), [hallChoice](DiningHall& h)
+    {
         return h.getHallId() == hallChoice;
     });
-    if (hallIt == halls.end()) {
+    if (hallIt == halls.end()) 
+    {
+        logger.addLog("Student " + studentID + " selected invalid dining hall ID.", "WARNING");
         cout << "Invalid dining hall selected!\n";
         return;
     }
@@ -322,9 +341,12 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     auto& session = StudentSession::SessionManager::instance();
     if (session.shoppingCart()) {
         session.shoppingCart()->addReservation(reservation);
+        logger.addLog("Student " + studentID + " added meal " + to_string(mealChoice) + " to shopping cart in dining hall: " + selectedHall->getName(),
+    "INFO");
         cout << "✅ Meal added to shopping cart!\n";
     } else {
         cout << "❌ Error: Shopping cart not available!\n";
+        logger.addLog("Student " + studentID + " shopping cart unavailable.", "ERROR");
         // Free heap memory since reservation was not stored:
         delete selectedHall;
         delete selectedMeal;
@@ -333,6 +355,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 
 void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
 {
+    string studentID = s.currentStudent()->getStudentId();
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(20, 17);
@@ -341,11 +364,13 @@ void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
     {
         Transaction t = s.shoppingCart()->confirm();
         transactions.push_back(t);
+        logger.addLog("Student " + studentID + " confirmed shopping cart: " , "INFO");
         cout << "Shopping cart confirmed successfully.\n";
         t.print(); // نمایش جزئیات تراکنش
     } 
     catch (const exception& e) 
     {
+        logger.addLog("Student " + studentID + " failed to confirm shopping cart: " + string(e.what()), "ERROR");
         cout << "Error: " << e.what() << endl;
     }
 }
@@ -359,10 +384,13 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
     cout << "Enter the reservationID you want to remove.";
     cin >> ID;
     s.shoppingCart()->removeReservation(ID);
+    string studentID = s.currentStudent()->getStudentId();
+    logger.addLog("Student " + studentID + " removed reservation ID " + to_string(ID) + " from shopping cart.", "INFO");
 }
 
 void Panel::increaseBalance(StudentSession::SessionManager& s)
 {
+    string studentID = s.currentStudent()->getStudentId();
     float amount;
     Transaction t;
     system("cls");
@@ -372,6 +400,7 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
     cin >> amount;
     if (amount <= 0) 
     {
+        logger.addLog("Student " + studentID + " attempted to increase balance with invalid amount: " + to_string(amount), "WARNING");
         throw invalid_argument("Amount must be greater than zero.");
     }
     else
@@ -388,6 +417,7 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
     t.setStatus(TransactionStatus::COMPLETED);
     t.setCreatedAT(time(0));
     t.print();
+    logger.addLog("Student " + studentID + " increased balance by " + to_string(amount) + ". Transaction ID: " + to_string(t.getTransactionID()), "INFO");
 
     Student* student = StudentSession::SessionManager::instance().currentStudent();
     if (student)
@@ -398,6 +428,7 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
 
 void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 {
+    string studentID = s.currentStudent()->getStudentId();
     system("cls"); // پاک کردن صفحه
     drawBox(0, 0, 80, 20);
     gotoxy(2, 1);
@@ -407,6 +438,7 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
     if (transactions.empty())
     {
         gotoxy(2, 3);
+        logger.addLog("Student " + studentID + " viewed recent transactions: none found.", "INFO");
         cout << "No transactions found.\n";
         return;
     }
@@ -425,7 +457,11 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
             cout << " Time: " << ctime(&createdAt);    // آدرس بده به ctime
                     
         line++;
-        if (line > 18) break; // محدود به تعداد خط
+        if (line > 18) 
+        break; // محدود به تعداد خط
+        logger.addLog("Student " + studentID + " viewed recent transactions.", "INFO");
+
+
     }
 
     //gotoxy(2, 19);
@@ -434,6 +470,7 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 
 void Panel::cancelReservation(StudentSession::SessionManager& s)
 {
+    string studentID = s.currentStudent()->getStudentId();
     int id;
     system("cls");
     drawBox(0, 0, 40, 15);
@@ -457,12 +494,14 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
                 reservations.erase(it);
 
                 gotoxy(20, 19);
+                logger.addLog("Student " + studentID + " cancelled reservation ID " + to_string(id) + " and refunded " + to_string(price), "INFO");
                 cout << "Reservation cancelled successfully and amount refunded.\n";
                 return;
             }
             else
             {
                 gotoxy(20, 19);
+                logger.addLog("Student " + studentID + " attempted to cancel already cancelled reservation ID " + to_string(id), "WARNING");
                 cout << "This reservation is already cancelled!\n";
                 return;
             }
@@ -470,12 +509,15 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     }
 
     gotoxy(20, 19);
+    logger.addLog("Student " + studentID + " attempted to cancel non-existent reservation ID " + to_string(id), "WARNING");
     cout << "Reservation ID not found!\n";
 }
 
-void Panel::exit()
+void Panel::exit(StudentSession::SessionManager& s)
 {
-     system("cls");
+    system("cls");
+    string studentID = s.currentStudent()->getStudentId();
+    logger.addLog("Student " + studentID + " exited panel.", "INFO");
     cout << "";
     std::exit(0);
 }
