@@ -59,18 +59,19 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     else
     {
         // استخراج داده‌ها از JSON
-        int userID = j["userID"];
-        string firstName = j["firstName"];
-        string lastName = j["lastName"];
-        string storedHashedPassword = j["hashedPassword"];
-        string email = j["email"];
-        string phone = j["phone"];
-        string studentID = j["studentID"];
+        // int userID = j["userID"];
+        // string firstName = j["firstName"];
+        // string lastName = j["lastName"];
+        // string storedHashedPassword = j["hashedPassword"];
+        // string email = j["email"];
+        // string phone = j["phone"];
+        // string studentID = j["studentID"];
         // ساخت شی Student و اختصاص به _currentStudent
-        _currentStudent = new Student(userID, firstName, lastName, password, phone, studentID, email, 0, true);
+        // _currentStudent = new Student(userID, firstName, lastName, password, phone, studentID, email, 0, true);
+        *_currentStudent = j;
         // ایجاد یک shopping cart جدید
         _shopping_cart = new ShoppingCart();
-        _studentID = studentID;
+        _studentID = _studentID;
         logger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
         cout << "Session loaded successfully." << endl;
     }    
@@ -82,13 +83,14 @@ void SessionManager::save_session(string& studentNumber, const string& password 
 
     fs::path path = ConfigPaths::instance().getStudentSessionsDir() / ( "Student_" + _studentID + ".json");
     json j;
-    j["userID"] = to_string(_currentStudent->getUserID());
-    j["studentID"] = _studentID;
-    j["name"] = _currentStudent->getName();
-    j["lastname"] = _currentStudent->getLastName();
-    j["hashpassword"] = _currentStudent->getHashedPasssword();
-    j["email"] = _currentStudent->getEmail();
-    j["phone"] = _currentStudent->getPhone();
+    // j["userID"] = to_string(_currentStudent->getUserID());
+    // j["studentID"] = _studentID;
+    // j["name"] = _currentStudent->getName();
+    // j["lastname"] = _currentStudent->getLastName();
+    // j["hashpassword"] = _currentStudent->getHashedPasssword();
+    // j["email"] = _currentStudent->getEmail();
+    // j["phone"] = _currentStudent->getPhone();
+    j = *_currentStudent;
     ofstream out(path);
     if (!out.is_open()) 
     {
@@ -161,7 +163,7 @@ void SessionManager::login(string studentNumber, string password)
                 {
                     int _userID = stoi(userID);
                     _studentID = studentID;
-                    _currentStudent = new Student(_userID, firstName, lastName, password, phone, studentID, email, 0, true);
+                    _currentStudent = new Student(_userID, firstName, lastName, password, phone, studentID, email, 0.0, true);
                     _shopping_cart = new ShoppingCart();
 
 

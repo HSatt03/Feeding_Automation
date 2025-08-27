@@ -12,7 +12,7 @@ User::User(int user_id, string name, string last_name, string password, string p
     setUserID(user_id);
     setName(name);
     setLastName(last_name);
-    setPassword(password);
+    setHashPassword(password);
     setPhone(phone);
 }
 
@@ -54,7 +54,7 @@ void User::setLastName(string last_name)
     _last_name = last_name;
 }
 
-void User::setPassword(string password)
+void User::setHashPassword(string password)
 {
     _hashed_password = password;
 }

@@ -39,58 +39,17 @@ bool Admin::isThereAnyAdmin()
     return false;
 }
 
-void Admin::sign_in(string& studentNumber, string& password)
+void Admin::sign_in(string& adminPho, string& password)
 {
     AdminSession::SessionManager adminSession;
-    fs::path csvPath = ConfigPaths::instance().getStudentsCsv();
-    ifstream file(csvPath);
-    if (!file.is_open())
-    {
-        throw std::runtime_error("Cannot open students CSV file.");
-    }
-
-    string line;
-    bool found = false;
-    while (getline(file, line))
-    {
-        stringstream ss(line);
-        string userIDStr, firstName, lastName, studentID, hashedPassword, email, phone;
-
-        getline(ss, userIDStr, ',');
-        getline(ss, studentID, ',');
-        getline(ss, firstName, ',');
-        getline(ss, lastName, ',');
-        getline(ss, hashedPassword, ',');
-        getline(ss, email, ',');
-        getline(ss, phone, ',');
-
-        if (studentID == studentNumber)
-        {
-            found = true;
-            if (!bcrypt::validatePassword(password, hashedPassword))
-            {
-                throw runtime_error("Incorrect password.");
-            }
-
-            int adminID = stoi(userIDStr);
-
-            Admin *currentAdmin = new Admin(adminID, firstName, lastName, password, phone);
-            //int adminID = adminID;
-
-            adminSession.setCurrentAdmin(currentAdmin, adminID);
-
-            adminSession.save_session(studentNumber, password);
-
-            cout << "Admin registered successfully." << endl;
-            break;
-        
-        }
-    }
-
-    if (!found)
-    {
-        throw runtime_error("Student ID not found in records.");
-    }
+    string userID, firstName, lastName, hashedPassword, phone;
+    int adminID = stoi(userID);
+    hashedPassword = bcrypt::generateHash(password);
+    Admin *currentAdmin = new Admin(adminID, firstName, lastName, hashedPassword, phone);
+    //int adminID = adminID;
+    adminSession.setCurrentAdmin(currentAdmin, adminID);
+    adminSession.save_session(adminPho, password);
+    cout << "Admin registered successfully." << endl;
 }
 
 void Admin::print()const

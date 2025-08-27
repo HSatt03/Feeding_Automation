@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "sessionManager2.hpp"
 #include "adminPanel.hpp"
 #include "utils.hpp"
@@ -9,29 +10,40 @@ void gotoxy(int x, int y);
 
 void drawBox(int x, int y, int width, int height);
 
+void clearScreen() 
+{
+    system("cls"); // ویندوز
+}
+
 int main()
 {
-    string password, studentNumber;
-    drawBox(1, 1, 30, 10);
-    gotoxy(12, 3);
-    cout << "*Log in*";
-    gotoxy(20, 20);
-    gotoxy(4, 5);
-    cout << "Password: ";
-    cin >> password;
-    gotoxy(4, 7);
-    cout << "StudentID: ";
-    cin >> studentNumber;
-    gotoxy(20, 20);
     if(!Admin::isThereAnyAdmin())
     {
+        string Name, LastName, Password, Phone;
+        drawBox(1, 1, 40, 10);
+        gotoxy(12, 3);
+        cout << "*Log in*";
+        gotoxy(20, 20);
+        gotoxy(4, 5);
+        cout << "Name: ";
+        cin >> Name;
+        gotoxy(4, 6);
+        cout << "Last Name: ";
+        cin >> LastName;
+        gotoxy(4, 7);
+        cout << "Phone: ";
+        cin >> Phone;
+        gotoxy(4, 8);
+        cout << "Choose a password:";
+        cin >> Password;
+        gotoxy(20, 20);
+        system("cls");
         AdminSession::SessionManager admin_session;
-        admin_session.login(studentNumber, password);
+        admin_session.login(Phone, Password);
         AdminPanel panel;
         panel.showMenu();
+        // system("cls");
     }
-    cout << "\nPress Enter to exit...";
-    cin.ignore(); // برای پاک کردن بافر
-    cin.get();    // منتظر زدن Enter می‌مونه
+
     return 0;
 }

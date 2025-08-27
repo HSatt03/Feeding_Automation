@@ -79,6 +79,11 @@ void Student::setReservations(vector<Reservation*>reserve)
     _reservations = reserve;
 }
 
+void Student::setTransactions(const vector<Transaction>& transaction)
+{
+    _transactions = transaction;
+}
+
 void Student::print()const
 {
     User::print();

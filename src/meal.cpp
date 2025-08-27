@@ -20,7 +20,7 @@ Meal::Meal(int m, string n, float p, MealType mt, ReserveDay r, bool b)
 
 void Meal::setMeal_id(int m) 
 {
-    if(m > 0)
+    if(m >= 0)
     {
         _meal_id = m;
     }
@@ -45,7 +45,7 @@ void Meal::setName(string name)
 
 void Meal::setPrice(float p)
 {
-    if(p > 0.0)
+    if(p >= 0.0)
     {
         _price = p;
     }

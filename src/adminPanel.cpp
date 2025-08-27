@@ -176,6 +176,7 @@ void AdminPanel::addNewDiningHallIntractive()
     {
         inFile >> jArray;
     }
+    inFile.close();
     for(int i = 0;  i < n; i++)
     {
         DiningHall hall;
@@ -196,8 +197,8 @@ void AdminPanel::addNewDiningHallIntractive()
 
 void AdminPanel::removeMeal(int mealIDToRemove)
 {
-    string csvFile = "../mealsCsvFile.csv";
-    string tempFile = "../temp.csv";
+    string csvFile = "mealsCsvFile.json";
+    string tempFile = "temp.json";
 
     ifstream inFile(csvFile);
     ofstream outFile(tempFile);
@@ -310,111 +311,99 @@ void AdminPanel::removeDiningHall(int hallIDToRemove)
 
 void AdminPanel::showMenu()
 {
-    int hightMM, widthMM;
-    int n,i,j,y_start;
-    bool sw_MainMenu;
-    char ch;
-    sw_MainMenu = false;
-    hightMM = 33;
-    widthMM = 28;
-    y_start = 3;
-    gotoxy(5,y_start);
-    for(int i=0 ; i<=widthMM-1 ; i++)
+    const int startX = 10;   // شروع ستون منو
+    const int startY = 2;    // شروع سطر منو
+    const int width = 40;    // عرض منو
+    const int height = 20;   // ارتفاع منو
+    bool sw_MainMenu = false;
+    char choice;
+
+    // رسم بالای منو
+    gotoxy(startX, startY);
+    cout << "+"; 
+    for(int i=0; i<width; i++) cout << "-";
+    cout << "+";
+
+    // فضای داخلی منو
+    for(int i=1; i<height-1; i++)
     {
-        for(int i=0; i<widthMM; i++)
-            cout << "* ";
+        gotoxy(startX, startY+i);
+        cout << "|";
+        for(int j=0; j<width; j++) cout << " ";
+        cout << "|";
     }
-    for(int i=1 ; i<hightMM-1 ; i++)
+
+    // رسم پایین منو
+    gotoxy(startX, startY+height-1);
+    cout << "+";
+    for(int i=0; i<width; i++) cout << "-";
+    cout << "+";
+
+    // عنوان منو
+    gotoxy(startX+5, startY+1);
+    cout << "Admin Menu --- Feeding Automation";
+
+    // گزینه‌ها
+    gotoxy(startX+5, startY+3);  cout << "1 - Display all meals";
+    gotoxy(startX+5, startY+5);  cout << "2 - Display all diningHalls";
+    gotoxy(startX+5, startY+7);  cout << "3 - Add meal";
+    gotoxy(startX+5, startY+9);  cout << "4 - Add diningHall";
+    gotoxy(startX+5, startY+11); cout << "5 - Remove meal";
+    gotoxy(startX+5, startY+13); cout << "6 - Remove diningHall";
+    gotoxy(startX+5, startY+15); cout << "7 - Exit";
+
+    gotoxy(startX+5, startY+17);
+    cout << "Enter your choice (1-7): ";
+
+    while(!sw_MainMenu)
     {
-        gotoxy(5,y_start+i);
-        cout<<"* ";
-        for(int j=1 ; j<widthMM-1 ; j++)
-            cout<<"  ";
-        cout<<"*";
-    }
-    gotoxy(5,y_start+i);
-    for(int i=0 ; i<=widthMM-1 ; i++)
-    {
-        if(i%2==0)
+        if(kbhit())
         {
-            cout <<"* ";
+            choice = getch();
+            if(choice >= '1' && choice <= '7')
+            {
+                system("cls");
+                action(choice);
+                sw_MainMenu = true;
+            }
+            else
+            {
+                gotoxy(startX+5, startY+19);
+                cout << "Invalid input! Please enter 1-7.";
+            }
         }
-        else
-        {
-            cout <<"* ";
-        }
-    }
-    gotoxy(12,y_start+2);
-    cout <<"Admin Menu    ---  <<Feeding atuomation>>";
-    gotoxy(12, y_start+5);
-    cout <<"1 _ Display all meals";
-
-    gotoxy(12, y_start+7);
-    cout <<"2 _ Display all diningHalls";
-
-    gotoxy(12, y_start+9);
-    cout <<"3 _ Add meal";
-
-    gotoxy(12, y_start+11);
-    cout << "4 _ Add diningHall";
-
-    gotoxy(12, y_start+13);
-    cout <<"5 _ Remove meal";
-
-    gotoxy(12, y_start+15);
-    cout << "6 _ Remove diningHall";
-
-    gotoxy(12, y_start+17);
-    cout << "7 _ exit";
-
-    gotoxy(12, y_start+19);
-    cout<<"Enter Keys : ( 1 to 7 ) ";
-
-    while (!sw_MainMenu)
-    {
-      if (kbhit())
-      {
-          n = getch();
-          if(n >= '1' && n <= '7')
-            action(n);
-        else
-        {
-            gotoxy(12,y_start+31);
-            cout << "The number is not valid!";
-        }
-
-      }
     }
 }
-void AdminPanel::action(int number)
+
+void AdminPanel::action(char character)
 {
-    switch(number)
+    switch(character)
     {
-        case 1:
+        case '1':
             displayAllMeals();
             break;
-        case 2:
+        case '2':
             displayAllDininigHalls();
             break;
-        case 3:
+        case '3':
             addNewMealIntractive();
             break;
-        case 4:
+        case '4':
             addNewDiningHallIntractive();
             break;
-        case 5:
+        case '5':
             int ID1;
             cout << "Which meal do you want to remove? please enter its ID: ";
             cin >> ID1;
             removeMeal(ID1);
             break;
-        case 6:
+        case '6':
             int ID2;
             cout << "Which diningHall do you want to remove? please enter its ID: ";
             cin >> ID2;
             removeDiningHall(ID2);
             break;
-        case 7:
+        case '7':
             exit(0);
             break;
         default:
