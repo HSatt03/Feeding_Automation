@@ -11,8 +11,8 @@ using namespace StudentSession;
  class Panel
  {
  public:
-     bool Action(int, StudentSession::SessionManager*);
-     void showMenu();
+     void Action(int, StudentSession::SessionManager*);
+     void showMenu(StudentSession::SessionManager*);
      void showStudentInfo(StudentSession::SessionManager&);
      void checkBalance(StudentSession::SessionManager&);
      void viewReservation(StudentSession::SessionManager&);
@@ -23,7 +23,7 @@ using namespace StudentSession;
      void increaseBalance(StudentSession::SessionManager&);
      void viewRecentTransactions(StudentSession::SessionManager&);
      void cancelReservation(StudentSession::SessionManager&);
-     void exit();
+     void exit(StudentSession::SessionManager&);
  };
  
  #endif
