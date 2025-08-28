@@ -1,5 +1,6 @@
 #ifndef STUDENT_HPP
 #define STUDENT_HPP
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,8 +8,10 @@
 #include "transaction.hpp"
 #include "meal.hpp"
 #include "user.hpp"
+#include "json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
 class User;
 class Reservation;
@@ -23,6 +26,7 @@ public:
     void setBalance(float);
     void setIsActive(bool);
     void setReservations(vector<Reservation*>);
+    void setTransactions(const vector<Transaction>&);
 
     void print()const;
     void reserveMeal(Meal*);
@@ -51,7 +55,7 @@ public:
     {
         return _is_active;
     }
-    vector<Reservation*>& getReserves()
+    const vector<Reservation*>& getReserves() const
     {
         return _reservations;
     }
@@ -68,5 +72,40 @@ private:
     vector<Reservation*>_reservations;
     vector<Transaction> _transactions;
 };
+
+namespace nlohmann
+{
+    template<>
+    struct adl_serializer<Student>
+    {
+        static void to_json(json& j, const Student& s)
+        {
+                // ابتدا داده‌های User رو به JSON اضافه کن
+                j = json(s); // این خط خودش to_json کلاس User رو صدا می‌کنه
+                // بعد فیلدهای خودش رو اضافه کن
+                j["studentID"] = s.getStudentId();
+                j["email"] = s.getEmail();
+                j["balance"] = s.getBalance();
+                // برای رزروها (Reservation*) بهتره فقط شناسه یا اسم ذخیره بشه
+                // فعلا ردش می‌کنیم یا بعدا ID بذاریم
+                // {"reservations", s.getReserves()},
+                j["transactions"] = s.getTransactions();
+                // 👆 شرطش اینه Transaction هم adl_serializer داشته باشه
+
+        }
+        static void from_json(const json& j, Student& s)
+        {
+            // اول داده‌های User رو بارگذاری کن
+            User& u = s; // upcast
+            u = j.get<User>();
+            
+            // بعد فیلدهای خودش رو
+            s.setStudentId(j.at("studentID").get<string>());
+            s.setEmail(j.at("email").get<string>());
+            s.setBalance(j.at("balance").get<float>());
+            s.setTransactions(j.at("transactions").get<vector<Transaction>>());
+        }
+    };
+}
 
 #endif

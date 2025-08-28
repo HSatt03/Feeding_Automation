@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int Transaction::_transactionID = 0; 
+// int Transaction::_transactionID = 0; 
 Transaction::Transaction(int transactionID, string trackingCode, float amount , TransactionType type, TransactionStatus status, time_t createdAT)
 {
     setTransactionID(transactionID);
@@ -110,4 +110,62 @@ void Transaction::print()
     strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
     strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
     cout << buffer1 <<" " << buffer2 << endl;
+}
+
+string Transaction::transactionTypeToString(TransactionType type)
+{
+    switch(type)
+    {
+        case TransactionType::TRANSFER: 
+            return "TRANSFER";
+        case TransactionType::PAYMENT:  
+            return "PAYMENT";
+        default: 
+            return "UNKNOWN";
+    }
+}
+
+TransactionType Transaction::stringToTransactionType(const string& str)
+{
+    if (str == "TRANSFER")
+    {
+        return TransactionType::TRANSFER;
+    }
+    if (str == "PAYMENT")
+    {
+        return TransactionType::PAYMENT;
+    }
+    throw invalid_argument("Invalid TransactionType string: " + str);
+}
+
+string Transaction::transactionStatusToString(TransactionStatus status)
+{
+    switch(status)
+    {
+        case TransactionStatus::PENDING:
+            return "PENDING";
+        case TransactionStatus::COMPLETED:
+            return "COMPLETED";
+        case TransactionStatus::FIALED:    
+            return "FIALED";
+        default: 
+            return "UNKNOWN";
+    }
+}
+
+TransactionStatus Transaction::stringToTransactionStatus(const string& str)
+{
+    if (str == "PENDING")
+    {   
+        return TransactionStatus::PENDING;
+    }
+    if (str == "COMPLETED")
+    {
+        return TransactionStatus::COMPLETED;
+    }
+    if (str == "FIALED")
+    {    
+        return TransactionStatus::FIALED;
+    }
+    throw invalid_argument("Invalid TransactionStatus string: " + str);
 }

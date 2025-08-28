@@ -29,17 +29,17 @@ void AdminSession::SessionManager::setCurrentAdmin(Admin *a, int i)
     _adminID = i;
 }
 
-void SessionManager::load_session(string& studentNumber, const string& password)
+void SessionManager::load_session(string& adminPho, const string& password)
 {
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
 
-    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
+    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
     
     ifstream file(sessionFile);
     if (!file.is_open()) 
     {
-        logger.addLog("Failed to open session file for admin " + studentNumber, "ERROR");
+        logger.addLog("Failed to open session file for admin " + adminPho, "ERROR");
         throw runtime_error("Cannot open admin session file.");
     }
 
@@ -50,36 +50,36 @@ void SessionManager::load_session(string& studentNumber, const string& password)
     string storedHashedPass = j["hashedPassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
-        logger.addLog("Failed login attempt (incorrect password) for admin " + studentNumber, "WARNING");
+        logger.addLog("Failed login attempt (incorrect password) for admin " + adminPho, "WARNING");
         throw runtime_error("Incorrect admin password.");
     }
 
-    int userID = j["userID"];
-    string firstName = j["firstName"];
-    string lastName = j["lastName"];
-    string storedHashedPassword = j["hashedPassword"];
-    string phone = j["phone"];
-
-    _currentAdmin = new Admin(userID, firstName, lastName, password, phone);
+    // int userID = j["userID"];
+    // string firstName = j["firstName"];
+    // string lastName = j["lastName"];
+    // string storedHashedPassword = j["hashedPassword"];
+    // string phone = j["phone"];
+    // _currentAdmin = new Admin(userID, firstName, lastName, password, phone);
     //Admin* _currentAdmin;
-    _adminID = userID;
-    logger.addLog("Session loaded successfully for admin " + studentNumber, "INFO");
+    *_currentAdmin = j;
+    _adminID = _currentAdmin->getUserID();
+    logger.addLog("Session loaded successfully for admin " + adminPho, "INFO");
     cout << "Session loaded successfully." << endl;
 }
 
-void SessionManager::save_session(string& studentNumber, const string& password)
+void SessionManager::save_session(string& adminPho, const string& password)
 {
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
-    fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
-    string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());    
+    fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
+    // string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());    
     json j;
-    j["userID"] = _adminID;
-    j["firstName"] = _currentAdmin->getName();
-    j["lastName"] = _currentAdmin->getLastName();
-    j["hashedPassword"] = hashedPassword;  
-    j["phone"] = _currentAdmin->getPhone();
-    
+    // j["userID"] = _adminID;
+    // j["firstName"] = _currentAdmin->getName();
+    // j["lastName"] = _currentAdmin->getLastName();
+    // j["hashedPassword"] = hashedPassword;  
+    // j["phone"] = _currentAdmin->getPhone();
+    j = *_currentAdmin;
     ofstream out(path);
     if (!out.is_open()) 
     {
@@ -91,7 +91,7 @@ void SessionManager::save_session(string& studentNumber, const string& password)
     out << j.dump(4); // 4 = فاصله برای خوانایی بیشتر
 }
 
-void SessionManager::login(string studentNumber, string password)
+void SessionManager::login(string adminPho, string password)
 {
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
@@ -101,7 +101,7 @@ void SessionManager::login(string studentNumber, string password)
         try 
         {
             fs::create_directories(adminSessionsDir);
-            logger.addLog("Session directory created successfully for student: " + studentNumber, "INFO");
+            logger.addLog("Session directory created successfully for admin: " + adminPho, "INFO");
             cout << "Session directory created: " << adminSessionsDir << endl;
         }
         catch (const fs::filesystem_error& e) 
@@ -111,8 +111,8 @@ void SessionManager::login(string studentNumber, string password)
             throw;
         }
         cout << "No admin found. Registering first admin..." << endl;
-        logger.addLog("No admin found, registering first admin (" + studentNumber + ")", "INFO");
-        Admin::sign_in(studentNumber, password);
+        logger.addLog("No admin found, registering first admin (" + adminPho + ")", "INFO");
+        Admin::sign_in(adminPho, password);
         logger.addLog("First admin registered successfully", "INFO");
         cout << "First admin registered successfully." << endl;
         // return;
@@ -130,22 +130,22 @@ void SessionManager::login(string studentNumber, string password)
     else
     {
     // اگر ادمین وجود داشت، مسیر فایل سشن ادمین مربوط به username
-        fs::path sessionFile = adminSessionsDir / ("Admin_" + studentNumber + ".json");
+        fs::path sessionFile = adminSessionsDir / ("Admin_" + adminPho + ".json");
 
         if (!fs::exists(sessionFile))
         {
-            logger.addLog("Admin session file not found for " + studentNumber, "WARNING");
+            logger.addLog("Admin session file not found for " + adminPho, "WARNING");
             throw std::runtime_error("Admin session file not found.");
         }
 
         // اگر فایل بود، بارگذاری سشن و چک کردن پسورد
-        load_session(studentNumber, password);
-        logger.addLog("Admin " + studentNumber + " logged in successfully", "INFO");
+        load_session(adminPho, password);
+        logger.addLog("Admin " + adminPho + " logged in successfully", "INFO");
         std::cout << "Admin login successful." << std::endl;
     }
 }
 
-void SessionManager::logout(string studentNumber, string password)
+void SessionManager::logout(string adminPho, string password)
 {
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
@@ -156,13 +156,13 @@ void SessionManager::logout(string studentNumber, string password)
         return;
     }
 
-    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + studentNumber + ".json");
+    fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
     if (fs::exists(sessionFile)) 
     {
         fs::remove(sessionFile);
     }
         
-    logger.addLog("Admin " + studentNumber + " logged out", "INFO");
+    logger.addLog("Admin " + adminPho + " logged out", "INFO");
 
     delete _currentAdmin;
     _currentAdmin = nullptr;

@@ -23,4 +23,4 @@ echo Running program...
 REM =========================
 REM Keep the CMD window open after execution
 REM =========================
-pause8
+pause
