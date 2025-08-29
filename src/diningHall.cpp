@@ -32,7 +32,7 @@ DiningHall::DiningHall(int hall_id, string name, string address, int capacity)
 }
 void DiningHall::setHallId(int hall_id)
 {
-    if(hall_id == 1 && hall_id == 2)
+    if(hall_id >= 0)
     {
         _hall_id = hall_id;
     }
@@ -83,8 +83,8 @@ void DiningHall::inputHalls()
     cin.ignore();
     cout << "DiningHall Name: ";
     getline(cin, _name);
-    cout << "Gender: ";
     _gender = selectGender();
+    cin.ignore();
     cout << "DiningHall Address: ";
     getline(cin, _address);
     cout << "DiningHall Capacity: ";
@@ -96,7 +96,8 @@ void DiningHall::print()const
     cout << "Name: " << _name << 
                             "\nHall Id: " << _hall_id << 
                                                     "\nAddress: " << _address << 
-                                                                            "\nCapacity: " << _capacity << "\nGender: " << _gender << endl;            
+                                                                            "\nCapacity: " << _capacity << "\nGender: " << _gender << endl <<
+                                                                                                                                     "***********" << endl;            
 }
 
 Gender DiningHall::stringToGender(const string& s) 

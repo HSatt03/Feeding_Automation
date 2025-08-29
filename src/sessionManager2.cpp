@@ -9,6 +9,7 @@
 #include "configPaths.hpp"
 #include "json.hpp"
 #include "../Bcrypt.cpp/include/bcrypt.h"
+#include "consoleMessageBox.hpp"
 
 using namespace std;
 using namespace AdminSession;
@@ -19,9 +20,9 @@ AdminSession::SessionManager::SessionManager(Admin a, int i)
     _currentAdmin = &a;
     _adminID = i;
 }
-Admin SessionManager::currentAdmin()
+Admin* SessionManager::currentAdmin()
 {
-    return *_currentAdmin;
+    return _currentAdmin;
 }
 void AdminSession::SessionManager::setCurrentAdmin(Admin *a, int i)
 {
@@ -93,6 +94,8 @@ void SessionManager::save_session(string& adminPho, const string& password)
 
 void SessionManager::login(string adminPho, string password)
 {
+    auto& msgBox = ConsoleMessageBox::instance();
+    msgBox.setPosition(7, 20, 100, 5);
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
     // fs::path existAdminSessionDir = ConfigPaths::instance().getAdminSessionsDir();
@@ -102,19 +105,31 @@ void SessionManager::login(string adminPho, string password)
         {
             fs::create_directories(adminSessionsDir);
             logger.addLog("Session directory created successfully for admin: " + adminPho, "INFO");
-            cout << "Session directory created: " << adminSessionsDir << endl;
+            // cout << "Session directory created!!!" << adminSessionsDir << endl;
         }
         catch (const fs::filesystem_error& e) 
         {
             logger.addLog("Error creating admin sessions directory: " + string(e.what()), "ERROR");
-            cerr << "Error creating directory: " << e.what() << endl;
+            msgBox.addMessage("Error creating directory: " + string(e.what()), MsgColor::RED);
+            msgBox.showMessages();
+            system("pause");
+            msgBox.clear();
+            // cerr << "Error creating directory: " << e.what() << endl;
             throw;
         }
-        cout << "No admin found. Registering first admin..." << endl;
+        msgBox.addMessage("No admin found. Registering first admin...", MsgColor::GREEN);
+        msgBox.showMessages();
+        system("pause");
+        msgBox.clear();
+        // cout << "No admin found. Registering first admin..." << endl;
         logger.addLog("No admin found, registering first admin (" + adminPho + ")", "INFO");
         Admin::sign_in(adminPho, password);
         logger.addLog("First admin registered successfully", "INFO");
-        cout << "First admin registered successfully." << endl;
+        msgBox.addMessage("First admin registered successfully.", MsgColor::GREEN);
+        msgBox.showMessages();
+        system("pause");
+        msgBox.clear();
+        // cout << "First admin registered successfully." << endl;
         // return;
     }
     // if (!Admin::isThereAnyAdmin()) 

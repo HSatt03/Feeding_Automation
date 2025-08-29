@@ -4,14 +4,16 @@
 
 using namespace std;
 
-void gotoxy(int x, int y) {
+void gotoxy(int x, int y) 
+{
     COORD coord;
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void drawBox(int x, int y, int width, int height) {
+void drawBox(int x, int y, int width, int height) 
+{
     gotoxy(x, y); cout << "+";
     gotoxy(x + width, y); cout << "+";
     gotoxy(x, y + height); cout << "+";
@@ -26,3 +28,15 @@ void drawBox(int x, int y, int width, int height) {
         gotoxy(x + width, y + i); cout << "|";
     }
 }
+
+// void printColor(const string& text, int foreground, int background = 0) 
+// {
+//     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+//     // ترکیب رنگ Foreground و Background
+//     SetConsoleTextAttribute(hConsole, foreground | (background << 4));
+//     cout << text;
+
+//     // ریست رنگ به سفید پیش‌فرض
+//     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+// }

@@ -28,102 +28,106 @@ fs::path AdminPanel::chooseCsvFile()
 
 void AdminPanel::displayAllMeals()
 {
-    string csvFile = "../meals.json"; // مسیر فایل CSV
-    ifstream file(csvFile);
+    string mealsFile = "meals.json"; // مسیر فایل CSV
+    ifstream file(mealsFile);
     if (!file.is_open()) 
     {
-        cerr << "Cannot open meals CSV file." << endl;
+        cerr << "Cannot open meals json file." << endl;
         return;
     }
 
-    string line;
-    vector<Meal> meals;
+    // string line;
+    // vector<Meal> meals;
 
     // خواندن هدر
-    getline(file, line);
+    // getline(file, line);
 
-    while (getline(file, line)) 
-    {
-        stringstream ss(line);
-        string field;
-        int mealID;
-        string name;
-        float price;
-        string mealtypeStr, reservedayStr;
+    // while (getline(file, line)) 
+    // {
+    //     stringstream ss(line);
+    //     string field;
+    //     int mealID;
+    //     string name;
+    //     float price;
+    //     string mealtypeStr, reservedayStr;
 
-        getline(ss, field, ',');
-        mealID = stoi(field);
+    //     getline(ss, field, ',');
+    //     mealID = stoi(field);
 
-        getline(ss, name, ',');
+    //     getline(ss, name, ',');
 
-        getline(ss, field, ',');
-        price = stof(field);
+    //     getline(ss, field, ',');
+    //     price = stof(field);
 
-        getline(ss, mealtypeStr, ',');
+    //     getline(ss, mealtypeStr, ',');
 
-        getline(ss, reservedayStr, ',');
+    //     getline(ss, reservedayStr, ',');
 
-        MealType mealType = Meal::stringToMealType(mealtypeStr);
-        ReserveDay reserveDay = Meal::stringToReserveDay(reservedayStr);
+    //     MealType mealType = Meal::stringToMealType(mealtypeStr);
+    //     ReserveDay reserveDay = Meal::stringToReserveDay(reservedayStr);
 
-        Meal m(mealID, name, price, mealType, reserveDay);
-        meals.push_back(m);
-    }
-
+    //     Meal m(mealID, name, price, mealType, reserveDay);
+    //     meals.push_back(m);
+    // }
+    nlohmann::json j;
+    file >> j;
     file.close();
-
+    vector<Meal> meals = j.get<std::vector<Meal>>();  // دی‌سریالایز کل لیست
     // چاپ همه غذاها
     cout << "=== All Meals ===" << endl;
-    for (const auto& m : meals) {
+    for (const auto& m : meals) 
+    {
         m.print();  // فرض می‌کنیم متد print() داخل کلاس Meal چاپ مناسب انجام میده
     }
 }
 
 void AdminPanel::displayAllDininigHalls()
 {
-    string csvFile = "../dining_halls.csv"; // مسیر فایل CSV
-    ifstream file(csvFile);
+    string diningHallsFile = "diningHalls.json"; // مسیر فایل CSV
+    ifstream file(diningHallsFile);
 
     if (!file.is_open()) 
     {
-        cerr << "Cannot open dining halls CSV file." << endl;
+        cerr << "Cannot open dining halls json file." << endl;
         return;
     }
 
-    vector<DiningHall> halls;
-    string line;
+    // vector<DiningHall> halls;
+    // string line;
 
-    // خواندن هدر
-    getline(file, line);
+    // // خواندن هدر
+    // getline(file, line);
 
-    // خواندن هر خط و ساخت آبجکت DiningHall
-    while (getline(file, line)) 
-    {
-        stringstream ss(line);
-        string field;
-        int hallID, capacity;
-        string name, genderStr, address;
+    // // خواندن هر خط و ساخت آبجکت DiningHall
+    // while (getline(file, line)) 
+    // {
+    //     stringstream ss(line);
+    //     string field;
+    //     int hallID, capacity;
+    //     string name, genderStr, address;
 
-        getline(ss, field, ',');
-        hallID = stoi(field);
+    //     getline(ss, field, ',');
+    //     hallID = stoi(field);
 
-        getline(ss, name, ',');
+    //     getline(ss, name, ',');
 
-        getline(ss, genderStr, ','); // اینجا می‌تونیم بعداً استفاده کنیم یا نادیده بگیریم
+    //     getline(ss, genderStr, ','); // اینجا می‌تونیم بعداً استفاده کنیم یا نادیده بگیریم
 
-        getline(ss, address, ',');
+    //     getline(ss, address, ',');
 
-        getline(ss, field, ',');
-        capacity = stoi(field);
+    //     getline(ss, field, ',');
+    //     capacity = stoi(field);
 
-        Gender gender = DiningHall::stringToGender(genderStr);
+    //     Gender gender = DiningHall::stringToGender(genderStr);
 
-        DiningHall hall(hallID, name, address, capacity);
-        halls.push_back(hall);
-    }
+    //     DiningHall hall(hallID, name, address, capacity);
+    //     halls.push_back(hall);
+    // }
 
+    nlohmann::json j;
+    file >> j;
     file.close();
-
+    vector<DiningHall> halls = j.get<std::vector<DiningHall>>();
     // نمایش همه سالن‌ها با متد print
     cout << "=== All Dining Halls ===" << endl;
     for (const auto& hall : halls) 
@@ -160,7 +164,7 @@ void AdminPanel::addNewMealIntractive()
     }
     outFile << setw(4) << jArray << endl; // نوشتن JSON مرتب
     outFile.close();
-    cout << "\nMeal added to json file successfully!\n";
+    cout << "\nMeals added to json file successfully!\n";
 }
 
 void AdminPanel::addNewDiningHallIntractive()
@@ -197,114 +201,184 @@ void AdminPanel::addNewDiningHallIntractive()
 
 void AdminPanel::removeMeal(int mealIDToRemove)
 {
-    string csvFile = "mealsCsvFile.json";
-    string tempFile = "temp.json";
+    // string csvFile = "mealsCsvFile.json";
+    // string tempFile = "temp.json";
 
-    ifstream inFile(csvFile);
-    ofstream outFile(tempFile);
+    // ifstream inFile(csvFile);
+    // ofstream outFile(tempFile);
 
-    if(!inFile.is_open() || !outFile.is_open())
+    // if(!inFile.is_open() || !outFile.is_open())
+    // {
+    //     cerr << "Cannot open meals CSV file." << endl;
+    //     return;
+    // }
+
+    // string line;
+    // bool removed = false;
+
+    // // خواندن هدر و نوشتن در فایل موقت
+    // if(getline(inFile, line)) 
+    // {
+    //     outFile << line << endl;
+    // }
+
+    // // خواندن هر خط و فیلتر کردن
+    // while(getline(inFile, line))
+    // {
+    //     stringstream ss(line);
+    //     string field;
+    //     getline(ss, field, ',');
+    //     int id = stoi(field);
+
+    //     if (id != mealIDToRemove) 
+    //     {
+    //         outFile << line << endl; // فقط غذاهای غیر از mealID مورد نظر ذخیره میشن
+    //     }   else {
+    //         removed = true;
+    //     }
+    // }
+
+    // inFile.close();
+    // outFile.close();
+
+    // // جایگزینی فایل اصلی با فایل موقت
+    // if(removed)
+    // {
+    //     remove(csvFile.c_str());
+    //     rename(tempFile.c_str(), csvFile.c_str());
+    //     cout << "Meal with ID " << mealIDToRemove << " removed successfully.\n";
+    // } 
+    // else
+    // {
+    //     remove(tempFile.c_str());
+    //     cout << "Meal with ID " << mealIDToRemove << " not found.\n";
+    // }
+    string mealsFile = "meals.json";
+
+    // خواندن لیست غذاها از فایل JSON
+    ifstream inFile(mealsFile);
+    if (!inFile.is_open())
     {
-        cerr << "Cannot open meals CSV file." << endl;
+        cerr << "Cannot open meals.json file." << endl;
         return;
     }
 
-    string line;
-    bool removed = false;
-
-    // خواندن هدر و نوشتن در فایل موقت
-    if(getline(inFile, line)) 
-    {
-        outFile << line << endl;
-    }
-
-    // خواندن هر خط و فیلتر کردن
-    while(getline(inFile, line))
-    {
-        stringstream ss(line);
-        string field;
-        getline(ss, field, ',');
-        int id = stoi(field);
-
-        if (id != mealIDToRemove) 
-        {
-            outFile << line << endl; // فقط غذاهای غیر از mealID مورد نظر ذخیره میشن
-        }   else {
-            removed = true;
-        }
-    }
-
+    json j;
+    inFile >> j;
     inFile.close();
-    outFile.close();
 
-    // جایگزینی فایل اصلی با فایل موقت
-    if(removed)
+    vector<Meal> meals = j.get<vector<Meal>>();
+
+    // پیدا کردن و حذف غذا
+    auto it = remove_if(meals.begin(), meals.end(),
+                        [mealIDToRemove](const Meal& m) { return m.getMeal_id() == mealIDToRemove; });
+
+    if (it != meals.end())
     {
-        remove(csvFile.c_str());
-        rename(tempFile.c_str(), csvFile.c_str());
+        meals.erase(it, meals.end());
+
+        // ذخیره لیست جدید در فایل
+        ofstream outFile(mealsFile);
+        outFile << json(meals).dump(4);  // دوباره serialize
+        outFile.close();
+
         cout << "Meal with ID " << mealIDToRemove << " removed successfully.\n";
-    } 
+    }
     else
     {
-        remove(tempFile.c_str());
         cout << "Meal with ID " << mealIDToRemove << " not found.\n";
     }
 }
 
 void AdminPanel::removeDiningHall(int hallIDToRemove)
 {
-    string csvFile = "../diningHallsCsvFile.csv";
-    string tempFile = "../temp.csv";
+    // string csvFile = "../diningHallsCsvFile.csv";
+    // string tempFile = "../temp.csv";
 
-    ifstream inFile(csvFile);
-    ofstream outFile(tempFile);
+    // ifstream inFile(csvFile);
+    // ofstream outFile(tempFile);
 
-    if(!inFile.is_open() || !outFile.is_open()) 
+    // if(!inFile.is_open() || !outFile.is_open()) 
+    // {
+    //     cerr << "Cannot open dining halls CSV file." << endl;
+    //     return;
+    // }
+
+    // string line;
+    // bool removed = false;
+
+    // // خواندن هدر و نوشتن در فایل موقت
+    // if(getline(inFile, line))
+    // {
+    //     outFile << line << endl;
+    // }
+
+    // // خواندن هر خط و فیلتر کردن بر اساس hallID
+    // while(getline(inFile, line))
+    // {
+    //     stringstream ss(line);
+    //     string field;
+    //     getline(ss, field, ',');
+    //     int id = stoi(field);
+
+    //     if (id != hallIDToRemove) 
+    //     {
+    //         outFile << line << endl; // فقط سالن‌های غیر از hallID مورد نظر ذخیره میشن
+    //     } 
+    //     else 
+    //     {
+    //         removed = true;
+    //     }
+    // }
+
+    // inFile.close();
+    // outFile.close();
+
+    // // جایگزینی فایل اصلی با فایل موقت
+    // if(removed)
+    // {
+    //     remove(csvFile.c_str());
+    //     rename(tempFile.c_str(), csvFile.c_str());
+    //     cout << "Dining hall with ID " << hallIDToRemove << " removed successfully.\n";
+    // } 
+    // else 
+    // {
+    //     remove(tempFile.c_str());
+    //     cout << "Dining hall with ID " << hallIDToRemove << " not found.\n";
+    // }
+    string DiningHallsjson = "diningHalls.json";
+
+    // خواندن لیست سالن‌ها از فایل JSON
+    ifstream inFile(DiningHallsjson);
+    if (!inFile.is_open())
     {
-        cerr << "Cannot open dining halls CSV file." << endl;
+        cerr << "Cannot open diningHalls.json file." << endl;
         return;
     }
 
-    string line;
-    bool removed = false;
-
-    // خواندن هدر و نوشتن در فایل موقت
-    if(getline(inFile, line))
-    {
-        outFile << line << endl;
-    }
-
-    // خواندن هر خط و فیلتر کردن بر اساس hallID
-    while(getline(inFile, line))
-    {
-        stringstream ss(line);
-        string field;
-        getline(ss, field, ',');
-        int id = stoi(field);
-
-        if (id != hallIDToRemove) 
-        {
-            outFile << line << endl; // فقط سالن‌های غیر از hallID مورد نظر ذخیره میشن
-        } 
-        else 
-        {
-            removed = true;
-        }
-    }
-
+    json j;
+    inFile >> j;
     inFile.close();
-    outFile.close();
 
-    // جایگزینی فایل اصلی با فایل موقت
-    if(removed)
+    vector<DiningHall> halls = j.get<vector<DiningHall>>();
+
+    // پیدا کردن و حذف سالن
+    auto it = remove_if(halls.begin(), halls.end(),
+                        [hallIDToRemove](const DiningHall& h) { return h.getHallId() == hallIDToRemove; });
+
+    if (it != halls.end())
     {
-        remove(csvFile.c_str());
-        rename(tempFile.c_str(), csvFile.c_str());
+        halls.erase(it, halls.end());
+
+        // ذخیره لیست جدید در فایل
+        ofstream outFile(DiningHallsjson);
+        outFile << json(halls).dump(4);  // serialize دوباره
+        outFile.close();
+
         cout << "Dining hall with ID " << hallIDToRemove << " removed successfully.\n";
-    } 
-    else 
+    }
+    else
     {
-        remove(tempFile.c_str());
         cout << "Dining hall with ID " << hallIDToRemove << " not found.\n";
     }
 }
@@ -404,6 +478,7 @@ void AdminPanel::action(char character)
             removeDiningHall(ID2);
             break;
         case '7':
+            cout << "Bye Bye!!!  ";
             exit(0);
             break;
         default:
