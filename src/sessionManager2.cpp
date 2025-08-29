@@ -15,12 +15,17 @@ using namespace std;
 using namespace AdminSession;
 using json = nlohmann::json;
 
-AdminSession::SessionManager::SessionManager(Admin a, int i)
+AdminSession::SessionManager::SessionManager()
 {
-    _currentAdmin = &a;
-    _adminID = i;
+    _currentAdmin = nullptr;
+    _adminID = 0;
 }
-Admin* SessionManager::currentAdmin()
+SessionManager& AdminSession::SessionManager::instance()
+{
+    static SessionManager instance;
+    return instance;
+}
+Admin* AdminSession::SessionManager::currentAdmin()
 {
     return _currentAdmin;
 }
@@ -30,11 +35,11 @@ void AdminSession::SessionManager::setCurrentAdmin(Admin *a, int i)
     _adminID = i;
 }
 
-void SessionManager::load_session(string& adminPho, const string& password)
+void AdminSession::SessionManager::load_session(string& adminPho, const string& password)
 {
+    auto& msgBox = ConsoleMessageBox::instance();
+    msgBox.setPosition(7, 20, 100, 5);
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
-
-
     fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
     
     ifstream file(sessionFile);
@@ -48,7 +53,7 @@ void SessionManager::load_session(string& adminPho, const string& password)
     file >> j;
     file.close();
 
-    string storedHashedPass = j["hashedPassword"];
+    string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
         logger.addLog("Failed login attempt (incorrect password) for admin " + adminPho, "WARNING");
@@ -62,25 +67,34 @@ void SessionManager::load_session(string& adminPho, const string& password)
     // string phone = j["phone"];
     // _currentAdmin = new Admin(userID, firstName, lastName, password, phone);
     //Admin* _currentAdmin;
+    if (_currentAdmin == nullptr)
+    {
+        _currentAdmin = new Admin();  // یا هر سازنده مناسب
+    }
+
     *_currentAdmin = j;
     _adminID = _currentAdmin->getUserID();
     logger.addLog("Session loaded successfully for admin " + adminPho, "INFO");
-    cout << "Session loaded successfully." << endl;
+    msgBox.addMessage("Session loaded successfully.", MsgColor::GREEN);
+    msgBox.showMessages();
+    system("pause");
+    msgBox.clear();
+    // cout << "Session loaded successfully." << endl;
 }
 
-void SessionManager::save_session(string& adminPho, const string& password)
+void AdminSession::SessionManager::save_session(string& adminPho, const string& password)
 {
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
     // string hashedPassword = bcrypt::generateHash(_currentAdmin->getHashedPasssword());    
-    json j;
+    // json j;
     // j["userID"] = _adminID;
     // j["firstName"] = _currentAdmin->getName();
     // j["lastName"] = _currentAdmin->getLastName();
     // j["hashedPassword"] = hashedPassword;  
     // j["phone"] = _currentAdmin->getPhone();
-    j = *_currentAdmin;
+    json j = *_currentAdmin;
     ofstream out(path);
     if (!out.is_open()) 
     {
@@ -92,7 +106,7 @@ void SessionManager::save_session(string& adminPho, const string& password)
     out << j.dump(4); // 4 = فاصله برای خوانایی بیشتر
 }
 
-void SessionManager::login(string adminPho, string password)
+void AdminSession::SessionManager::login(string adminPho, string password)
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
@@ -156,18 +170,28 @@ void SessionManager::login(string adminPho, string password)
         // اگر فایل بود، بارگذاری سشن و چک کردن پسورد
         load_session(adminPho, password);
         logger.addLog("Admin " + adminPho + " logged in successfully", "INFO");
-        std::cout << "Admin login successful." << std::endl;
+        msgBox.addMessage("Admin login successfully.", MsgColor::GREEN);
+        msgBox.showMessages();
+        system("pause");
+        msgBox.clear();
+        // cout << "Admin login successful." << endl;
     }
 }
 
-void SessionManager::logout(string adminPho, string password)
+void AdminSession::SessionManager::logout(string adminPho, string password)
 {
+    auto& msgBox = ConsoleMessageBox::instance();
+    msgBox.setPosition(7, 20, 100, 5);
     LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
 
     if (_currentAdmin == nullptr) 
     {
         logger.addLog("Logout attempt with no active admin session", "WARNING");
-        cout << "No admin is currently logged in." << endl;
+        msgBox.addMessage("No admin is currently logged in.", MsgColor::GREEN);
+        msgBox.showMessages();
+        system("pause");
+        msgBox.clear();
+        // cout << "No admin is currently logged in." << endl;
         return;
     }
 
@@ -182,6 +206,9 @@ void SessionManager::logout(string adminPho, string password)
     delete _currentAdmin;
     _currentAdmin = nullptr;
     _adminID = 0;
-
-    cout << "Admin logged out successfully." << endl;
+    msgBox.addMessage("Admin logged out successfully.", MsgColor::GREEN);
+    msgBox.showMessages();
+    system("pause");
+    msgBox.clear();
+    // cout << "Admin logged out successfully." << endl;
 }

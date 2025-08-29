@@ -56,17 +56,17 @@ void Admin::sign_in(string& adminPho, string& password)
     cout << "Last Name: ";
     cin >> lastName;
     gotoxy(20, 20);
-    AdminSession::SessionManager adminSession;
+    auto& adminSession = AdminSession::SessionManager::instance();
     int adminID = 0;
     hashedPassword = bcrypt::generateHash(password);
     Admin *currentAdmin = new Admin(adminID, firstName, lastName, hashedPassword, adminPho);
     //int adminID = adminID;
     adminSession.setCurrentAdmin(currentAdmin, adminID);
     adminSession.save_session(adminPho, password);
-    msgBox.addMessage("Admin registered successfully.", MsgColor::GREEN);
-    msgBox.showMessages();
-    system("pause");
-    msgBox.clear();
+    // msgBox.addMessage("Admin registered successfully.", MsgColor::GREEN);
+    // msgBox.showMessages();
+    // system("pause");
+    // msgBox.clear();
     // cout << "Admin registered successfully." << endl;
 }
 

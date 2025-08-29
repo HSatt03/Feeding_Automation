@@ -41,7 +41,7 @@ public:
     {
         return _last_name;
     }
-    string getHashedPasssword()const
+    string getHashedPassword()const
     {
         return _hashed_password;
     }
@@ -69,7 +69,7 @@ namespace nlohmann
                 {"userID", a.getUserID()},
                 {"name", a.getName()},
                 {"lastname", a.getLastName()},
-                {"hashpassword", a.getHashedPasssword()},
+                {"hashpassword", a.getHashedPassword()},
                 {"phone", a.getPhone()}
                 };
         }

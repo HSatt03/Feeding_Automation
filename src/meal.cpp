@@ -160,7 +160,7 @@ void Meal::print()const
     {
             cout << _side_item[i] << " , ";
     } 
-    cout << "\nReserve Day:" << _reserve_day << endl << "*********" << endl;
+    cout << "\nReserve Day:" << _reserve_day << endl << "******************" << endl;
 }
 
 void Meal::update_price(float new_price)
