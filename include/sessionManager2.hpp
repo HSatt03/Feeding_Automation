@@ -13,7 +13,7 @@ class SessionManager : public SessionBase
         SessionManager(){}
         void login(string, string) override;
         void logout(string, string) override;
-        Admin currentAdmin();
+        Admin* currentAdmin();
         static SessionManager& instance();
         void load_session(string&, const string&) override;
         void save_session(string&, const string&) override;

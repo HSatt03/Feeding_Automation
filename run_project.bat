@@ -2,12 +2,12 @@
 REM =========================
 REM Compile utils.cpp separately
 REM =========================
-g++ -c src/utils.cpp -Iinclude -o utils.o
+g++ -c src/utils.cpp src/consoleMessageBox.cpp -Iinclude 
 
 REM =========================
 REM Compile all other source files
 REM =========================
-g++ -c src/sessionManager2.cpp src/sessionBase.cpp src/admin.cpp src/user.cpp src/logsystem.cpp src/configPaths.cpp src/adminPanel.cpp src/meal.cpp src/diningHall.cpp Bcrypt.cpp/src/bcrypt.cpp Bcrypt.cpp/src/blowfish.cpp src/main.cpp -Iinclude -IBcrypt.cpp/include
+g++ -c src/sessionManager2.cpp src/sessionBase.cpp src/admin.cpp src/user.cpp src/logsystem.cpp src/configPaths.cpp src/adminPanel.cpp src/meal.cpp src/diningHall.cpp Bcrypt.cpp/src/bcrypt.cpp Bcrypt.cpp/src/blowfish.cpp src/waitForKey.cpp src/main.cpp -Iinclude -IBcrypt.cpp/include
 
 REM =========================
 REM Link all object files into main.exe

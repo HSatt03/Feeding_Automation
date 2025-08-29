@@ -5,7 +5,9 @@
 #include "sessionManager2.hpp"
 #include "configPaths.hpp"
 #include "json.hpp"
+#include "utils.hpp"
 #include "bcrypt.h"
+#include "consoleMessageBox.hpp"
 
 using namespace std;
 using json = nlohmann::json;
@@ -41,15 +43,31 @@ bool Admin::isThereAnyAdmin()
 
 void Admin::sign_in(string& adminPho, string& password)
 {
+    auto& msgBox = ConsoleMessageBox::instance();
+    msgBox.setPosition(7, 20, 100, 5);
+    string userID, firstName, lastName, hashedPassword;
+    drawBox(10, 3, 56, 10);
+    gotoxy(12, 5);
+    cout << "*to complete your sign_in complete these information*";
+    gotoxy(13, 8);
+    cout << "Name: ";
+    cin >> firstName;
+    gotoxy(13, 10);
+    cout << "Last Name: ";
+    cin >> lastName;
+    gotoxy(20, 20);
     AdminSession::SessionManager adminSession;
-    string userID, firstName, lastName, hashedPassword, phone;
-    int adminID = stoi(userID);
+    int adminID = 0;
     hashedPassword = bcrypt::generateHash(password);
-    Admin *currentAdmin = new Admin(adminID, firstName, lastName, hashedPassword, phone);
+    Admin *currentAdmin = new Admin(adminID, firstName, lastName, hashedPassword, adminPho);
     //int adminID = adminID;
     adminSession.setCurrentAdmin(currentAdmin, adminID);
     adminSession.save_session(adminPho, password);
-    cout << "Admin registered successfully." << endl;
+    msgBox.addMessage("Admin registered successfully.", MsgColor::GREEN);
+    msgBox.showMessages();
+    system("pause");
+    msgBox.clear();
+    // cout << "Admin registered successfully." << endl;
 }
 
 void Admin::print()const

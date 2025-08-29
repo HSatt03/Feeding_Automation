@@ -25,13 +25,13 @@ namespace nlohmann
     {
         static void to_json(json& j, const Admin& a)
         {
-            // ابتدا داده‌های User رو به JSON اضافه کن
-            j = json(a); // این خط خودش to_json کلاس User رو صدا می‌کنه
-            // بعد فیلدهای خودش رو اضافه کن
+            // فقط فیلدهای User رو serialize کن، Admin خودش فیلد اضافه نداره
+            j = static_cast<const User&>(a);
         }
+
         static void from_json(const json& j, Admin& a)
         {
-            // اول داده‌های User رو بارگذاری کن
+            // ابتدا json رو به User تبدیل کن
             User& u = a; // upcast
             u = j.get<User>();
         }

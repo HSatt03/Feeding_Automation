@@ -80,9 +80,7 @@ namespace nlohmann
     {
         static void to_json(json& j, const Student& s)
         {
-                // ابتدا داده‌های User رو به JSON اضافه کن
-                j = json(s); // این خط خودش to_json کلاس User رو صدا می‌کنه
-                // بعد فیلدهای خودش رو اضافه کن
+                j = static_cast<const User&>(s);
                 j["studentID"] = s.getStudentId();
                 j["email"] = s.getEmail();
                 j["balance"] = s.getBalance();

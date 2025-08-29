@@ -98,9 +98,7 @@ void Meal::inputMeals()
     getline(cin, _name);
     cout << "Meal Price: ";
     cin >> _price;
-    cout << "Meal Type: ";
     _meal_type = selectMealType();
-    cout << "Reserve Day: ";
     _reserve_day = selectReserveDay();
 }
 
@@ -162,7 +160,7 @@ void Meal::print()const
     {
             cout << _side_item[i] << " , ";
     } 
-    cout << "\nReserve Day:" << _reserve_day;
+    cout << "\nReserve Day:" << _reserve_day << endl << "*********" << endl;
 }
 
 void Meal::update_price(float new_price)
