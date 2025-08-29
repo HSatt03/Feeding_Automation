@@ -1,5 +1,4 @@
 #include <iostream>
-#include <windows.h>
 #include <conio.h>
 #include <ctime>
 #include <fstream>
@@ -15,6 +14,8 @@
 #include "diningHall.hpp"
 #include "configPaths.hpp"
 #include "logsystem.hpp"
+#include "consoleMessageBox.hpp"
+
 using namespace std;
 using namespace StudentSession;
 
@@ -67,6 +68,8 @@ void Panel::Action(int n, StudentSession::SessionManager *Student)
 
 void Panel::showMenu(StudentSession::SessionManager *Student)
 {
+    auto& msgBox = ConsoleMessageBox::instance();
+    msgBox.setPosition(7, 20, 100, 5);
     int hightMM, widthMM;
     int i,j,y_start;
     bool sw_MainMenu;
@@ -75,8 +78,8 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
   //while(true)
   //{
     sw_MainMenu = false;
-    hightMM = 33;
-    widthMM = 28;
+    hightMM = 34;
+    widthMM = 36;
     y_start = 3;
 
     //system("cls");
@@ -100,19 +103,25 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
             cout<<"  ";
         cout<<"*";
     }
-    gotoxy(5,y_start+i);
+    // gotoxy(5,y_start+i);
+    // for(int i=0 ; i<=widthMM-1 ; i++)
+    // {
+    //     if(i%2==0)
+    //     {
+    //         cout <<"* ";
+    //     }
+    //     else
+    //     {
+    //         cout <<"* ";
+    //     }
+    // }
+    gotoxy(5, y_start + hightMM - 1);
     for(int i=0 ; i<=widthMM-1 ; i++)
     {
-        if(i%2==0)
-        {
-            cout <<"* ";
-        }
-        else
-        {
-            cout <<"* ";
-        }
+        cout << "* ";
     }
-    gotoxy(12,y_start+2);
+
+    gotoxy(19,y_start+2);
     cout <<"Student Menu    ---  <<Feeding atuomation>>";
     gotoxy(12, y_start+5);
     cout <<"1 _ show StudentInfo";
@@ -144,27 +153,38 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
     gotoxy(12, y_start+23);
     cout << "10 _ cancel Reservation";
 
-    gotoxy(12, y_start+26);
+    gotoxy(12, y_start+25);
     cout << "11 _ exit";
 
-    gotoxy(12, y_start+29);
-    cout<<"Enter Keys : ( 1 to 9 ) ";
+    gotoxy(12, y_start+28);
+    cout<<"Choose your option, then press ENTER key ( 1 to 11 ): ";
 
 
     while (!sw_MainMenu)
     {
-      if (kbhit())
-      {
-          int n = getch();
-          if(n >= 1 && n <= 9)
-            Action(n, Student);
-        else
-            gotoxy(12,y_start+31);
-            cout << "The number is not valid!";
+    //   if (kbhit())
+    //   {
+    //       int n = getch();
+    //       if(n >= 1 && n <= 9)
+    //         Action(n, Student);
+    //     else
+    //         gotoxy(12,y_start+31);
+    //         cout << "The number is not valid!";
 
-      }
+    //   }
+        int n;
+        cin >> n;
+        if(n >= 1 && n <= 11)
+        {
+            Action(n, Student);
+        }
+        else
+        {
+            gotoxy(12, y_start+31);
+            
+        }
     }
-  }
+}
    
 void Panel::showStudentInfo(StudentSession::SessionManager& s)
 {
@@ -518,6 +538,6 @@ void Panel::exit(StudentSession::SessionManager& s)
     system("cls");
     string studentID = s.currentStudent()->getStudentId();
     logger.addLog("Student " + studentID + " exited panel.", "INFO");
-    cout << "";
+    cout << "Bye Bye!!!  ";
     std::exit(0);
 }

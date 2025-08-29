@@ -74,7 +74,7 @@ void AdminPanel::displayAllMeals()
     file.close();
     vector<Meal> meals = j.get<std::vector<Meal>>();  // دی‌سریالایز کل لیست
     // چاپ همه غذاها
-    cout << "=== All Meals ===" << endl;
+    cout << "=== All Meals ===" << endl << endl;
     for (const auto& m : meals) 
     {
         m.print();  // فرض می‌کنیم متد print() داخل کلاس Meal چاپ مناسب انجام میده
@@ -129,7 +129,7 @@ void AdminPanel::displayAllDininigHalls()
     file.close();
     vector<DiningHall> halls = j.get<std::vector<DiningHall>>();
     // نمایش همه سالن‌ها با متد print
-    cout << "=== All Dining Halls ===" << endl;
+    cout << "=== All Dining Halls ===" << endl << endl;
     for (const auto& hall : halls) 
     {
         hall.print();
