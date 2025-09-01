@@ -23,7 +23,7 @@ class Reservation
 {
 public:
     Reservation(DiningHall* d = nullptr, Meal* m = nullptr, int r = 0,
-            RStatus s = RStatus::PENDING, time_t t1 = time(0), time_t t2 = 0); 
+            RStatus s = RStatus::PENDING, time_t t_c = time(0), time_t t_r = 0); 
 
     void setReservation_id(int);
     void setDhall(DiningHall*);
