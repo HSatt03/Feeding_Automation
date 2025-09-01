@@ -97,7 +97,7 @@ void DiningHall::print()const
                             "\nHall Id: " << _hall_id << 
                                                     "\nAddress: " << _address << 
                                                                             "\nCapacity: " << _capacity << "\nGender: " << _gender << endl <<
-                                                                                                                                     "***********" << endl;            
+                                                                                                                                     "********************" << endl;            
 }
 
 Gender DiningHall::stringToGender(const string& s) 
