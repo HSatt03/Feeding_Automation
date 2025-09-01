@@ -19,7 +19,7 @@ Student::Student(int user_id, string name, string last_name, string password, st
     setIsActive(is_active);
 }
 
-string Student::trim(const std::string& str)
+string Student::trim(const string& str)
 {
     auto start = std::find_if_not(str.begin(), str.end(), ::isspace);
     auto end = std::find_if_not(str.rbegin(), str.rend(), ::isspace).base();
@@ -29,7 +29,7 @@ string Student::trim(const std::string& str)
 
 void Student::setStudentId(string student_id)
 {
-    student_id = trim(student_id);
+    student_id = this->trim(student_id);
     if(student_id.length() == 10)
     {
         _student_id = student_id;
@@ -167,7 +167,7 @@ bool Student::operator==(Student ob)
     return(getUserID() == ob.getUserID()
           && getName() == ob.getName()
           && getLastName() == ob.getLastName()
-          && getHashedPassword() == ob.getHashedPassword()
+          && getHashedPasssword() == ob.getHashedPasssword()
           && _student_id == ob._student_id
           && _email == ob._email
           && _balance == ob._balance

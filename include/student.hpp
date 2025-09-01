@@ -19,7 +19,7 @@ class Reservation;
 class Student : public User
 {
 public:
-    Student(int = 0, string = "", string = "", string = "", string = "", string = "4031226077", string = "", float = 0, bool = 0);
+    Student(int = 0, string = "", string = "", string = "", string = "", string = "", string = "", float = 0, bool = 0);
 
     void setStudentId(string);
     void setEmail(string);
@@ -38,6 +38,7 @@ public:
     string getType();
     bool operator==(Student);
     void addTransaction(const Transaction&);
+    string trim(const string&);
 
     string getStudentId()const
     {
@@ -55,10 +56,6 @@ public:
     {
         return _is_active;
     }
-    const vector<Reservation*>& getReserves() const
-    {
-        return _reservations;
-    }
     vector<Reservation*>& getReserves()
     {
         return _reservations;
@@ -67,8 +64,6 @@ public:
     {
         return _transactions;
     }
-
-    static string trim(const std::string&);
 
 private:
     string _student_id;
