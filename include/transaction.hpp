@@ -39,7 +39,7 @@ public:
     friend ostream& operator<<(ostream&, const TransactionType&);
 
     static TransactionType stringToTransactionType(const string&);
-    static string transactionTypeToString(TransactionType);
+    static string Transaction::transactionTypeToString(TransactionType);
     static TransactionStatus stringToTransactionStatus(const string& str);
     static string transactionStatusToString(TransactionStatus status);
 
