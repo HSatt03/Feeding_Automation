@@ -28,7 +28,7 @@ int main()
     if(!Admin::isThereAnyAdmin())
     {
         drawBox(1, 1, 50, 10);
-        gotoxy(22, 3);
+        gotoxy(18, 3);
         cout << "*First Log in*";
         gotoxy(4, 5);
         cout << "Enter your phone: ";
