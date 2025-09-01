@@ -4,6 +4,7 @@
 #include <string>
 #include "configPaths.hpp"
 #include "user.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -65,10 +66,13 @@ void User::setPhone(string phone)
 }
 void User::print()const
 {
-    cout << "Name: " << _name << 
-                            "\nLast Name: " << _last_name <<
-                                                "\nUser Id: " << _user_id << 
-                                                                "\nHashed Password: " << _hashed_password;
+    gotoxy(2, 3);
+    cout << "Name: " << _name;
+    gotoxy(2, 5);
+    cout << "Last Name: " << _last_name;
+    gotoxy(2, 7);
+    cout << "User Id: " << _user_id; 
+                                                                // "\nHashed Password: " << _hashed_password;
 }
 
 string User::getType()

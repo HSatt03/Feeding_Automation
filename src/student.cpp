@@ -7,6 +7,7 @@
 #include "student.hpp"
 #include "meal.hpp"
 #include "transaction.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -97,9 +98,12 @@ void Student::setTransactions(const vector<Transaction>& transaction)
 void Student::print()const
 {
     User::print();
-    cout << "\nStudent Id: " << _student_id << 
-                        "\nEmail: " << _email <<
-                                "\nBalance: " << _balance << endl;
+    gotoxy(2, 9);
+    cout << "Student Id: " << _student_id;
+    gotoxy(2, 11);
+    cout << "Email: " << _email;
+    gotoxy(2, 13);
+    cout << "Balance: " << _balance << endl;
 }
 
 void Student::reserveMeal(Meal* meal)

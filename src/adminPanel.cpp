@@ -196,7 +196,7 @@ void AdminPanel::addNewDiningHallIntractive()
     }
     outFile << setw(4) << jArray << endl; // نوشتن JSON مرتب
     outFile.close();
-    cout << "Dining hall added to CSV file successfully!\n";
+    cout << "Dining hall added to json file successfully!\n";
 }
 
 void AdminPanel::removeMeal(int mealIDToRemove)

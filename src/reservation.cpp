@@ -9,25 +9,25 @@
 using namespace std;
 
 Reservation::Reservation(DiningHall* d, Meal* m, int r,
-            RStatus s, time_t t1, time_t t2)
+            RStatus s, time_t t_c, time_t t_r)
 {
     setReservation_id(r);
     setDhall(d);
     setMeal(m);
     setStatus(s);
-    setCreatedTime(t1);
-    setRemovedTime(t2);
+    setCreatedTime(t_c);
+    setRemovedTime(t_r);
 }
 
 void Reservation::setReservation_id(int r)
 {
-    if(r > 0)
+    if(r >= 0)
     {
         _reservation_id = r;
     }
     else
     {
-        throw invalid_argument("Incorrect value for reservations");
+        throw invalid_argument("Incorrect value for reservation_id");
     }
 }
 
@@ -49,7 +49,7 @@ void Reservation::setMeal(Meal *m)
 
 void Reservation::setStatus(RStatus s)
 {
-    if(s == RStatus::FAILED || s == RStatus::CANCELLED || s == RStatus::SUCCESSFULL || s == RStatus::NOT_PAID) 
+    if(s == RStatus::FAILED || s == RStatus::CANCELLED || s == RStatus::SUCCESSFULL || s == RStatus::NOT_PAID || s == RStatus::PENDING) 
     {
         _status = s;
     }
@@ -73,7 +73,7 @@ void Reservation::setCreatedTime(time_t t)
 
 void Reservation::setRemovedTime(time_t t)
 {
-    if(t > 0)
+    if(t >= 0)
     {
         _removed_from = t;
     }

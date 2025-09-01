@@ -108,7 +108,7 @@ int main()
                 while(1)
                 {
                     AdminPanel panel;
-                    // system("cls");
+                    system("cls");
                     panel.showMenu();
                     waitForKey();
                 }
