@@ -10,7 +10,7 @@ namespace AdminSession
 class SessionManager : public SessionBase
     {
     public:
-        SessionManager(){}
+        SessionManager();
         void login(string, string) override;
         void logout(string, string) override;
         Admin* currentAdmin();

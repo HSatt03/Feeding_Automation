@@ -70,6 +70,73 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
+    int hightMM = 34, widthMM = 36, y_start = 3;
+    bool sw_MainMenu = true;
+
+    while (sw_MainMenu)
+    {
+        system("cls"); // پاک کردن صفحه قبل از چاپ منو
+
+        // رسم چارچوب منو
+        gotoxy(5,y_start);
+        for(int i=0 ; i<widthMM ; i++) cout<<"* ";
+        for(int i=1 ; i<hightMM-1 ; i++)
+        {
+            gotoxy(5,y_start+i);
+            cout<<"* ";
+            for(int j=1 ; j<widthMM-1 ; j++) cout<<"  ";
+            cout<<"*";
+        }
+        gotoxy(5, y_start + hightMM - 1);
+        for(int i=0 ; i<widthMM ; i++) cout << "* ";
+
+        // چاپ گزینه‌ها
+        gotoxy(19,y_start+2);
+        cout <<"Student Menu    ---  <<Feeding automation>>";
+        gotoxy(12, y_start+5);  cout <<"1 _ show StudentInfo";
+        gotoxy(12, y_start+7);  cout <<"2 _ check Balance";
+        gotoxy(12, y_start+9);  cout <<"3 _ view Reservation";
+        gotoxy(12, y_start+11); cout << "4 _ view ShappingCart";
+        gotoxy(12, y_start+13); cout <<"5 _ add To ShoppingCart";
+        gotoxy(12, y_start+15); cout << "6 _ confirm ShoppingCart";
+        gotoxy(12, y_start+17); cout << "7 _ remove ShoppingCartItem";
+        gotoxy(12, y_start+19); cout << "8 _ increase Balance";
+        gotoxy(12, y_start+21); cout << "9 _ view Recent Transactions";
+        gotoxy(12, y_start+23); cout << "10 _ cancel Reservation";
+        gotoxy(12, y_start+25); cout << "11 _ exit";
+
+        gotoxy(12, y_start+28);
+        cout<<"Choose your option (1-11): ";
+
+        int n;
+        cin >> n;
+
+        if(n >= 1 && n <= 11)
+        {
+            Action(n, Student); // اجرای عملیات انتخاب شده
+
+            if(n == 11) 
+            {
+                sw_MainMenu = false; // خروج از منو
+            }
+            else
+            {
+                // صبر تا کاربر Enter بزند قبل از چاپ دوباره منو
+                cout << "\nPress Enter to return to menu...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                cin.get();
+            }
+        }
+        else
+        {
+            gotoxy(12, y_start+31);
+            cout << "Invalid option! Press Enter to try again...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.get();
+        }
+    }
+    /*auto& msgBox = ConsoleMessageBox::instance();
+    msgBox.setPosition(7, 20, 100, 5);
     int hightMM, widthMM;
     int i,j,y_start;
     bool sw_MainMenu;
@@ -77,7 +144,7 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
 
   //while(true)
   //{
-    sw_MainMenu = false;
+    sw_MainMenu = true;
     hightMM = 34;
     widthMM = 36;
     y_start = 3;
@@ -160,7 +227,7 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
     cout<<"Choose your option, then press ENTER key ( 1 to 11 ): ";
 
 
-    while (!sw_MainMenu)
+    while (sw_MainMenu)
     {
     //   if (kbhit())
     //   {
@@ -177,24 +244,28 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
         if(n >= 1 && n <= 11)
         {
             Action(n, Student);
+           if(n == 11) sw_MainMenu = false;
         }
         else
         {
             gotoxy(12, y_start+31);
-            
+            cout << "Invalid option!\n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // پاک کردن بافر
+            cin.get(); // صبر برای Enter   
         }
-    }
+    }*/
 }
    
 void Panel::showStudentInfo(StudentSession::SessionManager& s)
 {
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(5, 10);
     string studentID = s.currentStudent()->getStudentId();
     logger.addLog("Student " + studentID + " opened student info.", "INFO");
     cout << "Student information :" << endl;
     s.currentStudent()->print();
+
 }
 
 void Panel::checkBalance(StudentSession::SessionManager& s)
@@ -498,7 +569,7 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     cout << "Enter reservation ID to cancel: ";
     cin >> id;
 
-    vector<Reservation*>& reservations = s.currentStudent()->getReserves();
+     vector<Reservation*>& reservations = s.currentStudent()->getReserves();
     for (auto it = reservations.begin(); it != reservations.end(); ++it)
     {
         if ((*it)->getReservation_id() == id)

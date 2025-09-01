@@ -1,3 +1,5 @@
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -8,6 +10,7 @@
 #include "logsystem.hpp"
 #include "configPaths.hpp"
 #include "json.hpp"
+#include "windows.h"
 #include "bcrypt.h"
 #include "consoleMessageBox.hpp"
 
