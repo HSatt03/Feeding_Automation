@@ -290,7 +290,8 @@ void Panel::viewReservation(StudentSession::SessionManager& s)
     {
         string studentID = s.currentStudent()->getStudentId();
         logger.addLog("Student " + studentID + " viewed reservations.", "INFO");
-        if (R) R->print(); // چک کن null نباشه
+        if (R) R->print();
+        else cout << "There are no reservations."; // چک کن null نباشه
     }
 }
 
@@ -512,7 +513,7 @@ void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
     string studentID = s.currentStudent()->getStudentId();
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(10, 12);
     vector<Transaction> transactions;  // استفاده از وکتور به پیشنهاد چت جی پی تی برای دخیره تراکنش ها
     try 
     {
@@ -525,7 +526,7 @@ void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
     catch (const exception& e) 
     {
         logger.addLog("Student " + studentID + " failed to confirm shopping cart: " + string(e.what()), "ERROR");
-        cout << "Error: " << e.what() << endl;
+        cout << "Shopping cart confirmation failed";
     }
 }
 
@@ -534,12 +535,21 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
     int ID;
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(10, 12);
     cout << "Enter the reservationID you want to remove.";
     cin >> ID;
-    s.shoppingCart()->removeReservation(ID);
     string studentID = s.currentStudent()->getStudentId();
-    logger.addLog("Student " + studentID + " removed reservation ID " + to_string(ID) + " from shopping cart.", "INFO");
+    try
+    {
+        s.shoppingCart()->removeReservation(ID);
+        logger.addLog("Student " + studentID + " removed reservation ID " + to_string(ID) + " from shopping cart.", "INFO");  
+    }
+    catch (const exception& e) 
+    {
+        cout << "Reservation removal failed.";
+        logger.addLog("Student " + studentID + " could not remove reservation ID " + to_string(ID) + " from shopping cart.", "ERROR");
+    }
+    
 }
 
 void Panel::increaseBalance(StudentSession::SessionManager& s)
@@ -549,7 +559,7 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
     Transaction t;
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(2, 1);
     cout << "Enter the amount.";
     cin >> amount;
     if (amount <= 0) 
@@ -584,7 +594,7 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 {
     string studentID = s.currentStudent()->getStudentId();
     system("cls"); // پاک کردن صفحه
-    drawBox(0, 0, 80, 20);
+    drawBox(0, 0, 100, 20);
     gotoxy(2, 1);
     cout << "Recent Transactions:\n";
 
@@ -628,7 +638,7 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     int id;
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(10, 12);
     cout << "Enter reservation ID to cancel: ";
     cin >> id;
 

@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include "transaction.hpp"
+#include "utils.hpp"
 
 using namespace std;
 
@@ -98,11 +99,17 @@ ostream& operator<<(ostream& os, const TransactionStatus& num)
 
 void Transaction::print()
 {
+    gotoxy(2, 3);
     cout << "TransactionID : " << getTransactionID();
+    gotoxy(2, 5);
     cout << "\nTrackingCode : " << getTrackingCode();
+    gotoxy(2, 7);
     cout << "\nAmount : " << getAmount();
+    gotoxy(2, 9);
     cout << "\nType : " << getType();
+    gotoxy(2, 11);
     cout << "\nStatus : " << getStatus();
+    gotoxy(2, 13);
     cout << "\ncreaded at : ";
     tm* localTime = localtime(&_createdAT);
     char buffer1[80];
