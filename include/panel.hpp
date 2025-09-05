@@ -12,7 +12,7 @@ using namespace StudentSession;
  {
  public:
      void Action(int, StudentSession::SessionManager*);
-     void showMenu(StudentSession::SessionManager*);
+     bool showMenu(StudentSession::SessionManager*);
      void showStudentInfo(StudentSession::SessionManager&);
      void checkBalance(StudentSession::SessionManager&);
      void viewReservation(StudentSession::SessionManager&);

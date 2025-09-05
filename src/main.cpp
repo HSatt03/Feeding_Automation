@@ -69,78 +69,97 @@ int main()
         {
             AdminPanel panel;
             system("cls");
-            panel.showMenu();
-            waitForKey();
+            if (!panel.showMenu()) // ❌ اگر false برگردونه، یعنی Exit زده
+            {
+                break; // از حلقه منوی ادمین بیا بیرون → برگرد به منوی اصلی
+            }            
+            // waitForKey();
         }
     }
     else
     {
         char option;
-        drawBox(10, 3, 35, 10);
-        gotoxy(23, 5);
-        cout << "*Log in*";
-        gotoxy(13, 7);
-        cout << "1_ Admin";
-        gotoxy(13, 9);
-        cout << "2_ Student";
-        gotoxy(13, 11);
-        cout << "Choose your option: ";
-        option = getch();
-        gotoxy(20, 20);
-        system("cls");
-        switch(option)
+        while(1)
         {
-            case '1':
+            drawBox(10, 3, 35, 13);
+            gotoxy(23, 5);
+            cout << "*Log in*";
+            gotoxy(13, 7);
+            cout << "1_ Admin";
+            gotoxy(13, 9);
+            cout << "2_ Student";
+            gotoxy(13, 11);
+            cout << "3_ Exit";
+            gotoxy(13, 13);
+            cout << "Choose your option: ";
+            option = getch();
+            gotoxy(20, 20);
+            system("cls");
+            switch(option)
             {
-                drawBox(1, 1, 50, 10);
-                gotoxy(19, 3);
-                cout << "*Admin Log in*";
-                gotoxy(4, 5);
-                cout << "Phone: ";
-                cin >> admin_phone;
-                gotoxy(4, 7);
-                cout << "Password: ";
-                cin >> admin_password;
-                gotoxy(20, 20);
-                system("cls");
-                auto& admin_session = AdminSession::SessionManager::instance();
-                admin_session.login(admin_phone, admin_password);
-                while(1)
+                case '1':
                 {
-                    AdminPanel panel;
+                    drawBox(1, 1, 50, 10);
+                    gotoxy(19, 3);
+                    cout << "*Admin Log in*";
+                    gotoxy(4, 5);
+                    cout << "Phone: ";
+                    cin >> admin_phone;
+                    gotoxy(4, 7);
+                    cout << "Password: ";
+                    cin >> admin_password;
+                    gotoxy(20, 20);
                     system("cls");
-                    panel.showMenu();
-                    waitForKey();
+                    auto& admin_session = AdminSession::SessionManager::instance();
+                    admin_session.login(admin_phone, admin_password);
+                    while(1)
+                    {
+                        AdminPanel panel;
+                        system("cls");
+                        // panel.showMenu();
+                        if (!panel.showMenu()) // ❌ اگر false برگردونه، یعنی Exit زده
+                        {
+                            break; // از حلقه منوی ادمین بیا بیرون → برگرد به منوی اصلی
+                        }
+                        // waitForKey();
+                    }
+                    break;
                 }
-                break;
-            }
-            case '2':
-            {
-                drawBox(1, 1, 50, 10);
-                gotoxy(19, 3);
-                cout << "*Student Log in*";
-                gotoxy(4, 5);
-                cout << "Student Number: ";
-                cin >> student_number;
-                gotoxy(4, 7);
-                cout << "Password: ";
-                cin >> student_password;
-                gotoxy(20, 20);
-                system("cls");
-                auto& student_session = StudentSession::SessionManager::instance();
-                student_session.login(student_number, student_password);
-                while(1)
+                case '2':
                 {
-                    Panel panel;
+                    drawBox(1, 1, 50, 10);
+                    gotoxy(19, 3);
+                    cout << "*Student Log in*";
+                    gotoxy(4, 5);
+                    cout << "Student Number: ";
+                    cin >> student_number;
+                    gotoxy(4, 7);
+                    cout << "Password: ";
+                    cin >> student_password;
+                    gotoxy(20, 20);
                     system("cls");
-                    panel.showMenu(&student_session);
-                    waitForKey();
+                    auto& student_session = StudentSession::SessionManager::instance();
+                    student_session.login(student_number, student_password);
+                    while(1)
+                    {
+                        Panel panel;
+                        system("cls");
+                        if(!panel.showMenu(&student_session))
+                        {
+                            break;
+                        }
+                        // waitForKey();
+                    }
+                    break;
                 }
-                break;
-            }
-            default:
-                throw invalid_argument("Admin session file not found.");
-        } 
+                case '3':
+                    system("cls");
+                    cout << "BYE BYE !!!";
+                    exit(1);
+                default:
+                    throw invalid_argument("Admin session file not found.");
+            } 
+        }
     }
     return 0;
 }
