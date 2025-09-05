@@ -25,17 +25,18 @@ public:
     Reservation(DiningHall* d = nullptr, Meal* m = nullptr, int r = 0,
             RStatus s = RStatus::PENDING, time_t t_c = time(0), time_t t_r = 0); 
 
-    void setReservation_id(int);
+    //void setReservation_id(int);
     void setDhall(DiningHall*);
     void setMeal(Meal*);
     void setStatus(RStatus);
     void setCreatedTime(time_t);
     void setRemovedTime(time_t);
 
-    int getReservation_id()const
+   int getReservation_id() const 
     {
         return _reservation_id;
     }
+
     DiningHall getDhall()const
     {
         return *_dHall;
@@ -62,6 +63,7 @@ public:
     friend ostream& operator<<(ostream& ,const RStatus&);
 
 private:
+    static int _next_id;     // شمارنده‌ی سراسری
     int _reservation_id;
     DiningHall *_dHall;
     Meal *_meal;

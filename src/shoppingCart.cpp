@@ -56,9 +56,10 @@ Transaction ShoppingCart::confirm()
 
 void ShoppingCart::addReservation(Reservation reservation)
 {
-    reservation.setStatus(RStatus::NOT_PAID);
-    reservation.setCreatedTime(time(0));
-    _reservations.push_back(reservation);
+    Reservation r = reservation;
+    r.setStatus(RStatus::NOT_PAID);
+    r.setCreatedTime(time(0));
+    _reservations.push_back(r);
 }
 void ShoppingCart::removeReservation(int ID)
 {
@@ -112,6 +113,7 @@ void ShoppingCart::viewShoppingCartItems()
         tm* localTime = localtime(&created);
         char buffer1[80];
         strftime(buffer1, sizeof(buffer1), "%H:%M:%S" , localTime);
+        gotoxy(2, 19);
         cout << "The reservation was added to the shopping cart at " << buffer1 << endl;
         if(add->getRemovedTime() == specialTime)
         {

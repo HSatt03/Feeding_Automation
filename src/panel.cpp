@@ -304,15 +304,18 @@ void Panel::viewReservation(StudentSession::SessionManager& s)
 void Panel::viewShappingCart(StudentSession::SessionManager& s)
 {
     system("cls");
-    drawBox(0, 0, 40, 15);
-    gotoxy(8, 2);
+    drawBox(0, 0, 70, 21);
+    gotoxy(22, 1);
     cout <<"Temporary reservation :" << endl;
-    for (auto& r : s.shoppingCart()->getReservations()) 
+    s.shoppingCart()->viewShoppingCartItems();
+    string studentID = s.currentStudent()->getStudentId();
+    logger.addLog("Student " + studentID + " viewed shopping cart.", "INFO");
+    /*for (auto& r : s.shoppingCart()->getReservations()) 
     {
         string studentID = s.currentStudent()->getStudentId();
         logger.addLog("Student " + studentID + " viewed shopping cart.", "INFO");
         r.print();
-    }
+    }*/
 }
 
 void Panel::addToShoppingCart(StudentSession::SessionManager& s)
@@ -485,14 +488,15 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 
     // ---------- Create reservation ----------
     static int count_reservation = 0;
-    Reservation reservation(selectedHall, selectedMeal, count_reservation, RStatus::PENDING);
+    Reservation* reservation = new Reservation(selectedHall, selectedMeal, count_reservation, RStatus::PENDING);
     count_reservation += 1;
+    //s.currentStudent()->reserveMeal(selectedMeal);
 
     // ---------- Add to shopping cart ----------
     auto& session = StudentSession::SessionManager::instance();
     if (session.shoppingCart()) 
     {
-        session.shoppingCart()->addReservation(reservation);
+        session.shoppingCart()->addReservation(*reservation);
         logger.addLog("Student " + studentID + " added meal " + to_string(mealChoice) + " to shopping cart in dining hall: " + selectedHall->getName(),
     "INFO");
         msgBox.addMessage("Meal added to shopping cart!", MsgColor::GREEN);
@@ -519,7 +523,7 @@ void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
     string studentID = s.currentStudent()->getStudentId();
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(2, 1);
     vector<Transaction> transactions;  // استفاده از وکتور به پیشنهاد چت جی پی تی برای دخیره تراکنش ها
     try 
     {
@@ -541,7 +545,7 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
     int ID;
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(2, 1);
     cout << "Enter the reservationID you want to remove.";
     cin >> ID;
     s.shoppingCart()->removeReservation(ID);
@@ -556,8 +560,8 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
     Transaction t;
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
-    cout << "Enter the amount.";
+    gotoxy(2, 1);
+    cout << "Enter the amount:";
     cin >> amount;
     if (amount <= 0) 
     {
@@ -591,7 +595,7 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 {
     string studentID = s.currentStudent()->getStudentId();
     system("cls"); // پاک کردن صفحه
-    drawBox(0, 0, 80, 20);
+    drawBox(0, 0, 100, 20);
     gotoxy(2, 1);
     cout << "Recent Transactions:\n";
 
@@ -635,7 +639,7 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     int id;
     system("cls");
     drawBox(0, 0, 40, 15);
-    gotoxy(20, 17);
+    gotoxy(2, 11);
     cout << "Enter reservation ID to cancel: ";
     cin >> id;
 

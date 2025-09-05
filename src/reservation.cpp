@@ -7,11 +7,12 @@
 #include "reservation.hpp"
 
 using namespace std;
+void gotoxy(int x, int y);
 
 Reservation::Reservation(DiningHall* d, Meal* m, int r,
             RStatus s, time_t t_c, time_t t_r)
 {
-    setReservation_id(r);
+    _reservation_id = ++_next_id; // هر بار که شی ساخته میشه، آی‌دی یکتا می‌گیره
     setDhall(d);
     setMeal(m);
     setStatus(s);
@@ -19,7 +20,7 @@ Reservation::Reservation(DiningHall* d, Meal* m, int r,
     setRemovedTime(t_r);
 }
 
-void Reservation::setReservation_id(int r)
+/*void Reservation::setReservation_id(int r)
 {
     if(r >= 0)
     {
@@ -29,22 +30,16 @@ void Reservation::setReservation_id(int r)
     {
         throw invalid_argument("Incorrect value for reservation_id");
     }
-}
+}*/
 
 void Reservation::setDhall(DiningHall *d)
 {
-    d->setHallId(d->getHallId());
-    d->setName(d->getName());
-    d->setAddress(d->getAddress());
-    d->setCapacity(d->getCapacity());
+    _dHall = d;
 }
 
 void Reservation::setMeal(Meal *m)
 {
-    m->setMeal_id(m->getMeal_id());
-    m->setName(m->getName());
-    m->setPrice(m->getPrice());
-    m->setMeal_type(m->getMeal_type());
+    _meal = m;
 }
 
 void Reservation::setStatus(RStatus s)
@@ -104,6 +99,12 @@ ostream& operator<<(ostream& os, const RStatus& num)
         case RStatus::SUCCESSFULL:
             os << "SUCCESSFULL";
             break;
+        case RStatus::PENDING:
+            os << "PENDING";
+            break;
+        case RStatus::NOT_PAID:
+            os << "NOT_PAID";
+            break;
         default:
             os << "Unkown!!!";
     }
@@ -112,13 +113,16 @@ ostream& operator<<(ostream& os, const RStatus& num)
 
 void Reservation::print()const
 {
+    gotoxy(2, 3);
     cout << "reservation id : " << _reservation_id;
     cout << endl;
     _dHall->print();
     cout << endl;
     _meal->print();
-    cout << "\nstatus : " << _status;
-    cout << "\ncreaded at : ";
+    gotoxy(2, 17);
+    cout << "status : " << _status;
+    gotoxy(2, 18);
+    cout << "creaded at : ";
     tm* localTime = localtime(&_created_at);
     char buffer1[80];
     char buffer2[80];
@@ -134,3 +138,4 @@ bool Reservation::cancel()
     else
     return false;
 }
+int Reservation::_next_id = 0;
