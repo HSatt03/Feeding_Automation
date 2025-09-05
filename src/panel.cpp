@@ -483,7 +483,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     static int count_reservation = 0;
     Reservation* reservation = new Reservation(selectedHall, selectedMeal, count_reservation, RStatus::PENDING);
     count_reservation += 1;
-    //s.currentStudent()->reserveMeal(selectedMeal);
+    s.currentStudent()->reserveMeal(selectedMeal);
 
     // ---------- Add to shopping cart ----------
     auto& session = StudentSession::SessionManager::instance();
