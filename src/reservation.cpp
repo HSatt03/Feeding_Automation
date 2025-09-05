@@ -111,25 +111,21 @@ ostream& operator<<(ostream& os, const RStatus& num)
     return os;
 }
 
-void Reservation::print()const
+void Reservation::print(int startX, int startY) const
 {
-    gotoxy(2, 3);
-    cout << "reservation id : " << _reservation_id;
-    cout << endl;
-    _dHall->print();
-    cout << endl;
-    _meal->print();
-    gotoxy(2, 17);
-    cout << "status : " << _status;
-    gotoxy(2, 18);
-    cout << "creaded at : ";
-    tm* localTime = localtime(&_created_at);
-    char buffer1[80];
-    char buffer2[80];
-    strftime(buffer1, sizeof(buffer1), "%H:%M" , localTime);
-    strftime(buffer2, sizeof(buffer2), "%Y-%m-%d" , localTime);
-    cout << buffer1 <<" " << buffer2 << endl;
+    int i = startX;
+    int j = startY;
+
+    gotoxy(i, j++);
+    cout << "Reservation id: " << _reservation_id;
+
+    // چاپ DiningHall با موقعیت مشخص
+    _dHall->print_panel(i, j);
+
+    // چاپ Meal با موقعیت مشخص، کمی فاصله بعد از DiningHall
+    _meal->print_panel(i + 22, j);
 }
+
 
 bool Reservation::cancel()
 {
