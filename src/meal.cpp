@@ -7,6 +7,7 @@
 #include "meal.hpp"
 
 using namespace std;
+void gotoxy(int x, int y);
 
 Meal::Meal(int m, string n, float p, MealType mt, ReserveDay r, bool b)
 {
@@ -35,7 +36,7 @@ void Meal::setName(string name)
     int value = name.length();
     for(int i = 0; i < value; i++)
     {
-        if(!isalpha(name[i]))
+        if(!isalpha(name[i]) && name[i] != ' ')
         {
             throw invalid_argument("Incorrect name!!!");
         }
@@ -151,16 +152,24 @@ ostream& operator<<(ostream& os, const ReserveDay& num)
 
 void Meal::print()const
 {
+    gotoxy(2, 10);
     cout << "Meal id : " << _meal_id;
-    cout << "\nMeal name : " << _name;
-    cout << "\nMeal price : " << _price;
-    cout << "\nMeal type : " << _meal_type;
-    cout << "\nSide item : ";
+    gotoxy(2, 11);
+    cout << "Meal name : " << _name;
+    gotoxy(2, 12);
+    cout << "Meal price : " << _price;
+    gotoxy(2, 13);
+    cout << "Meal type : " << _meal_type;
+    gotoxy(2, 14);
+    cout << "Side item : ";
     for (int i=0 ; i < _side_item.size() ; ++i)
     {
             cout << _side_item[i] << " , ";
     } 
-    cout << "\nReserve Day:" << _reserve_day << endl << "******************" << endl;
+    gotoxy(2, 15);
+    cout << "Reserve Day:" << _reserve_day;
+    gotoxy(2, 16);
+    cout <<"******************";
 }
 
 void Meal::update_price(float new_price)
