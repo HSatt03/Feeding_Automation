@@ -133,9 +133,11 @@ void Reservation::print()const
 
 bool Reservation::cancel()
 {
-    if(_status == RStatus::CANCELLED)
+    if (_status == RStatus::CANCELLED) {
+        return false; // قبلاً کنسل شده
+    }
+    _status = RStatus::CANCELLED; // الان کنسل می‌کنیم
     return true;
-    else
-    return false;
 }
-int Reservation::_next_id = 0;
+
+int Reservation::_next_id = -1;

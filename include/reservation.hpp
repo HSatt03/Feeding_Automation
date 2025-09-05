@@ -45,6 +45,9 @@ public:
     {
         return *_meal;
     }
+    DiningHall* getDhallPtr() const { return _dHall; }
+    Meal* getMealPtr() const { return _meal; }
+
     RStatus getStatus()const
     {
         return _status;

@@ -290,8 +290,8 @@ void Panel::checkBalance(StudentSession::SessionManager& s)
 void Panel::viewReservation(StudentSession::SessionManager& s)
 {
     system("cls");
-    drawBox(0, 0, 40, 15);
-    gotoxy(10, 2);
+    drawBox(0, 0, 70, 21);
+    gotoxy(22, 1);
     cout << "Definite reservation :";
     for (Reservation* R : s.currentStudent()->getReserves()) // روش for-each
     {
@@ -490,7 +490,6 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     static int count_reservation = 0;
     Reservation* reservation = new Reservation(selectedHall, selectedMeal, count_reservation, RStatus::PENDING);
     count_reservation += 1;
-    s.currentStudent()->reserveMeal(selectedMeal);
 
     // ---------- Add to shopping cart ----------
     auto& session = StudentSession::SessionManager::instance();
@@ -520,22 +519,27 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 
 void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
 {
-    string studentID = s.currentStudent()->getStudentId();
+    //string studentID = s.currentStudent()->getStudentId();
     system("cls");
     drawBox(0, 0, 40, 15);
     gotoxy(2, 1);
+        if (!s.shoppingCart() || s.shoppingCart()->getReservations().empty())
+    {
+        cout << "Shopping cart is empty!" << endl;
+        return;
+    }
+
     vector<Transaction> transactions;  // استفاده از وکتور به پیشنهاد چت جی پی تی برای دخیره تراکنش ها
     try 
     {
         Transaction t = s.shoppingCart()->confirm();
         transactions.push_back(t);
-        logger.addLog("Student " + studentID + " confirmed shopping cart: " , "INFO");
-        cout << "Shopping cart confirmed successfully.\n";
+        //logger.addLog("Student " + studentID + " confirmed shopping cart: " , "INFO");
         t.print(); // نمایش جزئیات تراکنش
     } 
     catch (const exception& e) 
     {
-        logger.addLog("Student " + studentID + " failed to confirm shopping cart: " + string(e.what()), "ERROR");
+        //logger.addLog("Student " + studentID + " failed to confirm shopping cart: " + string(e.what()), "ERROR");
         cout << "Error: " << e.what() << endl;
     }
 }
@@ -544,13 +548,23 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
 {
     int ID;
     system("cls");
-    drawBox(0, 0, 40, 15);
+    drawBox(0, 0, 50, 8);
     gotoxy(2, 1);
-    cout << "Enter the reservationID you want to remove.";
-    cin >> ID;
-    s.shoppingCart()->removeReservation(ID);
     string studentID = s.currentStudent()->getStudentId();
-    logger.addLog("Student " + studentID + " removed reservation ID " + to_string(ID) + " from shopping cart.", "INFO");
+    cout << "Enter the reservationID you want to remove:";
+    cin >> ID;
+    if(s.shoppingCart()->removeReservation(ID))
+    { 
+        string studentID = s.currentStudent()->getStudentId();
+        logger.addLog("Student " + studentID + " removed reservation ID " + to_string(ID) + " from shopping cart.", "INFO");
+        gotoxy(2, 3);
+        cout << "Reservation removed successfully.";
+    }
+    else
+    {
+        gotoxy(2, 3);
+        cout << "ReservationID not found.";
+    }
 }
 
 void Panel::increaseBalance(StudentSession::SessionManager& s)
@@ -638,8 +652,8 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     string studentID = s.currentStudent()->getStudentId();
     int id;
     system("cls");
-    drawBox(0, 0, 40, 15);
-    gotoxy(2, 11);
+    drawBox(0, 0, 50, 8);
+    gotoxy(2, 1);
     cout << "Enter reservation ID to cancel: ";
     cin >> id;
 
@@ -658,14 +672,14 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
                 delete *it; // اگه با new ساخته شده
                 reservations.erase(it);
 
-                gotoxy(20, 19);
+                gotoxy(2, 3);
                 logger.addLog("Student " + studentID + " cancelled reservation ID " + to_string(id) + " and refunded " + to_string(price), "INFO");
                 cout << "Reservation cancelled successfully and amount refunded.\n";
                 return;
             }
             else
             {
-                gotoxy(20, 19);
+                gotoxy(2, 3);
                 logger.addLog("Student " + studentID + " attempted to cancel already cancelled reservation ID " + to_string(id), "WARNING");
                 cout << "This reservation is already cancelled!\n";
                 return;
@@ -673,7 +687,7 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
         }
     }
 
-    gotoxy(20, 19);
+    gotoxy(2, 3);
     logger.addLog("Student " + studentID + " attempted to cancel non-existent reservation ID " + to_string(id), "WARNING");
     cout << "Reservation ID not found!\n";
 }
