@@ -152,24 +152,53 @@ ostream& operator<<(ostream& os, const ReserveDay& num)
 
 void Meal::print()const
 {
-    gotoxy(2, 10);
+    static int i = 2;
+    static int j = 2;
+    gotoxy(i, j);
     cout << "Meal id : " << _meal_id;
-    gotoxy(2, 11);
+    gotoxy(i, j+=1);
     cout << "Meal name : " << _name;
-    gotoxy(2, 12);
+    gotoxy(i, j+=1);
     cout << "Meal price : " << _price;
-    gotoxy(2, 13);
+    gotoxy(i, j+=1);
     cout << "Meal type : " << _meal_type;
-    gotoxy(2, 14);
+    gotoxy(i, j+=1);
     cout << "Side item : ";
     for (int i=0 ; i < _side_item.size() ; ++i)
     {
             cout << _side_item[i] << " , ";
     } 
-    gotoxy(2, 15);
+    gotoxy(i, j+=1);
     cout << "Reserve Day:" << _reserve_day;
-    gotoxy(2, 16);
+    gotoxy(i, j+=1);
     cout <<"******************";
+    j++;
+}
+
+void Meal::print_panel(int startX, int startY) const
+{
+    int i = startX;
+    int j = startY;
+
+    gotoxy(i, j++);
+    cout << "Meal information:";
+    gotoxy(i, j++);
+    cout << "Meal id : " << _meal_id;
+    gotoxy(i, j++);
+    cout << "Meal name : " << _name;
+    gotoxy(i, j++);
+    cout << "Meal price : " << _price;
+    gotoxy(i, j++);
+    cout << "Meal type : " << _meal_type;
+    gotoxy(i, j++);
+    cout << "Side item : ";
+    for (size_t k = 0; k < _side_item.size(); ++k)
+    {
+        cout << _side_item[k];
+        if (k < _side_item.size() - 1) cout << ", ";
+    }
+    gotoxy(i, j++);
+    cout << "Reserve Day: " << _reserve_day;
 }
 
 void Meal::update_price(float new_price)

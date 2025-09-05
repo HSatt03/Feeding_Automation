@@ -125,8 +125,8 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
             {
                 // صبر تا کاربر Enter بزند قبل از چاپ دوباره منو
                 Action(n, Student); // اجرای عملیات انتخاب شده
-                drawBox(7, 20, 100, 5);
-                gotoxy(22, 22);
+                drawBox(83, 2, 35, 3);
+                gotoxy(85, 3);
                 cout << "Press Enter to return to menu...";
                 // if (cin.peek() == '\n') 
                 // {  
@@ -140,8 +140,9 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
         {
             gotoxy(12, y_start+31);
             cout << "Invalid option! Press Enter to try again...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
+            // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            // cin.get();
+            getch();
         }
     }
     /*auto& msgBox = ConsoleMessageBox::instance();
@@ -290,21 +291,21 @@ void Panel::checkBalance(StudentSession::SessionManager& s)
 void Panel::viewReservation(StudentSession::SessionManager& s)
 {
     system("cls");
-    drawBox(0, 0, 70, 21);
-    gotoxy(22, 1);
+    drawBox(0, 0, 40, 40);
+    gotoxy(10, 2);
     cout << "Definite reservation :";
     for (Reservation* R : s.currentStudent()->getReserves()) // روش for-each
     {
         string studentID = s.currentStudent()->getStudentId();
         logger.addLog("Student " + studentID + " viewed reservations.", "INFO");
-        if (R) R->print(); // چک کن null نباشه
+        // if (R) R->print(); // چک کن null نباشه
     }
 }
 
 void Panel::viewShappingCart(StudentSession::SessionManager& s)
 {
     system("cls");
-    drawBox(0, 0, 70, 21);
+    drawBox(0, 0, 70, 100);
     gotoxy(22, 1);
     cout <<"Temporary reservation :" << endl;
     s.shoppingCart()->viewShoppingCartItems();
