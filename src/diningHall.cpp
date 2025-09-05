@@ -94,19 +94,42 @@ void DiningHall::inputHalls()
 
 void DiningHall::print()const
 {
-    gotoxy(2, 4);
+    static int i = 2;
+    static int j = 2;
+    gotoxy(i, j);
     cout << "Name: " << _name;
-    gotoxy(2, 5);
+    gotoxy(i, j+=1);
     cout << "Hall Id: " << _hall_id;
-    gotoxy(2, 6);
+    gotoxy(i, j+=1);
     cout << "Address: " << _address;
-    gotoxy(2, 7);
+    gotoxy(i, j+=1);
     cout << "Capacity: " << _capacity;
-    gotoxy(2, 8);
+    gotoxy(i, j+=1);
     cout <<"Gender: " << _gender;    
-    gotoxy(2, 9);
-    cout << "********************" << endl;            
+    gotoxy(i, j+=1);
+    cout << "********************" << endl;  
+    j++;          
 }
+
+void DiningHall::print_panel(int startX, int startY) const
+{
+    int i = startX;
+    int j = startY;
+    
+    gotoxy(i, j++);
+    cout << "Hall information:";
+    gotoxy(i, j++);
+    cout << "Name: " << _name;
+    gotoxy(i, j++);
+    cout << "Hall Id: " << _hall_id;
+    gotoxy(i, j++);
+    cout << "Address: " << _address;
+    gotoxy(i, j++);
+    cout << "Capacity: " << _capacity;
+    gotoxy(i, j++);
+    cout << "Gender: " << _gender;
+}
+
 
 Gender DiningHall::stringToGender(const string& s) 
 {

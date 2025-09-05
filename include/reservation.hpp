@@ -57,7 +57,7 @@ public:
     {
         return _removed_from;
     }
-    void print()const;
+    void print(int, int)const;
     bool cancel();
     bool operator==(Reservation);
     friend ostream& operator<<(ostream& ,const RStatus&);

@@ -77,43 +77,21 @@ void ShoppingCart::removeReservation(int ID)
         }
     }
 }
-// void gotoxy(int x, int y)
-// {
-//     COORD coord;
-//     coord.X = x;
-//     coord.Y = y;
-//     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-// }
-// void drawBox(int x, int y, int width, int height)
-// {
-//     // گوشه‌ها
-//     gotoxy(x, y); cout << "+";
-//     gotoxy(x + width, y); cout << "+";
-//     gotoxy(x, y + height); cout << "+";
-//     gotoxy(x + width, y + height); cout << "+";
 
-//     // خطوط افقی
-//     for (int i = 1; i < width; ++i) {
-//         gotoxy(x + i, y); cout << "-";
-//         gotoxy(x + i, y + height); cout << "-";
-//     }
-
-//     // خطوط عمودی
-//     for (int i = 1; i < height; ++i) {
-//         gotoxy(x, y + i); cout << "|";
-//         gotoxy(x + width, y + i); cout << "|";
-//     }
-// }
 void ShoppingCart::viewShoppingCartItems()
 {
+    int i = 2;          // ستون شروع
+    int j = 3;         // سطر شروع
+    int rowSpacing = 10; // فاصله بین رزروها
+
     for(auto add = _reservations.begin(); add != _reservations.end(); add++)
     {
-        add->print();
+        add->print(i, j);
         time_t created = add->getCreatedTime();
         tm* localTime = localtime(&created);
         char buffer1[80];
         strftime(buffer1, sizeof(buffer1), "%H:%M:%S" , localTime);
-        gotoxy(2, 19);
+        gotoxy(i, j+8);
         cout << "The reservation was added to the shopping cart at " << buffer1 << endl;
         if(add->getRemovedTime() == specialTime)
         {
@@ -121,10 +99,44 @@ void ShoppingCart::viewShoppingCartItems()
             tm* localTime = localtime(&removed);
             char buffer2[80];
             strftime(buffer2, sizeof(buffer2), "%H:%M:%S" , localTime);
+            gotoxy(i, j+9);
             cout << "The reservation was deleted from the shopping cart at " << buffer2 << endl;
         }
+        j += rowSpacing; // فاصله به رزرو بعدی
     }
 }
+// void ShoppingCart::viewShoppingCartItems()
+// {
+//     int i = 2;          // ستون شروع
+//     int j = 3;         // سطر شروع
+//     int rowSpacing = 10; // فاصله بین رزروها
+
+//     for(auto& add : _reservations)
+//     {
+//         add.print(i, j);  // print حالا باید پارامتر بگیرد
+
+//         time_t created = add.getCreatedTime();
+//         tm* localTime = localtime(&created);
+//         char buffer1[80];
+//         strftime(buffer1, sizeof(buffer1), "%H:%M:%S" , localTime);
+
+//         gotoxy(i, j+5); // چاپ زمان اضافه شدن کمی پایین‌تر
+//         cout << "Added to shopping cart at " << buffer1 << endl;
+
+//         if(add.getRemovedTime() != specialTime)
+//         {
+//             time_t removed = add.getRemovedTime();            
+//             tm* localTime = localtime(&removed);
+//             char buffer2[80];
+//             strftime(buffer2, sizeof(buffer2), "%H:%M:%S" , localTime);
+//             gotoxy(i, j+6);
+//             cout << "Deleted from shopping cart at " << buffer2 << endl;
+//         }
+
+//         j += rowSpacing; // فاصله به رزرو بعدی
+//     }
+// }
+
 void ShoppingCart::clear()
 {
     _reservations.clear();

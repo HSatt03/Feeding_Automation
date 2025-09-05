@@ -154,7 +154,7 @@ int main()
                 }
                 case '3':
                     system("cls");
-                    cout << "BYE BYE !!!";
+                    cout << "BYE BYE !!! ";
                     exit(1);
                 default:
                     throw invalid_argument("Admin session file not found.");
