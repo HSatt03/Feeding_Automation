@@ -383,13 +383,13 @@ void AdminPanel::removeDiningHall(int hallIDToRemove)
     }
 }
 
-void AdminPanel::showMenu()
+bool AdminPanel::showMenu()
 {
     const int startX = 10;   // شروع ستون منو
     const int startY = 2;    // شروع سطر منو
     const int width = 40;    // عرض منو
     const int height = 20;   // ارتفاع منو
-    bool sw_MainMenu = false;
+    // bool sw_MainMenu = false;
     char choice;
 
     // رسم بالای منو
@@ -429,7 +429,7 @@ void AdminPanel::showMenu()
     gotoxy(startX+5, startY+17);
     cout << "Enter your choice (1-7): ";
 
-    while(!sw_MainMenu)
+    while(true)
     {
         if(kbhit())
         {
@@ -437,8 +437,25 @@ void AdminPanel::showMenu()
             if(choice >= '1' && choice <= '7')
             {
                 system("cls");
-                action(choice);
-                sw_MainMenu = true;
+                if(choice == '7') // یعنی Exit
+                {
+                    return false;  // 🔙 برگرد به منوی اصلی
+                }
+                else
+                {
+                    action(choice);
+                    drawBox(7, 20, 100, 5);
+                    gotoxy(22, 22);
+                    cout << "Press Enter to return to menu...";
+                    getch();
+                    // if (cin.peek() == '\n') 
+                    // {  
+                    //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    // }
+                    // cin.get();
+                    return true; // ادامه بده (منو رو دوباره نشون بده)
+                    // sw_MainMenu = true;
+                }
             }
             else
             {
@@ -479,7 +496,6 @@ void AdminPanel::action(char character)
             break;
         case '7':
             cout << "Bye Bye!!!  ";
-            exit(0);
             break;
         default:
             cout << "You have selected an out-of-range option.";

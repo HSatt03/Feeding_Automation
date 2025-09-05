@@ -61,19 +61,20 @@ void Panel::Action(int n, StudentSession::SessionManager *Student)
         cancelReservation(*Student);
         break;
     case 11:        
-        exit(*Student);
+        // exit(*Student);
+        cout << "Bye Bye!!!";
         break;
     }
 }
 
-void Panel::showMenu(StudentSession::SessionManager *Student)
+bool Panel::showMenu(StudentSession::SessionManager *Student)
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
     int hightMM = 34, widthMM = 36, y_start = 3;
-    bool sw_MainMenu = true;
+    // bool sw_MainMenu = true;
 
-    while (sw_MainMenu)
+    while (1)
     {
         system("cls"); // پاک کردن صفحه قبل از چاپ منو
 
@@ -113,20 +114,26 @@ void Panel::showMenu(StudentSession::SessionManager *Student)
 
         if(n >= 1 && n <= 11)
         {
-            Action(n, Student); // اجرای عملیات انتخاب شده
 
+            system("cls");
             if(n == 11) 
             {
-                sw_MainMenu = false; // خروج از منو
+                // sw_MainMenu = false; // خروج از منو
+                return false;
             }
             else
             {
                 // صبر تا کاربر Enter بزند قبل از چاپ دوباره منو
+                Action(n, Student); // اجرای عملیات انتخاب شده
                 drawBox(7, 20, 100, 5);
                 gotoxy(22, 22);
                 cout << "Press Enter to return to menu...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-                cin.get();
+                // if (cin.peek() == '\n') 
+                // {  
+                //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                // }
+                // cin.get();
+                getch();
             }
         }
         else

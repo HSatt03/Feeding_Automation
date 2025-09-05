@@ -16,7 +16,7 @@ public:
     void removeMeal(int);
     void mealAcitvation(int, bool);
     void removeDiningHall(int);
-    void showMenu();
+    bool showMenu();
     void action(char);
 };
 
