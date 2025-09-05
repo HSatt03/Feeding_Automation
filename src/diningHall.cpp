@@ -5,6 +5,7 @@
 #include "diningHall.hpp"
 
 using namespace std;
+void gotoxy(int x, int y);
 
 ostream& operator<<(ostream& os, const Gender& gender)
 {
@@ -93,11 +94,18 @@ void DiningHall::inputHalls()
 
 void DiningHall::print()const
 {
-    cout << "Name: " << _name << 
-                            "\nHall Id: " << _hall_id << 
-                                                    "\nAddress: " << _address << 
-                                                                            "\nCapacity: " << _capacity << "\nGender: " << _gender << endl <<
-                                                                                                                                     "********************" << endl;            
+    gotoxy(2, 4);
+    cout << "Name: " << _name;
+    gotoxy(2, 5);
+    cout << "Hall Id: " << _hall_id;
+    gotoxy(2, 6);
+    cout << "Address: " << _address;
+    gotoxy(2, 7);
+    cout << "Capacity: " << _capacity;
+    gotoxy(2, 8);
+    cout <<"Gender: " << _gender;    
+    gotoxy(2, 9);
+    cout << "********************" << endl;            
 }
 
 Gender DiningHall::stringToGender(const string& s) 
