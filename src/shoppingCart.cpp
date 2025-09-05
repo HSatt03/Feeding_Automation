@@ -9,9 +9,11 @@
 #include "student.hpp"
 #include "sessionManager.hpp"
 #include "utils.hpp"
-
+#include "configPaths.hpp"
+#include "logsystem.hpp"
 using namespace std;
 
+void gotoxy(int x, int y);
 time_t specialTime = 123456;
 ShoppingCart::ShoppingCart()
 {
@@ -21,13 +23,74 @@ Transaction ShoppingCart::confirm()
 {
     float totalAmount = 0;
     time_t now = time(0);
+    Student* student = StudentSession::SessionManager::instance().currentStudent();
+    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
+    string studentID = student->getStudentId();
 
     // تغییر وضعیت رزروها به SUCCESSFULL و محاسبه مجموع قیمت‌ها
     for (auto& reservation : _reservations)
     {
-        reservation.setStatus(RStatus::SUCCESSFULL);
+        //reservation.setStatus(RStatus::SUCCESSFULL);
         totalAmount += reservation.getMeal().getPrice();
     }
+
+    if (!student || student->getBalance() < totalAmount)
+    {
+        logger.addLog("Student " + studentID + " failed to confirm shopping cart. " , "ERROR");
+        gotoxy(2, 15);
+        cout << "Insufficient balance. Please recharge your account." << endl;
+
+        // failed transaction
+        static int transactionCounter = 1;
+        int transactionID = transactionCounter++;
+        string trackingCode = to_string(rand() % 90000 + 10000);
+
+        Transaction t(transactionID, trackingCode, totalAmount,
+                    TransactionType::PAYMENT,
+                    TransactionStatus::FIALED,
+                    now);
+
+        if (student)
+        { 
+           student->addTransaction(t);
+        }
+        
+        return t;
+    }
+
+    student->setBalance(student->getBalance() - totalAmount);
+
+    for (auto& reservation : _reservations)
+    {
+        reservation.setStatus(RStatus::SUCCESSFULL);
+
+        Reservation* confirmed = new Reservation(
+            reservation.getDhallPtr(),
+            reservation.getMealPtr(),
+            reservation.getReservation_id(),
+            reservation.getStatus(),
+            reservation.getCreatedTime(),
+            reservation.getRemovedTime()
+        );
+        student->addReservation(confirmed);
+        logger.addLog("Student " + studentID + " confirmed shopping cart: " , "INFO");
+        gotoxy(2, 15);
+        cout << "Shopping cart confirmed successfully.\n";
+   } 
+
+
+    // اضافه کردن هر رزرو به لیست رزروهای دانشجو
+    /*if (student)
+{
+    for (auto& reservation : _reservations)  // برای هر رزرو موجود در سبد خرید
+    {
+        Reservation* confirmed = new Reservation(reservation.getDhallPtr(), reservation.getMealPtr(), reservation.getReservation_id(), 
+        reservation.getStatus(), reservation.getCreatedTime(), reservation.getRemovedTime());  // ایجاد رزرو جدید روی heap
+        student->addReservation(confirmed);  // اضافه کردن به رزروهای دانشجو
+    }
+}*/
+
+
 
     // تولید یک transactionID تصادفی (مثلا عددی بین 1 تا 10000)
     static int transactionCounter = 1;
@@ -42,17 +105,16 @@ Transaction ShoppingCart::confirm()
                   TransactionStatus::COMPLETED,
                   now);
 
-    Student* student = StudentSession::SessionManager::instance().currentStudent();
-    if (student)
-    {
-        student->addTransaction(t);  // دخیره کردن در کلاس student
-    }             
+if (student)
+{ 
+    student->addTransaction(t);
+}  // دخیره کردن در کلاس student
 
     // پاک کردن سبد خرید بعد از تایید تراکنش
     clear();
 
     return t;
-}
+} 
 
 void ShoppingCart::addReservation(Reservation reservation)
 {
@@ -61,7 +123,7 @@ void ShoppingCart::addReservation(Reservation reservation)
     r.setCreatedTime(time(0));
     _reservations.push_back(r);
 }
-void ShoppingCart::removeReservation(int ID)
+bool ShoppingCart::removeReservation(int ID)
 {
     for(auto add = _reservations.begin(); add != _reservations.end(); add++)
     {
@@ -69,13 +131,14 @@ void ShoppingCart::removeReservation(int ID)
         {
             _reservations.erase(add);
             (*add).setRemovedTime(time(0));
-            break;
+            return true;
         }
-        else 
+        /*else 
         {
             (*add).setRemovedTime(specialTime);
-        }
+        }*/
     }
+    return false;
 }
 
 void ShoppingCart::viewShoppingCartItems()

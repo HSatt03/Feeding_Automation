@@ -27,6 +27,7 @@ public:
     void setIsActive(bool);
     void setReservations(vector<Reservation*>);
     void setTransactions(const vector<Transaction>&);
+    void addReservation(Reservation*);
 
     void print()const;
     void reserveMeal(Meal*);

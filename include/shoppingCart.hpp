@@ -13,7 +13,7 @@ public:
     ShoppingCart();
     Transaction confirm();
     void addReservation(Reservation);
-    void removeReservation(int ID);
+    bool removeReservation(int ID);
     void viewShoppingCartItems();
     void clear();
     vector<Reservation> getReservations() const;

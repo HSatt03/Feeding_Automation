@@ -113,6 +113,15 @@ void Student::reserveMeal(Meal* meal)
     _reservations.push_back(reserve);
 }
 
+void Student::addReservation(Reservation* r)
+{
+    if (r) 
+    {
+        _reservations.push_back(r);
+    }
+}
+
+
 void Student::view_recent_transactions()
 {
     
