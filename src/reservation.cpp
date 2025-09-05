@@ -12,7 +12,8 @@ void gotoxy(int x, int y);
 Reservation::Reservation(DiningHall* d, Meal* m, int r,
             RStatus s, time_t t_c, time_t t_r)
 {
-    _reservation_id = ++_next_id; // هر بار که شی ساخته میشه، آی‌دی یکتا می‌گیره
+    // _reservation_id = ++_next_id; // هر بار که شی ساخته میشه، آی‌دی یکتا می‌گیره
+    _reservation_id = r;
     setDhall(d);
     setMeal(m);
     setStatus(s);

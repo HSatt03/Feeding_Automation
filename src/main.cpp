@@ -15,10 +15,10 @@ void gotoxy(int x, int y);
 
 void drawBox(int x, int y, int width, int height);
 
-void clearScreen() 
-{
-    system("cls"); // ویندوز
-}
+// void clearScreen() 
+// {
+//     system("cls"); // ویندوز
+// }
 
 int main()
 {
