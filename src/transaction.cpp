@@ -15,18 +15,22 @@ Transaction::Transaction(int transactionID, string trackingCode, float amount , 
     setStatus(status);
     setCreatedAT(createdAT);
 }
+
 void Transaction::setTransactionID(int i)
 {
     _transactionID = (i > 0) ? i : 0;
 }
+
 void Transaction::setTrackingCode(string s)
 {
     _trackingCode = (s.length() == 5) ? s : "00000";
 }
+
 void Transaction::setAmount(float f)
 {
     _amount = (f > 0) ? f : 0.00;
 }
+
 void Transaction::setType(TransactionType t)
 {
     if(t == TransactionType::TRANSFER || t == TransactionType::PAYMENT) 
@@ -38,6 +42,7 @@ void Transaction::setType(TransactionType t)
         throw invalid_argument("Incorrect value for TransactionType!!!");
     }
 }
+
 void Transaction::setStatus(TransactionStatus t)
 {
     if(t == TransactionStatus::PENDING || t == TransactionStatus::COMPLETED || t == TransactionStatus::FIALED) 
@@ -49,6 +54,7 @@ void Transaction::setStatus(TransactionStatus t)
         throw invalid_argument("Incorrect value for TransactionStatus!!!");
     }
 }
+
 void Transaction::setCreatedAT(time_t t)
 {
     if(t > 0)
@@ -95,7 +101,6 @@ ostream& operator<<(ostream& os, const TransactionStatus& num)
     }
     return os;
 }
-
 
 void Transaction::print()
 {

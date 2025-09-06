@@ -14,6 +14,7 @@ void SessionBase::setCreatedAt(time_t createdAt)
         throw invalid_argument("Incorrect value for time!!!");
     }
 }
+
 void SessionBase::setLasttimeLogin(time_t lasttimeLogin)
 {
     if(lasttimeLogin > 0)
@@ -25,6 +26,7 @@ void SessionBase::setLasttimeLogin(time_t lasttimeLogin)
         throw invalid_argument("Incorrect value for time!!!");
     }
 }
+
 void SessionBase::setSessionStatus(SessionStatus status)
 {
     if(status == SessionStatus::ANONYMOUS || status == SessionStatus::AUTHENTICATED)

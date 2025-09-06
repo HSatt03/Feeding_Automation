@@ -12,7 +12,6 @@ void gotoxy(int x, int y);
 Reservation::Reservation(DiningHall* d, Meal* m, int r,
             RStatus s, time_t t_c, time_t t_r)
 {
-    // _reservation_id = ++_next_id; // هر بار که شی ساخته میشه، آی‌دی یکتا می‌گیره
     _reservation_id = r;
     setDhall(d);
     setMeal(m);
@@ -21,7 +20,7 @@ Reservation::Reservation(DiningHall* d, Meal* m, int r,
     setRemovedTime(t_r);
 }
 
-/*void Reservation::setReservation_id(int r)
+void Reservation::setReservation_id(int r)
 {
     if(r >= 0)
     {
@@ -31,7 +30,7 @@ Reservation::Reservation(DiningHall* d, Meal* m, int r,
     {
         throw invalid_argument("Incorrect value for reservation_id");
     }
-}*/
+}
 
 void Reservation::setDhall(DiningHall *d)
 {
@@ -87,6 +86,7 @@ bool Reservation::operator==(Reservation ob)
            && _status == ob._status
            && _created_at == ob._created_at);
 }
+
 ostream& operator<<(ostream& os, const RStatus& num)
 {
     switch(num)
@@ -136,5 +136,3 @@ bool Reservation::cancel()
     _status = RStatus::CANCELLED; // الان کنسل می‌کنیم
     return true;
 }
-
-int Reservation::_next_id = -1;

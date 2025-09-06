@@ -6,7 +6,6 @@
 #include "adminPanel.hpp"
 #include "panel.hpp"
 #include "utils.hpp"
-#include "waitForKey.hpp"
 #include "consoleMessageBox.hpp"
 
 using namespace std;
@@ -14,11 +13,6 @@ using namespace std;
 void gotoxy(int x, int y);
 
 void drawBox(int x, int y, int width, int height);
-
-// void clearScreen() 
-// {
-//     system("cls"); // ویندوز
-// }
 
 int main()
 {
@@ -58,7 +52,6 @@ int main()
                 msgBox.showMessages();
                 system("pause");
                 msgBox.clear();
-                // cout << "Error: " << e.what() << " Try again." << endl;
             }
         }
         gotoxy(20, 20);
@@ -73,7 +66,6 @@ int main()
             {
                 break; // از حلقه منوی ادمین بیا بیرون → برگرد به منوی اصلی
             }            
-            // waitForKey();
         }
     }
     else
@@ -116,12 +108,10 @@ int main()
                     {
                         AdminPanel panel;
                         system("cls");
-                        // panel.showMenu();
                         if (!panel.showMenu()) // ❌ اگر false برگردونه، یعنی Exit زده
                         {
                             break; // از حلقه منوی ادمین بیا بیرون → برگرد به منوی اصلی
                         }
-                        // waitForKey();
                     }
                     break;
                 }
@@ -148,7 +138,6 @@ int main()
                         {
                             break;
                         }
-                        // waitForKey();
                     }
                     break;
                 }

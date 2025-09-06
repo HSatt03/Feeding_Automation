@@ -1,6 +1,7 @@
 #ifndef SESSIOSBASE_HPP
 #define SESSTIONBASE_HPP
 #pragma once
+
 #include <iostream>
 #include <ctime>
 

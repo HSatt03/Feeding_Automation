@@ -1,5 +1,6 @@
 #ifndef MEAL_H
 #define MEAL_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -88,8 +89,6 @@ public:
     static string reserveDayToString(ReserveDay);
     static MealType selectMealType();
     static ReserveDay selectReserveDay(); 
-    // MealType stringToMealType(const string&);
-    // ReserveDay stringToReserveDay(const string&);
     friend ostream& operator<<(ostream& os, const MealType& num);
     friend ostream& operator<<(ostream& os, const ReserveDay& num);
 
@@ -115,8 +114,8 @@ namespace nlohmann
                 {"name", m.getName()},
                 {"price", m.getPrice()},
                 {"mealtype", Meal::mealTypeToString(m.getMeal_type())},
-                {"reserveday", Meal::reserveDayToString(m.getReserveDay())}
-                // {"sideItems", m.getSide_item()}
+                {"reserveday", Meal::reserveDayToString(m.getReserveDay())},
+                {"sideItems", m.getSide_item()}
                 };
         }
         static void from_json(const json& j, Meal &m)
@@ -126,7 +125,7 @@ namespace nlohmann
             m.setPrice(j.at("price").get<float>());
             m.setMeal_type(Meal::stringToMealType(j.at("mealtype").get<string>()));
             m.setReserveDay(Meal::stringToReserveDay(j.at("reserveday").get<string>()));
-            // m.setSide_item(j.at("sideItems").get<vector<string>>());
+            m.setSide_item(j.at("sideItems").get<vector<string>>());
         }
     };
 }

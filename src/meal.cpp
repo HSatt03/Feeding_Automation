@@ -258,6 +258,7 @@ void Meal::isActive(bool b)
 {
     _isActive = b;
 }
+
 bool Meal::activate()
 {
     isActive(1);
@@ -382,54 +383,3 @@ ReserveDay Meal::selectReserveDay()
             return ReserveDay::SATURDAY;
     }
 }
-
-// static inline void trim_inplace(string& s) {
-//     // پاک کردن فاصله‌های ابتدا/انتها
-//     auto not_space = [](int ch){ return !isspace(ch); };
-//     s.erase(s.begin(), find_if(s.begin(), s.end(), not_space));
-//     s.erase(find_if(s.rbegin(), s.rend(), not_space).base(), s.end());
-// }
-
-// static inline string upper_copy(string s) {
-//     transform(s.begin(), s.end(), s.begin(),
-//                    [](unsigned char c){ return toupper(c); });
-//     return s;
-// }
-
-// MealType Meal::stringToMealType(const string& in) {
-//     string s = in;
-//     trim_inplace(s);
-//     s = upper_copy(s);
-
-//     // هندل کردن اشتباه رایج "BREKFAST"
-//     if (s == "BREAKFAST" || s == "BREKFAST") return MealType::BREAKFAST;
-//     if (s == "LUNCH")     return MealType::LUNCH;
-//     if (s == "DINNER")    return MealType::DINNER;
-
-//     throw invalid_argument("Invalid meal type: " + in);
-// }
-
-// ReserveDay Meal::stringToReserveDay(const string& in) {
-//     string s = in;
-//     trim_inplace(s);
-//     s = upper_copy(s);
-
-//     if (s == "SATURDAY")   return ReserveDay::SATURDAY;
-//     if (s == "SUNDAY")     return ReserveDay::SUNDAY;
-//     if (s == "MONDAY")     return ReserveDay::MONDAY;
-//     if (s == "TUESDAY")    return ReserveDay::TUESDAY;
-//     if (s == "WEDNESDAY")  return ReserveDay::WEDNESDAY;
-//     if (s == "THURSDAY")   return ReserveDay::THURSDAY;
-
-//     throw invalid_argument("Invalid reserve day: " + in);
-// }
-
-// برای چاپ خوانا
-/*ostream& operator<<(ostream& os, const MealType& mt) {
-    switch (mt) {
-        case MealType::BREAKFAST: os << "BREAKFAST"; break;
-        case MealType::LUNCH:     os << "LUNCH";     break;
-        case MealType::DINNER:    os << "DINNER";    break;
-    }
-    return os;
-}*/
