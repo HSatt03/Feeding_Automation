@@ -68,87 +68,84 @@ int main()
             }            
         }
     }
-    else
+    char option;
+    while(1)
     {
-        char option;
-        while(1)
+        drawBox(10, 3, 35, 13);
+        gotoxy(23, 5);
+        cout << "*Log in*";
+        gotoxy(13, 7);
+        cout << "1_ Admin";
+        gotoxy(13, 9);
+        cout << "2_ Student";
+        gotoxy(13, 11);
+        cout << "3_ Exit";
+        gotoxy(13, 13);
+        cout << "Choose your option: ";
+        option = getch();
+        gotoxy(20, 20);
+        system("cls");
+        switch(option)
         {
-            drawBox(10, 3, 35, 13);
-            gotoxy(23, 5);
-            cout << "*Log in*";
-            gotoxy(13, 7);
-            cout << "1_ Admin";
-            gotoxy(13, 9);
-            cout << "2_ Student";
-            gotoxy(13, 11);
-            cout << "3_ Exit";
-            gotoxy(13, 13);
-            cout << "Choose your option: ";
-            option = getch();
-            gotoxy(20, 20);
-            system("cls");
-            switch(option)
+            case '1':
             {
-                case '1':
+                drawBox(1, 1, 50, 10);
+                gotoxy(19, 3);
+                cout << "*Admin Log in*";
+                gotoxy(4, 5);
+                cout << "Phone: ";
+                cin >> admin_phone;
+                gotoxy(4, 7);
+                cout << "Password: ";
+                cin >> admin_password;
+                gotoxy(20, 20);
+                system("cls");
+                auto& admin_session = AdminSession::SessionManager::instance();
+                admin_session.login(admin_phone, admin_password);
+                while(1)
                 {
-                    drawBox(1, 1, 50, 10);
-                    gotoxy(19, 3);
-                    cout << "*Admin Log in*";
-                    gotoxy(4, 5);
-                    cout << "Phone: ";
-                    cin >> admin_phone;
-                    gotoxy(4, 7);
-                    cout << "Password: ";
-                    cin >> admin_password;
-                    gotoxy(20, 20);
+                    AdminPanel panel;
                     system("cls");
-                    auto& admin_session = AdminSession::SessionManager::instance();
-                    admin_session.login(admin_phone, admin_password);
-                    while(1)
+                    if (!panel.showMenu()) // ❌ اگر false برگردونه، یعنی Exit زده
                     {
-                        AdminPanel panel;
-                        system("cls");
-                        if (!panel.showMenu()) // ❌ اگر false برگردونه، یعنی Exit زده
-                        {
-                            break; // از حلقه منوی ادمین بیا بیرون → برگرد به منوی اصلی
-                        }
+                        break; // از حلقه منوی ادمین بیا بیرون → برگرد به منوی اصلی
                     }
-                    break;
                 }
-                case '2':
+                break;
+            }
+            case '2':
+            {
+                drawBox(1, 1, 50, 10);
+                gotoxy(19, 3);
+                cout << "*Student Log in*";
+                gotoxy(4, 5);
+                cout << "Student Number: ";
+                cin >> student_number;
+                gotoxy(4, 7);
+                cout << "Password: ";
+                cin >> student_password;
+                gotoxy(20, 20);
+                system("cls");
+                auto& student_session = StudentSession::SessionManager::instance();
+                student_session.login(student_number, student_password);
+                while(1)
                 {
-                    drawBox(1, 1, 50, 10);
-                    gotoxy(19, 3);
-                    cout << "*Student Log in*";
-                    gotoxy(4, 5);
-                    cout << "Student Number: ";
-                    cin >> student_number;
-                    gotoxy(4, 7);
-                    cout << "Password: ";
-                    cin >> student_password;
-                    gotoxy(20, 20);
+                    Panel panel;
                     system("cls");
-                    auto& student_session = StudentSession::SessionManager::instance();
-                    student_session.login(student_number, student_password);
-                    while(1)
+                    if(!panel.showMenu(&student_session))
                     {
-                        Panel panel;
-                        system("cls");
-                        if(!panel.showMenu(&student_session))
-                        {
-                            break;
-                        }
+                        break;
                     }
-                    break;
                 }
-                case '3':
-                    system("cls");
-                    cout << "BYE BYE !!! ";
-                    exit(1);
-                default:
-                    throw invalid_argument("Admin session file not found.");
-            } 
-        }
+                break;
+            }
+            case '3':
+                system("cls");
+                cout << "BYE BYE !!! ";
+                exit(1);
+            default:
+                throw invalid_argument("Admin session file not found.");
+        } 
     }
     return 0;
 }
