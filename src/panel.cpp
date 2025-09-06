@@ -92,17 +92,17 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
         // چاپ گزینه‌ها
         gotoxy(19,y_start+2);
         cout <<"Student Menu    ---  <<Feeding automation>>";
-        gotoxy(12, y_start+5);  cout <<"1 _ show StudentInfo";
-        gotoxy(12, y_start+7);  cout <<"2 _ check Balance";
-        gotoxy(12, y_start+9);  cout <<"3 _ view Reservation";
-        gotoxy(12, y_start+11); cout << "4 _ view ShappingCart";
-        gotoxy(12, y_start+13); cout <<"5 _ add To ShoppingCart";
-        gotoxy(12, y_start+15); cout << "6 _ confirm ShoppingCart";
-        gotoxy(12, y_start+17); cout << "7 _ remove ShoppingCartItem";
-        gotoxy(12, y_start+19); cout << "8 _ increase Balance";
-        gotoxy(12, y_start+21); cout << "9 _ view Recent Transactions";
-        gotoxy(12, y_start+23); cout << "10 _ cancel Reservation";
-        gotoxy(12, y_start+25); cout << "11 _ exit";
+        gotoxy(12, y_start+5);  cout <<"1 _ Show StudentInfo";
+        gotoxy(12, y_start+7);  cout <<"2 _ Check Balance";
+        gotoxy(12, y_start+9);  cout <<"3 _ View Reservation";
+        gotoxy(12, y_start+11); cout << "4 _ View ShappingCart";
+        gotoxy(12, y_start+13); cout <<"5 _ Add To ShoppingCart";
+        gotoxy(12, y_start+15); cout << "6 _ Confirm ShoppingCart";
+        gotoxy(12, y_start+17); cout << "7 _ Remove ShoppingCartItem";
+        gotoxy(12, y_start+19); cout << "8 _ Increase Balance";
+        gotoxy(12, y_start+21); cout << "9 _ View Recent Transactions";
+        gotoxy(12, y_start+23); cout << "10 _ Cancel Reservation";
+        gotoxy(12, y_start+25); cout << "11 _ Sign out of the user account";
 
         gotoxy(12, y_start+28);
         cout<<"Choose your option (1-11): ";

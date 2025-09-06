@@ -28,6 +28,7 @@ fs::path AdminPanel::chooseCsvFile()
 
 void AdminPanel::displayAllMeals()
 {
+    drawBox(0, 0, 70, 100);
     string mealsFile = "meals.json"; // مسیر فایل CSV
     ifstream file(mealsFile);
     if (!file.is_open()) 
@@ -40,6 +41,7 @@ void AdminPanel::displayAllMeals()
     file.close();
     vector<Meal> meals = j.get<std::vector<Meal>>();  // دی‌سریالایز کل لیست
     // چاپ همه غذاها
+    gotoxy(25, 1);
     cout << "=== All Meals ===" << endl << endl;
     int line = 2; // خط شروع
     for (const auto& m : meals) 
@@ -51,6 +53,7 @@ void AdminPanel::displayAllMeals()
 
 void AdminPanel::displayAllDininigHalls()
 {
+    drawBox(0, 0, 70, 100);
     string diningHallsFile = "diningHalls.json"; // مسیر فایل CSV
     ifstream file(diningHallsFile);
     if (!file.is_open()) 
@@ -63,6 +66,7 @@ void AdminPanel::displayAllDininigHalls()
     file.close();
     vector<DiningHall> halls = j.get<std::vector<DiningHall>>();
     // نمایش همه سالن‌ها با متد print
+    gotoxy(23, 1);
     cout << "=== All Dining Halls ===" << endl << endl;
     int line = 2; // خط شروع
     for (const auto& hall : halls) 
@@ -237,7 +241,7 @@ bool AdminPanel::showMenu()
     gotoxy(startX+5, startY+9);  cout << "4 - Add diningHall";
     gotoxy(startX+5, startY+11); cout << "5 - Remove meal";
     gotoxy(startX+5, startY+13); cout << "6 - Remove diningHall";
-    gotoxy(startX+5, startY+15); cout << "7 - Exit";
+    gotoxy(startX+5, startY+15); cout << "7 - Sign out of the user account";
     gotoxy(startX+5, startY+17);
     cout << "Enter your choice (1-7): ";
     while(true)
