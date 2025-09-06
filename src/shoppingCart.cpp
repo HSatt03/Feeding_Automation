@@ -11,14 +11,18 @@
 #include "utils.hpp"
 #include "configPaths.hpp"
 #include "logsystem.hpp"
+
 using namespace std;
 
 void gotoxy(int x, int y);
+
 time_t specialTime = 123456;
+
 ShoppingCart::ShoppingCart()
 {
     
 }
+
 Transaction ShoppingCart::confirm()
 {
     float totalAmount = 0;
@@ -26,14 +30,12 @@ Transaction ShoppingCart::confirm()
     Student* student = StudentSession::SessionManager::instance().currentStudent();
     LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
     string studentID = student->getStudentId();
-
     // تغییر وضعیت رزروها به SUCCESSFULL و محاسبه مجموع قیمت‌ها
     for (auto& reservation : _reservations)
     {
         //reservation.setStatus(RStatus::SUCCESSFULL);
         totalAmount += reservation.getMeal().getPrice();
     }
-
     if (!student || student->getBalance() < totalAmount)
     {
         logger.addLog("Student " + studentID + " failed to confirm shopping cart. " , "ERROR");
@@ -49,21 +51,16 @@ Transaction ShoppingCart::confirm()
                     TransactionType::PAYMENT,
                     TransactionStatus::FIALED,
                     now);
-
         if (student)
         { 
            student->addTransaction(t);
         }
-        
         return t;
     }
-
     student->setBalance(student->getBalance() - totalAmount);
-
     for (auto& reservation : _reservations)
     {
         reservation.setStatus(RStatus::SUCCESSFULL);
-
         Reservation* confirmed = new Reservation(
             reservation.getDhallPtr(),
             reservation.getMealPtr(),
@@ -77,42 +74,22 @@ Transaction ShoppingCart::confirm()
         gotoxy(2, 15);
         cout << "Shopping cart confirmed successfully.\n";
    } 
-
-
-    // اضافه کردن هر رزرو به لیست رزروهای دانشجو
-    /*if (student)
-{
-    for (auto& reservation : _reservations)  // برای هر رزرو موجود در سبد خرید
-    {
-        Reservation* confirmed = new Reservation(reservation.getDhallPtr(), reservation.getMealPtr(), reservation.getReservation_id(), 
-        reservation.getStatus(), reservation.getCreatedTime(), reservation.getRemovedTime());  // ایجاد رزرو جدید روی heap
-        student->addReservation(confirmed);  // اضافه کردن به رزروهای دانشجو
-    }
-}*/
-
-
-
     // تولید یک transactionID تصادفی (مثلا عددی بین 1 تا 10000)
-    static int transactionCounter = 1;
-    int transactionID = transactionCounter++;
-
+    static int transactionCounter = 0;
+    int transactionID = ++transactionCounter;
     // تولید یک trackingCode 5 رقمی به صورت رشته
     string trackingCode = to_string(rand() % 90000 + 10000);
-
     // ایجاد Transaction با مقدارهای مناسب
     Transaction t(transactionID, trackingCode, totalAmount,
                   TransactionType::PAYMENT,
                   TransactionStatus::COMPLETED,
                   now);
-
-if (student)
-{ 
-    student->addTransaction(t);
-}  // دخیره کردن در کلاس student
-
+    if (student)
+    { 
+        student->addTransaction(t);
+    }  // دخیره کردن در کلاس student
     // پاک کردن سبد خرید بعد از تایید تراکنش
     clear();
-
     return t;
 } 
 
@@ -133,10 +110,6 @@ bool ShoppingCart::removeReservation(int ID)
             (*add).setRemovedTime(time(0));
             return true;
         }
-        /*else 
-        {
-            (*add).setRemovedTime(specialTime);
-        }*/
     }
     return false;
 }
@@ -168,42 +141,12 @@ void ShoppingCart::viewShoppingCartItems()
         j += rowSpacing; // فاصله به رزرو بعدی
     }
 }
-// void ShoppingCart::viewShoppingCartItems()
-// {
-//     int i = 2;          // ستون شروع
-//     int j = 3;         // سطر شروع
-//     int rowSpacing = 10; // فاصله بین رزروها
-
-//     for(auto& add : _reservations)
-//     {
-//         add.print(i, j);  // print حالا باید پارامتر بگیرد
-
-//         time_t created = add.getCreatedTime();
-//         tm* localTime = localtime(&created);
-//         char buffer1[80];
-//         strftime(buffer1, sizeof(buffer1), "%H:%M:%S" , localTime);
-
-//         gotoxy(i, j+5); // چاپ زمان اضافه شدن کمی پایین‌تر
-//         cout << "Added to shopping cart at " << buffer1 << endl;
-
-//         if(add.getRemovedTime() != specialTime)
-//         {
-//             time_t removed = add.getRemovedTime();            
-//             tm* localTime = localtime(&removed);
-//             char buffer2[80];
-//             strftime(buffer2, sizeof(buffer2), "%H:%M:%S" , localTime);
-//             gotoxy(i, j+6);
-//             cout << "Deleted from shopping cart at " << buffer2 << endl;
-//         }
-
-//         j += rowSpacing; // فاصله به رزرو بعدی
-//     }
-// }
 
 void ShoppingCart::clear()
 {
     _reservations.clear();
 }
+
 vector<Reservation> ShoppingCart::getReservations()const
 {
     return _reservations;

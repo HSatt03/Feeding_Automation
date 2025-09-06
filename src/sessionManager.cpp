@@ -30,10 +30,12 @@ void StudentSession::SessionManager::setCurrentStudent(Student* student)
 {
     _currentStudent = student;
 }
+
 void StudentSession::SessionManager::setShoppingCart(ShoppingCart* shopping_cart)
 {
     _shopping_cart = shopping_cart;
 }
+
 void StudentSession::SessionManager::setStudentID(string studentID)
 {
     _studentID = studentID;
@@ -44,43 +46,36 @@ void StudentSession::SessionManager::load_session(string& studentNumber, const s
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
     LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
-
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     if (!fs::exists(sessionFile))
     {
         logger.addLog("Session file not found for student " + studentNumber, "ERROR");
         throw runtime_error("Cannot open session file.");
     }
-
     ifstream file(sessionFile);
     if (!file.is_open())
     {
         logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
         throw runtime_error("Cannot open session file.");
     }
-
     json j;
     file >> j;
     file.close();
-
     string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass))
     {
         logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
         throw runtime_error("Incorrect password.");
     }
-
     // پاک کردن شی قبلی اگر وجود داشته باشه
     delete _currentStudent;
     _currentStudent = new Student();
-
     // بارگذاری از JSON با adl_serializer
     // nlohmann::adl_serializer<Student>::from_json(j, *_currentStudent);
     *_currentStudent = j;
     // پاک کردن shopping cart قبلی و ایجاد جدید
     delete _shopping_cart;
     _shopping_cart = new ShoppingCart();
-
     // ست کردن شناسه دانشجو
     _studentID = _currentStudent->getStudentId();
 
@@ -89,22 +84,12 @@ void StudentSession::SessionManager::load_session(string& studentNumber, const s
     msgBox.showMessages();
     system("pause");
     msgBox.clear();
-    // cout << "Session loaded successfully." << endl;
 }
 
 void StudentSession::SessionManager::save_session(string& studentNumber, const string& password )
 {
     LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
-
-
     fs::path path = ConfigPaths::instance().getStudentSessionsDir() / ( "Student_" + _studentID + ".json");
-    // j["userID"] = to_string(_currentStudent->getUserID());
-    // j["studentID"] = _studentID;
-    // j["name"] = _currentStudent->getName();
-    // j["lastname"] = _currentStudent->getLastName();
-    // j["hashpassword"] = _currentStudent->getHashedPasssword();
-    // j["email"] = _currentStudent->getEmail();
-    // j["phone"] = _currentStudent->getPhone();
     json j = *_currentStudent;
     ofstream out(path);
     if (!out.is_open()) 
@@ -122,7 +107,6 @@ void StudentSession::SessionManager::login(string studentNumber, string password
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
     LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
-
     // فرض: _studentID و پسورد هش شده در این کلاس ست شده اند
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     fs::path existStudentSessionDir = ConfigPaths::instance().getStudentSessionsDir();
@@ -135,7 +119,6 @@ void StudentSession::SessionManager::login(string studentNumber, string password
             msgBox.showMessages();
             system("pause");
             msgBox.clear();
-            // cout << "Session directory created: " << existStudentSessionDir << endl;
         }
         catch (const fs::filesystem_error& e) 
         {
@@ -143,7 +126,6 @@ void StudentSession::SessionManager::login(string studentNumber, string password
             msgBox.showMessages();
             system("pause");
             msgBox.clear();
-            // cerr << "Error creating directory: " << e.what() << endl;
             throw;
         }
     }
@@ -203,7 +185,6 @@ void StudentSession::SessionManager::login(string studentNumber, string password
                     msgBox.showMessages();
                     system("pause");
                     msgBox.clear();
-                    // cout << "Login successful." << endl;
                     break;
                 }
             }
@@ -221,26 +202,21 @@ void StudentSession::SessionManager::logout(string studentNumber, string passwor
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
     LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
-
     // پاک کردن شی دانشجو و سبد خرید (اگر داینامیک ساختی)
     delete _currentStudent;
     _currentStudent = nullptr;
 
     delete _shopping_cart;
     _shopping_cart = nullptr;
-
     string studentID = _studentID;
     _studentID = "";
-
     // حذف فایل سشن مربوط به این دانشجو
     fs::path path = ConfigPaths::instance().getStudentSessionsDir()
                     / ("Student_" + studentID + ".json");
-
     if (fs::exists(path))
     {
         fs::remove(path);
     }
-
     logger.addLog("Student " + studentID + " logged out", "INFO");
     msgBox.addMessage("Admin logged out successfully.", MsgColor::GREEN);
     msgBox.showMessages();

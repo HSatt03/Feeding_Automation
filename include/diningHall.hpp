@@ -1,5 +1,6 @@
 #ifndef DININGHALL_H
 #define DININGHALL_H
+
 #include <iostream>
 #include <string>
 #include "json.hpp"

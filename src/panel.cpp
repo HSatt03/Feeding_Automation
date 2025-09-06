@@ -61,7 +61,6 @@ void Panel::Action(int n, StudentSession::SessionManager *Student)
         cancelReservation(*Student);
         break;
     case 11:        
-        // exit(*Student);
         cout << "Bye Bye!!!";
         break;
     }
@@ -72,7 +71,6 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
     int hightMM = 34, widthMM = 36, y_start = 3;
-    // bool sw_MainMenu = true;
 
     while (1)
     {
@@ -118,7 +116,6 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
             system("cls");
             if(n == 11) 
             {
-                // sw_MainMenu = false; // خروج از منو
                 return false;
             }
             else
@@ -128,11 +125,6 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
                 drawBox(83, 22, 35, 3);
                 gotoxy(85, 23);
                 cout << "Press Enter to return to menu...";
-                // if (cin.peek() == '\n') 
-                // {  
-                //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                // }
-                // cin.get();
                 getch();
             }
         }
@@ -140,130 +132,9 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
         {
             gotoxy(12, y_start+31);
             cout << "Invalid option! Press Enter to try again...";
-            // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            // cin.get();
             getch();
         }
     }
-    /*auto& msgBox = ConsoleMessageBox::instance();
-    msgBox.setPosition(7, 20, 100, 5);
-    int hightMM, widthMM;
-    int i,j,y_start;
-    bool sw_MainMenu;
-    char ch;
-
-  //while(true)
-  //{
-    sw_MainMenu = true;
-    hightMM = 34;
-    widthMM = 36;
-    y_start = 3;
-
-    //system("cls");
-    gotoxy(5,y_start);
-    for(int i=0 ; i<=widthMM-1 ; i++)
-    {
-        if(i%2==0)
-        {
-            cout<<"* ";
-        }
-        else
-        {
-            cout <<"* ";
-        }
-    }
-    for(int i=1 ; i<hightMM-1 ; i++)
-    {
-        gotoxy(5,y_start+i);
-        cout<<"* ";
-        for(int j=1 ; j<widthMM-1 ; j++)
-            cout<<"  ";
-        cout<<"*";
-    }
-    // gotoxy(5,y_start+i);
-    // for(int i=0 ; i<=widthMM-1 ; i++)
-    // {
-    //     if(i%2==0)
-    //     {
-    //         cout <<"* ";
-    //     }
-    //     else
-    //     {
-    //         cout <<"* ";
-    //     }
-    // }
-    gotoxy(5, y_start + hightMM - 1);
-    for(int i=0 ; i<=widthMM-1 ; i++)
-    {
-        cout << "* ";
-    }
-
-    gotoxy(19,y_start+2);
-    cout <<"Student Menu    ---  <<Feeding atuomation>>";
-    gotoxy(12, y_start+5);
-    cout <<"1 _ show StudentInfo";
-
-    gotoxy(12, y_start+7);
-    cout <<"2 _ check Balance";
-
-    gotoxy(12, y_start+9);
-    cout <<"3 _ view Reservation";
-
-    gotoxy(12, y_start+11);
-    cout << "4 _ view ShappingCast";
-
-    gotoxy(12, y_start+13);
-    cout <<"5 _ add To ShoppingCart";
-
-    gotoxy(12, y_start+15);
-    cout << "6 _ confirm ShoppingCart";
-
-    gotoxy(12, y_start+17);
-    cout << "7 _ remove ShoppingCartItem";
-
-    gotoxy(12, y_start+19);
-    cout << "8 _ increase Balance";
-
-    gotoxy(12, y_start+21);
-    cout << "9 _ view Recent Transactions";
-
-    gotoxy(12, y_start+23);
-    cout << "10 _ cancel Reservation";
-
-    gotoxy(12, y_start+25);
-    cout << "11 _ exit";
-
-    gotoxy(12, y_start+28);
-    cout<<"Choose your option, then press ENTER key ( 1 to 11 ): ";
-
-
-    while (sw_MainMenu)
-    {
-    //   if (kbhit())
-    //   {
-    //       int n = getch();
-    //       if(n >= 1 && n <= 9)
-    //         Action(n, Student);
-    //     else
-    //         gotoxy(12,y_start+31);
-    //         cout << "The number is not valid!";
-
-    //   }
-        int n;
-        cin >> n;
-        if(n >= 1 && n <= 11)
-        {
-            Action(n, Student);
-           if(n == 11) sw_MainMenu = false;
-        }
-        else
-        {
-            gotoxy(12, y_start+31);
-            cout << "Invalid option!\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // پاک کردن بافر
-            cin.get(); // صبر برای Enter   
-        }
-    }*/
 }
    
 void Panel::showStudentInfo(StudentSession::SessionManager& s)
@@ -314,12 +185,6 @@ void Panel::viewShappingCart(StudentSession::SessionManager& s)
     s.shoppingCart()->viewShoppingCartItems();
     string studentID = s.currentStudent()->getStudentId();
     logger.addLog("Student " + studentID + " viewed shopping cart.", "INFO");
-    /*for (auto& r : s.shoppingCart()->getReservations()) 
-    {
-        string studentID = s.currentStudent()->getStudentId();
-        logger.addLog("Student " + studentID + " viewed shopping cart.", "INFO");
-        r.print();
-    }*/
 }
 
 void Panel::addToShoppingCart(StudentSession::SessionManager& s)
@@ -327,8 +192,8 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
     system("cls");
-    // drawBox(0, 0, 50, 25);
     string studentID = s.currentStudent()->getStudentId();
+    drawBox(0, 0, 60, 110);
 
     // ---------- Read meals file ----------
     string mealsFile = ConfigPaths::instance().getMealsJson().string();
@@ -339,34 +204,9 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        // cerr << "Error opening meals file: " << mealsFile << "\n";
         logger.addLog("Student " + studentID + " failed to open meals file.", "ERROR");
-        // delete selectedHall;
         return;
     }
-
-    // vector<Meal> meals;
-    // string line;
-    // // Skip header
-    // getline(mealStream, line);
-
-    // while (getline(mealStream, line)) {
-    //     stringstream ss(line);
-    //     string idStr, name, priceStr, mealTypeStr, dayStr;
-
-    //     getline(ss, idStr, ',');
-    //     getline(ss, name, ',');
-    //     getline(ss, priceStr, ',');
-    //     getline(ss, mealTypeStr, ',');
-    //     getline(ss, dayStr, ',');
-
-    //     int id = stoi(idStr);
-    //     float price = stof(priceStr);
-    //     MealType mealType = Meal::stringToMealType(mealTypeStr);
-    //     ReserveDay day = Meal::stringToReserveDay(dayStr);
-
-    //     meals.emplace_back(id, name, price, mealType, day, true);
-    // }
 
     nlohmann::json jMeals;
     mealStream >> jMeals;
@@ -405,8 +245,6 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        // cout << "Invalid meal selected!\n";
-        // delete selectedHall();
         return;
     }
     Meal* selectedMeal = new Meal(*mealIt);
@@ -421,34 +259,8 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        // cerr << "Error opening dining halls file: " << hallFile << "\n";
         return;
     }
-
-    // vector<DiningHall> halls;
-    // //string line;
-
-    // // Skip header
-    // getline(hallStream, line);
-
-    // while (getline(hallStream, line)) 
-    // {
-    //     stringstream ss(line);
-    //     string idStr, name, genderStr, address, capStr;
-
-    //     getline(ss, idStr, ',');
-    //     getline(ss, name, ',');
-    //     getline(ss, genderStr, ',');
-    //     getline(ss, address, ',');
-    //     getline(ss, capStr, ',');
-
-    //     int id = std::stoi(idStr);
-    //     int cap = std::stoi(capStr);
-    //     Gender g = DiningHall::stringToGender(genderStr);
-
-    //     halls.emplace_back(id, name, address, cap);
-    //     halls.back().setGender(g);
-    // }
 
     nlohmann::json jHalls;
     hallStream >> jHalls;
@@ -485,7 +297,6 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        // cout << "Invalid dining hall selected!\n";
         return;
     }
     DiningHall* selectedHall = new DiningHall(*hallIt);
@@ -506,14 +317,13 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        // cout << "✅ Meal added to shopping cart!\n";
-    } else 
+    } 
+    else 
     {
         msgBox.addMessage("Error: Shopping cart not available!", MsgColor::RED);
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        // cout << "❌ Error: Shopping cart not available!\n";
         logger.addLog("Student " + studentID + " shopping cart unavailable.", "ERROR");
         // Free heap memory since reservation was not stored:
         delete selectedHall;
@@ -523,7 +333,6 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 
 void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
 {
-    //string studentID = s.currentStudent()->getStudentId();
     system("cls");
     drawBox(0, 0, 60, 20);
     gotoxy(2, 1);
@@ -593,7 +402,7 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
         s.currentStudent()->setBalance(f);
     }
     
-    t.setTransactionID(t.getTransactionID()+1);
+    t.setTransactionID(t.getTransactionID());
     t.setTrackingCode(to_string(rand() % 90000 + 10000));
     t.setAmount(amount);
     t.setType(TransactionType::TRANSFER);
@@ -646,9 +455,6 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 
 
     }
-
-    //gotoxy(2, 19);
-    //system("pause");
 }
 
 void Panel::cancelReservation(StudentSession::SessionManager& s)

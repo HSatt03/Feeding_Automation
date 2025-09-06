@@ -64,6 +64,7 @@ void User::setPhone(string phone)
 {
     _phone = phone;
 }
+
 void User::print()const
 {
     gotoxy(2, 3);

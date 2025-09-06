@@ -1,5 +1,6 @@
 #ifndef LOGSYSTEM_HPP
 #define LOGSYSTEM_HPP
+
 #include <string>
 
 using namespace std;

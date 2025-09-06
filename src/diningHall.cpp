@@ -31,6 +31,7 @@ DiningHall::DiningHall(int hall_id, string name, string address, int capacity)
     _address = address;
     _capacity = capacity;
 }
+
 void DiningHall::setHallId(int hall_id)
 {
     if(hall_id >= 0)
@@ -42,6 +43,7 @@ void DiningHall::setHallId(int hall_id)
         throw invalid_argument("Incorect value for hall_id!!!");
     }
 }
+
 void DiningHall::setName(string name)
 {
     int value = name.length();
@@ -54,6 +56,7 @@ void DiningHall::setName(string name)
     }
     _name = name;
 }
+
 void DiningHall::setGender(Gender g)
 {
     if(g == Gender::MALE || g == Gender::FEMALE)
@@ -65,10 +68,12 @@ void DiningHall::setGender(Gender g)
         throw invalid_argument("Incorrect value for gender!!!");
     }
 }
+
 void DiningHall::setAddress(string address)
 {
     _address = address;
 }
+
 void DiningHall::setCapacity(int capacity)
 {
     if(capacity > 0)
@@ -135,7 +140,6 @@ void DiningHall::print_panel(int startX, int startY) const
     cout << "Gender: " << _gender;
 }
 
-
 Gender DiningHall::stringToGender(const string& s) 
 {
     if(s == "Male")
@@ -169,41 +173,15 @@ Gender DiningHall::selectGender()
     int choice;
     cout << "Select gender:\n1. Male\n2. Female\nChoice: ";
     cin >> choice;
-    switch (choice) {
-        case 1: return Gender::MALE;
-        case 2: return Gender::FEMALE;
+    switch (choice) 
+    {
+        case 1: 
+            return Gender::MALE;
+        case 2: 
+            return Gender::FEMALE;
         default: 
             cout << "Invalid choice, default BREAKFAST selected.\n";
             return Gender::FEMALE;
     }
 }
-
-// static inline void trim_inplace(string& s) {
-//     auto not_space = [](int ch){ return !isspace(ch); };
-//     s.erase(s.begin(), find_if(s.begin(), s.end(), not_space));
-//     s.erase(find_if(s.rbegin(), s.rend(), not_space).base(), s.end());
-// }
-
-// static inline string upper_copy(std::string s) {
-//     transform(s.begin(), s.end(), s.begin(),
-//                    [](unsigned char c){ return toupper(c); });
-//     return s;
-// }
-
-// Gender DiningHall::stringToGender(const string& in) {
-//     string s = in;
-//     trim_inplace(s);
-//     s = upper_copy(s);
-
-//     if (s == "MALE"   || s == "M") return Gender::MALE;
-//     if (s == "FEMALE" || s == "F") return Gender::FEMALE;
-
-//     throw invalid_argument("Invalid gender: " + in);
-// }
-
-/*std::ostream& operator<<(ostream& os, const Gender& g) {
-    os << (g == Gender::MALE ? "Male" : "Female");
-    return os;
-}*/
-
 

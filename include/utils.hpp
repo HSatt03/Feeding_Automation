@@ -3,6 +3,5 @@
 
 void gotoxy(int x, int y);
 void drawBox(int x, int y, int width, int height);
-// void printColor(const string& text, int foreground, int background = 0);
 
 #endif

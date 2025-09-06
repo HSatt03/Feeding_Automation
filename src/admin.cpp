@@ -25,11 +25,9 @@ bool Admin::isThereAnyAdmin()
 {   
     // 1. مسیر پوشه‌ای که سشن ادمین‌ها توش ذخیره شده رو می‌گیریم
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
-
     // 2. چک می‌کنیم آیا این مسیر وجود داره و واقعاً یه دایرکتوری هست
     if (!fs::exists(adminSessionsDir) || !fs::is_directory(adminSessionsDir))
         return false;  // اگه وجود نداشت یا دایرکتوری نبود، یعنی ادمینی نیست
-
     // 3. داخل پوشه می‌گردیم ببینیم حداقل یه فایل با پسوند .json هست یا نه
     for (const auto& entry : fs::directory_iterator(adminSessionsDir))
     {
@@ -39,7 +37,6 @@ bool Admin::isThereAnyAdmin()
             return true;
         }
     }
-
     // 5. اگر هیچ فایل .json پیدا نشد، ادمینی وجود نداره
     return false;
 }
@@ -63,14 +60,8 @@ void Admin::sign_in(string& adminPho, string& password)
     int adminID = 0;
     hashedPassword = bcrypt::generateHash(password);
     Admin *currentAdmin = new Admin(adminID, firstName, lastName, hashedPassword, adminPho);
-    //int adminID = adminID;
     adminSession.setCurrentAdmin(currentAdmin, adminID);
     adminSession.save_session(adminPho, password);
-    // msgBox.addMessage("Admin registered successfully.", MsgColor::GREEN);
-    // msgBox.showMessages();
-    // system("pause");
-    // msgBox.clear();
-    // cout << "Admin registered successfully." << endl;
 }
 
 void Admin::print()const

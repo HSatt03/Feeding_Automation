@@ -2,6 +2,7 @@
 #define CONFIGPATHS_HPP
 
 #include <filesystem>
+
 namespace fs = std::filesystem;
 
 class ConfigPaths
