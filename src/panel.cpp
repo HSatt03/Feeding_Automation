@@ -125,8 +125,8 @@ bool Panel::showMenu(StudentSession::SessionManager *Student)
             {
                 // صبر تا کاربر Enter بزند قبل از چاپ دوباره منو
                 Action(n, Student); // اجرای عملیات انتخاب شده
-                drawBox(83, 2, 35, 3);
-                gotoxy(85, 3);
+                drawBox(83, 22, 35, 3);
+                gotoxy(85, 23);
                 cout << "Press Enter to return to menu...";
                 // if (cin.peek() == '\n') 
                 // {  
@@ -290,15 +290,18 @@ void Panel::checkBalance(StudentSession::SessionManager& s)
 
 void Panel::viewReservation(StudentSession::SessionManager& s)
 {
+    int i = 2;
+    int j = 3;
     system("cls");
-    drawBox(0, 0, 40, 40);
-    gotoxy(10, 2);
-    cout << "Definite reservation :";
+    drawBox(0, 0, 70, 100);
+    gotoxy(22, 1);
+    cout << "Definite reservation :" << endl;
     for (Reservation* R : s.currentStudent()->getReserves()) // روش for-each
     {
         string studentID = s.currentStudent()->getStudentId();
         logger.addLog("Student " + studentID + " viewed reservations.", "INFO");
-        // if (R) R->print(); // چک کن null نباشه
+        if (R) R->print(i, j); // چک کن null نباشه
+        j+=8;
     }
 }
 
@@ -522,7 +525,7 @@ void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
 {
     //string studentID = s.currentStudent()->getStudentId();
     system("cls");
-    drawBox(0, 0, 40, 15);
+    drawBox(0, 0, 60, 20);
     gotoxy(2, 1);
         if (!s.shoppingCart() || s.shoppingCart()->getReservations().empty())
     {
@@ -610,7 +613,7 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
 {
     string studentID = s.currentStudent()->getStudentId();
     system("cls"); // پاک کردن صفحه
-    drawBox(0, 0, 100, 20);
+    drawBox(0, 0, 110, 20);
     gotoxy(2, 1);
     cout << "Recent Transactions:\n";
 
@@ -627,12 +630,12 @@ void Panel::viewRecentTransactions(StudentSession::SessionManager& s)
     for (const auto& t : transactions)
     {
         gotoxy(2, line++);
-        cout << "ID: " << t.getTransactionID()
-             << " Code: " << t.getTrackingCode()
-             << " Amount: " << t.getAmount()
-             << " Type: " << (t.getType() == TransactionType::TRANSFER ? "Transfer" : "Payment")
+        cout << "ID: " << t.getTransactionID() << ","
+             << " Code: " << t.getTrackingCode() << ","
+             << " Amount: " << t.getAmount() << ","
+             << " Type: " << (t.getType() == TransactionType::TRANSFER ? "Transfer" : "Payment") << ","
              << " Status: " << (t.getStatus() == TransactionStatus::COMPLETED ? "Completed" :
-                                t.getStatus() == TransactionStatus::PENDING ? "Pending" : "Failed");
+                                t.getStatus() == TransactionStatus::PENDING ? "Pending" : "Failed") << ",";
             time_t createdAt = t.getCreatedAT();       // مقدار رو بگیر
             cout << " Time: " << ctime(&createdAt);    // آدرس بده به ctime
                     
@@ -653,7 +656,7 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     string studentID = s.currentStudent()->getStudentId();
     int id;
     system("cls");
-    drawBox(0, 0, 50, 8);
+    drawBox(0, 0, 60, 8);
     gotoxy(2, 1);
     cout << "Enter reservation ID to cancel: ";
     cin >> id;

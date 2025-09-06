@@ -75,9 +75,11 @@ void AdminPanel::displayAllMeals()
     vector<Meal> meals = j.get<std::vector<Meal>>();  // دی‌سریالایز کل لیست
     // چاپ همه غذاها
     cout << "=== All Meals ===" << endl << endl;
+    int line = 2; // خط شروع
     for (const auto& m : meals) 
     {
-        m.print();  // فرض می‌کنیم متد print() داخل کلاس Meal چاپ مناسب انجام میده
+        m.print(line);  // فرض می‌کنیم متد print() داخل کلاس Meal چاپ مناسب انجام میده
+        line += 8; // هر سالن حدود 7 خط طول میکشه
     }
 }
 
@@ -130,9 +132,11 @@ void AdminPanel::displayAllDininigHalls()
     vector<DiningHall> halls = j.get<std::vector<DiningHall>>();
     // نمایش همه سالن‌ها با متد print
     cout << "=== All Dining Halls ===" << endl << endl;
+    int line = 2; // خط شروع
     for (const auto& hall : halls) 
     {
-        hall.print();
+        hall.print(line);
+        line += 7; // هر سالن حدود 7 خط طول میکشه
     }
 }
 
@@ -444,8 +448,8 @@ bool AdminPanel::showMenu()
                 else
                 {
                     action(choice);
-                    drawBox(7, 20, 100, 5);
-                    gotoxy(22, 22);
+                    drawBox(83, 22, 35, 3);
+                    gotoxy(85, 23);
                     cout << "Press Enter to return to menu...";
                     getch();
                     // if (cin.peek() == '\n') 

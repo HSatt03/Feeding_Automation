@@ -92,23 +92,28 @@ void DiningHall::inputHalls()
     cin >> _capacity;
 }
 
-void DiningHall::print()const
+void DiningHall::print(int startLine) const
 {
-    static int i = 2;
-    static int j = 2;
-    gotoxy(i, j);
+    int i = 2;
+    int j = startLine;
+
+    gotoxy(i, j++);
     cout << "Name: " << _name;
-    gotoxy(i, j+=1);
+
+    gotoxy(i, j++);
     cout << "Hall Id: " << _hall_id;
-    gotoxy(i, j+=1);
+
+    gotoxy(i, j++);
     cout << "Address: " << _address;
-    gotoxy(i, j+=1);
+
+    gotoxy(i, j++);
     cout << "Capacity: " << _capacity;
-    gotoxy(i, j+=1);
-    cout <<"Gender: " << _gender;    
-    gotoxy(i, j+=1);
-    cout << "********************" << endl;  
-    j++;          
+
+    gotoxy(i, j++);
+    cout << "Gender: " << _gender;
+
+    gotoxy(i, j++);
+    cout << "********************" << endl;
 }
 
 void DiningHall::print_panel(int startX, int startY) const

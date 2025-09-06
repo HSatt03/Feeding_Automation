@@ -23,7 +23,7 @@ public:
     void setAddress(string);
     void setCapacity(int);
     void inputHalls();
-    void print()const;
+    void print(int)const;
     void print_panel(int, int)const;
     bool operator==(DiningHall);
     int getHallId()const

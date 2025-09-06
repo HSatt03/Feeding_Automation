@@ -150,30 +150,30 @@ ostream& operator<<(ostream& os, const ReserveDay& num)
     return os;
 }
 
-void Meal::print()const
+void Meal::print(int startLine) const
 {
-    static int i = 2;
-    static int j = 2;
+    int i = 2;
+    int j = startLine; // از خط داده شده شروع کن
     gotoxy(i, j);
     cout << "Meal id : " << _meal_id;
-    gotoxy(i, j+=1);
+    gotoxy(i, ++j);
     cout << "Meal name : " << _name;
-    gotoxy(i, j+=1);
+    gotoxy(i, ++j);
     cout << "Meal price : " << _price;
-    gotoxy(i, j+=1);
+    gotoxy(i, ++j);
     cout << "Meal type : " << _meal_type;
-    gotoxy(i, j+=1);
+    gotoxy(i, ++j);
     cout << "Side item : ";
-    for (int i=0 ; i < _side_item.size() ; ++i)
+    for (int k = 0; k < _side_item.size(); ++k)
     {
-            cout << _side_item[i] << " , ";
+        cout << _side_item[k] << " , ";
     } 
-    gotoxy(i, j+=1);
-    cout << "Reserve Day:" << _reserve_day;
-    gotoxy(i, j+=1);
-    cout <<"******************";
-    j++;
+    gotoxy(i, ++j);
+    cout << "Reserve Day: " << _reserve_day;
+    gotoxy(i, ++j);
+    cout << "******************";
 }
+
 
 void Meal::print_panel(int startX, int startY) const
 {
