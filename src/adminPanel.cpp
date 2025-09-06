@@ -12,6 +12,7 @@
 #include "diningHall.hpp"
 #include "configPaths.hpp"
 #include "utils.hpp"
+#include "logsystem.hpp"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -33,6 +34,7 @@ void AdminPanel::displayAllMeals()
     ifstream file(mealsFile);
     if (!file.is_open()) 
     {
+        adminLogger.addLog("Admin failed to open meals.json.", "ERROR");
         cerr << "Cannot open meals json file." << endl;
         return;
     }
@@ -41,6 +43,7 @@ void AdminPanel::displayAllMeals()
     file.close();
     vector<Meal> meals = j.get<std::vector<Meal>>();  // دی‌سریالایز کل لیست
     // چاپ همه غذاها
+    adminLogger.addLog("Admin viewed all meals." , "INFO");
     gotoxy(25, 1);
     cout << "=== All Meals ===" << endl << endl;
     int line = 2; // خط شروع
@@ -57,7 +60,8 @@ void AdminPanel::displayAllDininigHalls()
     string diningHallsFile = "diningHalls.json"; // مسیر فایل CSV
     ifstream file(diningHallsFile);
     if (!file.is_open()) 
-    {
+    {    
+        adminLogger.addLog("Admin failed to open diningHalls.json.", "ERROR");
         cerr << "Cannot open dining halls json file." << endl;
         return;
     }
@@ -66,6 +70,7 @@ void AdminPanel::displayAllDininigHalls()
     file.close();
     vector<DiningHall> halls = j.get<std::vector<DiningHall>>();
     // نمایش همه سالن‌ها با متد print
+    adminLogger.addLog("Admin viewed all dining halls." , "INFO");
     gotoxy(23, 1);
     cout << "=== All Dining Halls ===" << endl << endl;
     int line = 2; // خط شروع
@@ -99,11 +104,13 @@ void AdminPanel::addNewMealIntractive()
     ofstream outFile("meals.json");
     if(!outFile)
     {
+        adminLogger.addLog("Admin failed to open meals.json for writing.", "ERROR");
         cerr << "The file does not open!!!";
         exit(0);
     }
     outFile << setw(4) << jArray << endl; // نوشتن JSON مرتب
     outFile.close();
+    adminLogger.addLog("Admin added " + to_string(n) + " new meals.", "INFO");
     cout << "\nMeals added to json file successfully!\n";
 }
 
@@ -131,11 +138,13 @@ void AdminPanel::addNewDiningHallIntractive()
     ofstream outFile("diningHalls.json");
     if(!outFile)
     {
+        adminLogger.addLog("Admin failed to open diningHalls.json for writing.", "ERROR");
         cerr << "The file does not open!!!";
         exit(0);
     }
     outFile << setw(4) << jArray << endl; // نوشتن JSON مرتب
     outFile.close();
+    adminLogger.addLog("Admin added " + to_string(n) + " new dining halls.", "INFO");
     cout << "Dining hall added to json file successfully!\n";
 }
 
@@ -146,6 +155,7 @@ void AdminPanel::removeMeal(int mealIDToRemove)
     ifstream inFile(mealsFile);
     if (!inFile.is_open())
     {
+        adminLogger.addLog("Admin failed to open meals.json for removing meal.", "ERROR");
         cerr << "Cannot open meals.json file." << endl;
         return;
     }
@@ -164,10 +174,12 @@ void AdminPanel::removeMeal(int mealIDToRemove)
         ofstream outFile(mealsFile);
         outFile << json(meals).dump(4);  // دوباره serialize
         outFile.close();
+        adminLogger.addLog("Admin removed meal with ID " + to_string(mealIDToRemove), "INFO");
         cout << "Meal with ID " << mealIDToRemove << " removed successfully.\n";
     }
     else
     {
+        adminLogger.addLog("Admin tried to remove non-existent meal with ID " + to_string(mealIDToRemove), "WARNING");
         cout << "Meal with ID " << mealIDToRemove << " not found.\n";
     }
 }
@@ -179,6 +191,7 @@ void AdminPanel::removeDiningHall(int hallIDToRemove)
     ifstream inFile(DiningHallsjson);
     if (!inFile.is_open())
     {
+        adminLogger.addLog("Admin failed to open diningHalls.json for removing hall.", "ERROR");
         cerr << "Cannot open diningHalls.json file." << endl;
         return;
     }
@@ -198,10 +211,12 @@ void AdminPanel::removeDiningHall(int hallIDToRemove)
         outFile << json(halls).dump(4);  // serialize دوباره
         outFile.close();
 
+        adminLogger.addLog("Admin removed dining hall with ID " + to_string(hallIDToRemove), "INFO");
         cout << "Dining hall with ID " << hallIDToRemove << " removed successfully.\n";
     }
     else
     {
+        adminLogger.addLog("Admin tried to remove non-existent dining hall with ID " + to_string(hallIDToRemove), "WARNING");
         cout << "Dining hall with ID " << hallIDToRemove << " not found.\n";
     }
 }
@@ -254,6 +269,7 @@ bool AdminPanel::showMenu()
                 system("cls");
                 if(choice == '7') // یعنی Exit
                 {
+                    adminLogger.addLog("Admin signed out.", "INFO");
                     return false;  // 🔙 برگرد به منوی اصلی
                 }
                 else

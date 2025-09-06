@@ -42,12 +42,11 @@ void AdminSession::SessionManager::load_session(string& adminPho, const string& 
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
-    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     fs::path sessionFile = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
     ifstream file(sessionFile);
     if (!file.is_open()) 
     {
-        logger.addLog("Failed to open session file for admin " + adminPho, "ERROR");
+        adminLogger.addLog("Failed to open session file for admin " + adminPho, "ERROR");
         throw runtime_error("Cannot open admin session file.");
     }
     json j;
@@ -56,7 +55,7 @@ void AdminSession::SessionManager::load_session(string& adminPho, const string& 
     string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass)) 
     {
-        logger.addLog("Failed login attempt (incorrect password) for admin " + adminPho, "WARNING");
+        adminLogger.addLog("Failed login attempt (incorrect password) for admin " + adminPho, "WARNING");
         throw runtime_error("Incorrect admin password.");
     }
     if (_currentAdmin == nullptr)
@@ -65,7 +64,7 @@ void AdminSession::SessionManager::load_session(string& adminPho, const string& 
     }
     *_currentAdmin = j;
     _adminID = _currentAdmin->getUserID();
-    logger.addLog("Session loaded successfully for admin " + adminPho, "INFO");
+    adminLogger.addLog("Session loaded successfully for admin " + adminPho, "INFO");
     msgBox.addMessage("Session loaded successfully.", MsgColor::GREEN);
     msgBox.showMessages();
     system("pause");
@@ -74,16 +73,15 @@ void AdminSession::SessionManager::load_session(string& adminPho, const string& 
 
 void AdminSession::SessionManager::save_session(string& adminPho, const string& password)
 {
-    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     fs::path path = ConfigPaths::instance().getAdminSessionsDir() / ("Admin_" + adminPho + ".json");
     json j = *_currentAdmin;
     ofstream out(path);
     if (!out.is_open()) 
     {
-        logger.addLog("Cannot open admin session file for writing (ID: " + to_string(_adminID) + ")", "ERROR");
+        adminLogger.addLog("Cannot open admin session file for writing (ID: " + to_string(_adminID) + ")", "ERROR");
         throw std::runtime_error("Cannot open admin session file for writing.");
     }
-    logger.addLog("Admin session saved (ID: " + to_string(_adminID) + ")", "INFO");
+    adminLogger.addLog("Admin session saved (ID: " + to_string(_adminID) + ")", "INFO");
     out << j.dump(4); // 4 = فاصله برای خوانایی بیشتر
 }
 
@@ -91,18 +89,17 @@ void AdminSession::SessionManager::login(string adminPho, string password)
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
-    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     fs::path adminSessionsDir = ConfigPaths::instance().getAdminSessionsDir();
     if (!Admin::isThereAnyAdmin()) 
     {
         try 
         {
             fs::create_directories(adminSessionsDir);
-            logger.addLog("Session directory created successfully for admin: " + adminPho, "INFO");
+            adminLogger.addLog("Session directory created successfully for admin: " + adminPho, "INFO");
         }
         catch (const fs::filesystem_error& e) 
         {
-            logger.addLog("Error creating admin sessions directory: " + string(e.what()), "ERROR");
+            adminLogger.addLog("Error creating admin sessions directory: " + string(e.what()), "ERROR");
             msgBox.addMessage("Error creating directory: " + string(e.what()), MsgColor::RED);
             msgBox.showMessages();
             system("pause");
@@ -113,9 +110,9 @@ void AdminSession::SessionManager::login(string adminPho, string password)
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-        logger.addLog("No admin found, registering first admin (" + adminPho + ")", "INFO");
+        adminLogger.addLog("No admin found, registering first admin (" + adminPho + ")", "INFO");
         Admin::sign_in(adminPho, password);
-        logger.addLog("First admin registered successfully", "INFO");
+        adminLogger.addLog("First admin registered successfully", "INFO");
         msgBox.addMessage("First admin registered successfully.", MsgColor::GREEN);
         msgBox.showMessages();
         system("pause");
@@ -127,12 +124,12 @@ void AdminSession::SessionManager::login(string adminPho, string password)
         fs::path sessionFile = adminSessionsDir / ("Admin_" + adminPho + ".json");
         if (!fs::exists(sessionFile))
         {
-            logger.addLog("Admin session file not found for " + adminPho, "WARNING");
+            adminLogger.addLog("Admin session file not found for " + adminPho, "WARNING");
             throw std::runtime_error("Admin session file not found.");
         }
         // اگر فایل بود، بارگذاری سشن و چک کردن پسورد
         load_session(adminPho, password);
-        logger.addLog("Admin " + adminPho + " logged in successfully", "INFO");
+        adminLogger.addLog("Admin " + adminPho + " logged in successfully", "INFO");
         msgBox.addMessage("Admin login successfully.", MsgColor::GREEN);
         msgBox.showMessages();
         system("pause");
@@ -144,10 +141,9 @@ void AdminSession::SessionManager::logout(string adminPho, string password)
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
-    LogSystem logger(ConfigPaths::instance().getAdminsLogFile().string());
     if (_currentAdmin == nullptr) 
     {
-        logger.addLog("Logout attempt with no active admin session", "WARNING");
+        adminLogger.addLog("Logout attempt with no active admin session", "WARNING");
         msgBox.addMessage("No admin is currently logged in.", MsgColor::GREEN);
         msgBox.showMessages();
         system("pause");
@@ -159,7 +155,7 @@ void AdminSession::SessionManager::logout(string adminPho, string password)
     {
         fs::remove(sessionFile);
     }
-    logger.addLog("Admin " + adminPho + " logged out", "INFO");
+    adminLogger.addLog("Admin " + adminPho + " logged out", "INFO");
     delete _currentAdmin;
     _currentAdmin = nullptr;
     _adminID = 0;
