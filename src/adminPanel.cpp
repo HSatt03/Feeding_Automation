@@ -207,7 +207,7 @@ bool AdminPanel::showMenu()
     const int startX = 10;   // شروع ستون منو
     const int startY = 2;    // شروع سطر منو
     const int width = 40;    // عرض منو
-    const int height = 20;   // ارتفاع منو
+    const int height = 26;   // ارتفاع منو
     char choice;
     // رسم بالای منو
     gotoxy(startX, startY);
