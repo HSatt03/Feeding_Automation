@@ -3,11 +3,15 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <filesystem>
+#include <fstream>
 #include "logsystem.hpp"
+#include "configPaths.hpp"
 
 using namespace std;
 
-string LogSystem::getCurrentTime() {
+string LogSystem::getCurrentTime() 
+{
     time_t now = time(nullptr);
     tm *ltm = localtime(&now);
 
@@ -18,19 +22,21 @@ string LogSystem::getCurrentTime() {
 
 #include <filesystem>
 
-LogSystem::LogSystem(const std::string &file) : filename(file) {
-    namespace fs = std::filesystem;
+LogSystem::LogSystem(const string &file) : filename(file) 
+{
+    namespace fs = filesystem;
     fs::path logPath = fs::path(file).parent_path();
 
     if (!logPath.empty() && !fs::exists(logPath)) {
         fs::create_directories(logPath);
     }
 
-    std::ofstream outfile(filename, std::ios::app);
+    ofstream outfile(filename, ios::app);
     outfile.close();
 }
 
-void LogSystem::addLog(const string &message, const string &level) {
+void LogSystem::addLog(const string &message, const string &level) 
+{
     ofstream outfile(filename, ios::app);
     if (!outfile) {
         cerr << "Error: Cannot open log file!" << endl;
@@ -43,3 +49,7 @@ void LogSystem::addLog(const string &message, const string &level) {
 
     outfile.close();
 }
+
+// اینجا دوتا logger ساخته میشن
+LogSystem adminLogger(ConfigPaths::instance().getAdminsLogFile().string());
+LogSystem studentLogger(ConfigPaths::instance().getStudentsLogFile().string());

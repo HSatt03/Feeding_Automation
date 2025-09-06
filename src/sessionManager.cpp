@@ -45,17 +45,16 @@ void StudentSession::SessionManager::load_session(string& studentNumber, const s
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
-    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     if (!fs::exists(sessionFile))
     {
-        logger.addLog("Session file not found for student " + studentNumber, "ERROR");
+        studentLogger.addLog("Session file not found for student " + studentNumber, "ERROR");
         throw runtime_error("Cannot open session file.");
     }
     ifstream file(sessionFile);
     if (!file.is_open())
     {
-        logger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
+        studentLogger.addLog("Failed to open session file for student " + studentNumber, "ERROR");
         throw runtime_error("Cannot open session file.");
     }
     json j;
@@ -64,7 +63,7 @@ void StudentSession::SessionManager::load_session(string& studentNumber, const s
     string storedHashedPass = j["hashpassword"];
     if (!bcrypt::validatePassword(password, storedHashedPass))
     {
-        logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
+        studentLogger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
         throw runtime_error("Incorrect password.");
     }
     // پاک کردن شی قبلی اگر وجود داشته باشه
@@ -79,7 +78,7 @@ void StudentSession::SessionManager::load_session(string& studentNumber, const s
     // ست کردن شناسه دانشجو
     _studentID = _currentStudent->getStudentId();
 
-    logger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
+    studentLogger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
     msgBox.addMessage("Session loaded successfully.", MsgColor::GREEN);
     msgBox.showMessages();
     system("pause");
@@ -88,16 +87,15 @@ void StudentSession::SessionManager::load_session(string& studentNumber, const s
 
 void StudentSession::SessionManager::save_session(string& studentNumber, const string& password )
 {
-    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
     fs::path path = ConfigPaths::instance().getStudentSessionsDir() / ( "Student_" + _studentID + ".json");
     json j = *_currentStudent;
     ofstream out(path);
     if (!out.is_open()) 
     {
-        logger.addLog("Cannot open student session file for writing (ID: " + _studentID + ")", "ERROR");
+        studentLogger.addLog("Cannot open student session file for writing (ID: " + _studentID + ")", "ERROR");
         throw std::runtime_error("Cannot open student session file for writing.");
     }
-    logger.addLog("Student session saved (ID: " + _studentID + ")", "INFO");
+    studentLogger.addLog("Student session saved (ID: " + _studentID + ")", "INFO");
     out << j.dump(4);
     out.close();
 }
@@ -106,7 +104,6 @@ void StudentSession::SessionManager::login(string studentNumber, string password
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
-    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
     // فرض: _studentID و پسورد هش شده در این کلاس ست شده اند
     fs::path sessionFile = ConfigPaths::instance().getStudentSessionsDir() / ("Student_" + studentNumber + ".json");
     fs::path existStudentSessionDir = ConfigPaths::instance().getStudentSessionsDir();
@@ -132,7 +129,7 @@ void StudentSession::SessionManager::login(string studentNumber, string password
     if (fs::exists(sessionFile))
     {
         load_session(studentNumber, password);
-        logger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
+        studentLogger.addLog("Session loaded successfully for student " + studentNumber, "INFO");
         msgBox.addMessage("Student login successfully.", MsgColor::GREEN);
         msgBox.showMessages();
         system("pause");
@@ -144,7 +141,7 @@ void StudentSession::SessionManager::login(string studentNumber, string password
         ifstream file(csvPath);
         if(!file.is_open()) 
         {
-            logger.addLog("Cannot open students CSV file", "ERROR");
+            studentLogger.addLog("Cannot open students CSV file", "ERROR");
             throw runtime_error("Cannot open students CSV file.");
         }
         string line;
@@ -168,7 +165,7 @@ void StudentSession::SessionManager::login(string studentNumber, string password
                 // string pass = password;
                 if(!bcrypt::validatePassword(password, hashedPassword))
                 {
-                    logger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
+                    studentLogger.addLog("Failed login attempt (incorrect password) for student " + studentNumber, "WARNING");
                     throw runtime_error("Incorrect password.");
                 }
                 else
@@ -180,7 +177,7 @@ void StudentSession::SessionManager::login(string studentNumber, string password
 
 
                     save_session(studentNumber, password);
-                    logger.addLog("Student " + studentID + " logged in successfully", "INFO");
+                    studentLogger.addLog("Student " + studentID + " logged in successfully", "INFO");
                     msgBox.addMessage("Login successful.", MsgColor::GREEN);
                     msgBox.showMessages();
                     system("pause");
@@ -191,7 +188,7 @@ void StudentSession::SessionManager::login(string studentNumber, string password
         }
         if(!found) 
         {
-            logger.addLog("Login attempt for non-existing student " + studentNumber, "WARNING");
+            studentLogger.addLog("Login attempt for non-existing student " + studentNumber, "WARNING");
             throw runtime_error("Student ID not found.");
         }
     }
@@ -201,7 +198,6 @@ void StudentSession::SessionManager::logout(string studentNumber, string passwor
 {
     auto& msgBox = ConsoleMessageBox::instance();
     msgBox.setPosition(7, 20, 100, 5);
-    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
     // پاک کردن شی دانشجو و سبد خرید (اگر داینامیک ساختی)
     delete _currentStudent;
     _currentStudent = nullptr;
@@ -217,7 +213,7 @@ void StudentSession::SessionManager::logout(string studentNumber, string passwor
     {
         fs::remove(path);
     }
-    logger.addLog("Student " + studentID + " logged out", "INFO");
+    studentLogger.addLog("Student " + studentID + " logged out", "INFO");
     msgBox.addMessage("Admin logged out successfully.", MsgColor::GREEN);
     msgBox.showMessages();
     system("pause");

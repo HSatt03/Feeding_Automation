@@ -9,7 +9,6 @@
 #include "student.hpp"
 #include "sessionManager.hpp"
 #include "utils.hpp"
-#include "configPaths.hpp"
 #include "logsystem.hpp"
 
 using namespace std;
@@ -28,7 +27,6 @@ Transaction ShoppingCart::confirm()
     float totalAmount = 0;
     time_t now = time(0);
     Student* student = StudentSession::SessionManager::instance().currentStudent();
-    LogSystem logger(ConfigPaths::instance().getStudentsLogFile().string());
     string studentID = student->getStudentId();
     // تغییر وضعیت رزروها به SUCCESSFULL و محاسبه مجموع قیمت‌ها
     for (auto& reservation : _reservations)
@@ -38,7 +36,7 @@ Transaction ShoppingCart::confirm()
     }
     if (!student || student->getBalance() < totalAmount)
     {
-        logger.addLog("Student " + studentID + " failed to confirm shopping cart. " , "ERROR");
+        studentLogger.addLog("Student " + studentID + " failed to confirm shopping cart. " , "ERROR");
         gotoxy(2, 15);
         cout << "Insufficient balance. Please recharge your account." << endl;
 
@@ -70,7 +68,7 @@ Transaction ShoppingCart::confirm()
             reservation.getRemovedTime()
         );
         student->addReservation(confirmed);
-        logger.addLog("Student " + studentID + " confirmed shopping cart: " , "INFO");
+        studentLogger.addLog("Student " + studentID + " confirmed shopping cart: " , "INFO");
         gotoxy(2, 15);
         cout << "Shopping cart confirmed successfully.\n";
    } 
