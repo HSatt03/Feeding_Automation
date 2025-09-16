@@ -127,15 +127,6 @@ void ShoppingCart::viewShoppingCartItems()
         strftime(buffer1, sizeof(buffer1), "%H:%M:%S" , localTime);
         gotoxy(i, j+8);
         cout << "The reservation was added to the shopping cart at " << buffer1 << endl;
-        if(add->getRemovedTime() == specialTime)
-        {
-            time_t removed = add->getCreatedTime();            
-            tm* localTime = localtime(&removed);
-            char buffer2[80];
-            strftime(buffer2, sizeof(buffer2), "%H:%M:%S" , localTime);
-            gotoxy(i, j+9);
-            cout << "The reservation was deleted from the shopping cart at " << buffer2 << endl;
-        }
         j += rowSpacing; // فاصله به رزرو بعدی
     }
 }

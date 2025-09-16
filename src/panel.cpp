@@ -58,9 +58,6 @@ void Panel::Action(int n, StudentSession::SessionManager *Student)
     case 10:
         cancelReservation(*Student);
         break;
-    case 11:        
-        cout << "Bye Bye!!!";
-        break;
     }
 }
 
@@ -166,11 +163,11 @@ void Panel::viewReservation(StudentSession::SessionManager& s)
     system("cls");
     drawBox(0, 0, 70, 100);
     gotoxy(22, 1);
+    string studentID = s.currentStudent()->getStudentId();
+    studentLogger.addLog("Student " + studentID + " viewed reservations.", "INFO");
     cout << "Definite reservation :" << endl;
     for (Reservation* R : s.currentStudent()->getReserves()) // روش for-each
     {
-        string studentID = s.currentStudent()->getStudentId();
-        studentLogger.addLog("Student " + studentID + " viewed reservations.", "INFO");
         if (R) R->print(i, j); // چک کن null نباشه
         j+=8;
     }
@@ -214,18 +211,22 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
 
     // ---------- Select meal ----------
     int i, j;
-    i = 3;
+    i = 2;
     j = 4;
     gotoxy(17, 2);
     cout << "Available meals:";
     for (auto& meal : meals) 
-    {
+    { 
         gotoxy(i, j);
         cout << "Meal ID: " << meal.getMeal_id();
         gotoxy(i, j+=1);
         cout << "Meal Name: " << meal.getName();
         gotoxy(i, j+=1);
         cout << "Meal Price: " << meal.getPrice() << " Toman";
+        gotoxy(i, j+=1);
+        cout << "Meal Type: " << Meal::mealTypeToString(meal.getMeal_type());
+        gotoxy(i, j+=1);
+        cout << "Meal Day: " << Meal::reserveDayToString(meal.getReserveDay());
         j+=2;
     }
 
@@ -278,6 +279,10 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
         cout << "Hall Name: " << hall.getName();
         gotoxy(i, j+=1);
         cout << "Hall Gender: "<< (hall.getGender() == Gender::MALE ? "Male" : "Female");
+        gotoxy(i, j+=1);
+        cout << "Hall Address: "<< hall.getAddress();
+        gotoxy(i, j+=1);
+        cout << "Hall Capacity: "<< hall.getCapacity();
         j+=2;
     }
 

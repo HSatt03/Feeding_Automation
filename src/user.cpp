@@ -80,26 +80,3 @@ string User::getType()
 {
     return "User";
 }
-
-UserType User::detectUserType(const string& studentNumber) 
-{
-    namespace fs = filesystem;
-
-    // مسیر فایل سشن دانشجو
-    fs::path studentSession = ConfigPaths::instance().getStudentSessionsDir()
-                            / ("Student_" + studentNumber + ".json");
-
-    // مسیر فایل سشن ادمین
-    fs::path adminSession = ConfigPaths::instance().getAdminSessionsDir()
-                          / ("Admin_" + studentNumber + ".json");
-
-    if (fs::exists(adminSession)) {
-        return UserType::ADMIN;
-    }
-    else if (fs::exists(studentSession)) {
-        return UserType::STUDENT;
-    }
-    else {
-        return UserType::UNKNOWN; // یعنی اصلاً کاربر وجود نداره
-    }
-}

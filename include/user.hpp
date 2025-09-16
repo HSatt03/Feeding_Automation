@@ -8,12 +8,6 @@
 using namespace std;
 using json = nlohmann::json;
 
-enum class UserType 
-{
-    STUDENT,
-    ADMIN,
-    UNKNOWN
-};
 class User
 {
 public:
@@ -27,7 +21,6 @@ public:
 
     virtual void print()const;
     virtual string getType();
-    UserType detectUserType(const string&);
     
     int getUserID()const
     {
