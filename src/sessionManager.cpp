@@ -96,7 +96,7 @@ void StudentSession::SessionManager::save_session(string& studentNumber, const s
         throw std::runtime_error("Cannot open student session file for writing.");
     }
     studentLogger.addLog("Student session saved (ID: " + _studentID + ")", "INFO");
-    out << j.dump(4);
+    out << j.dump(4); //هر سطح تو در تو با 4 فاصله فاصله می گیرد
     out.close();
 }
 

@@ -2,6 +2,7 @@
 #include <string>
 #include "consoleMessageBox.hpp"
 #include "utils.hpp"
+using namespace std;
 
 ConsoleMessageBox::ConsoleMessageBox(int x, int y, int width, int height)
     : _x(x), _y(y), _width(width), _height(height) {}
@@ -20,7 +21,7 @@ void ConsoleMessageBox::setPosition(int x, int y, int width, int height)
     _height = height;
 }
 
-void ConsoleMessageBox::addMessage(const std::string& msg, MsgColor color)
+void ConsoleMessageBox::addMessage(const string& msg, MsgColor color)
 {
     _messages.push_back({msg, color});
 }
@@ -34,7 +35,7 @@ void ConsoleMessageBox::showMessages()
         if (msgY >= _y + _height - 1) break;
         gotoxy(_x + 1, msgY++);
         setColor(m.second);
-        std::cout << m.first.substr(0, _width - 2);
+        cout << m.first.substr(0, _width - 2);
         resetColor();
     }
 }
@@ -44,7 +45,7 @@ void ConsoleMessageBox::clear()
     for (int i = 0; i < _height; ++i)
     {
         gotoxy(_x, _y + i);
-        std::cout << std::string(_width, ' ');
+        cout << string(_width, ' ');
     }
     _messages.clear();
 }
@@ -52,14 +53,14 @@ void ConsoleMessageBox::clear()
 void ConsoleMessageBox::drawBox()
 {
     gotoxy(_x, _y);
-    std::cout << "+" << std::string(_width - 2, '-') << "+";
+    cout << "+" << string(_width - 2, '-') << "+";
     for (int i = 1; i < _height - 1; ++i)
     {
         gotoxy(_x, _y + i);
-        std::cout << "|" << std::string(_width - 2, ' ') << "|";
+        cout << "|" << string(_width - 2, ' ') << "|";
     }
     gotoxy(_x, _y + _height - 1);
-    std::cout << "+" << std::string(_width - 2, '-') << "+";
+    cout << "+" << string(_width - 2, '-') << "+";
 }
 
 void ConsoleMessageBox::gotoxy(int x, int y)

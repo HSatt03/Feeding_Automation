@@ -15,7 +15,7 @@ public:
     static ConsoleMessageBox& instance();
 
     void setPosition(int x, int y, int width, int height);
-    void addMessage(const std::string& msg, MsgColor color = MsgColor::DEFAULT);
+    void addMessage(const string& msg, MsgColor color = MsgColor::DEFAULT);
     void showMessages();
     void clear();
 
@@ -26,7 +26,7 @@ private:
     void resetColor();
 
     int _x, _y, _width, _height;
-    std::vector<std::pair<std::string, MsgColor>> _messages;
+    vector<pair<string, MsgColor>> _messages;
 };
 
 #endif

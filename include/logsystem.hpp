@@ -12,7 +12,7 @@ private:
 
 public:
     LogSystem(const string &file); // سازنده
-    void addLog(const string &message, const std::string &level = "INFO"); // افزودن پیام
+    void addLog(const string &message, const string &level = "INFO"); // افزودن پیام
 };
 // دوتا لاگر جداگانه
 extern LogSystem adminLogger;
