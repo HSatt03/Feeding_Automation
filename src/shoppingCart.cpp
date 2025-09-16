@@ -72,7 +72,7 @@ Transaction ShoppingCart::confirm()
         gotoxy(2, 15);
         cout << "Shopping cart confirmed successfully.\n";
    } 
-    // تولید یک transactionID تصادفی (مثلا عددی بین 1 تا 10000)
+    
     static int transactionCounter = 0;
     int transactionID = ++transactionCounter;
     // تولید یک trackingCode 5 رقمی به صورت رشته
