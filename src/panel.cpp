@@ -312,28 +312,13 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     count_reservation += 1;
 
     // ---------- Add to shopping cart ----------
-    auto& session = StudentSession::SessionManager::instance();
-    if (session.shoppingCart()) 
-    {
-        session.shoppingCart()->addReservation(*reservation);
+        s.shoppingCart()->addReservation(*reservation);
         studentLogger.addLog("Student " + studentID + " added meal " + to_string(mealChoice) + " to shopping cart in dining hall: " + selectedHall->getName(),
     "INFO");
         msgBox.addMessage("Meal added to shopping cart!", MsgColor::GREEN);
         msgBox.showMessages();
         system("pause");
         msgBox.clear();
-    } 
-    else 
-    {
-        msgBox.addMessage("Error: Shopping cart not available!", MsgColor::RED);
-        msgBox.showMessages();
-        system("pause");
-        msgBox.clear();
-        studentLogger.addLog("Student " + studentID + " shopping cart unavailable.", "ERROR");
-        // Free heap memory since reservation was not stored:
-        delete selectedHall;
-        delete selectedMeal;
-    }
 }
 
 void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
@@ -346,18 +331,10 @@ void Panel::confirmShoppingCart(StudentSession::SessionManager& s)
         cout << "Shopping cart is empty!" << endl;
         return;
     }
+    
+    Transaction t = s.shoppingCart()->confirm();
+    t.print();
 
-    vector<Transaction> transactions;  // استفاده از وکتور به پیشنهاد چت جی پی تی برای دخیره تراکنش ها
-    try 
-    {
-        Transaction t = s.shoppingCart()->confirm();
-        transactions.push_back(t);
-        t.print(); // نمایش جزئیات تراکنش
-    } 
-    catch (const exception& e) 
-    {
-        cout << "Error: " << e.what() << endl;
-    }
 }
 
 void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
@@ -503,13 +480,4 @@ void Panel::cancelReservation(StudentSession::SessionManager& s)
     gotoxy(2, 3);
     studentLogger.addLog("Student " + studentID + " attempted to cancel non-existent reservation ID " + to_string(id), "WARNING");
     cout << "Reservation ID not found!\n";
-}
-
-void Panel::exit(StudentSession::SessionManager& s)
-{
-    system("cls");
-    string studentID = s.currentStudent()->getStudentId();
-    studentLogger.addLog("Student " + studentID + " exited panel.", "INFO");
-    cout << "Bye Bye!!!  ";
-    std::exit(0);
 }
