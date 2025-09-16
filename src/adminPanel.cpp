@@ -319,9 +319,6 @@ void AdminPanel::action(char character)
             cin >> ID2;
             removeDiningHall(ID2);
             break;
-        case '7':
-            cout << "Bye Bye!!!  ";
-            break;
         default:
             cout << "You have selected an out-of-range option.";
     }
