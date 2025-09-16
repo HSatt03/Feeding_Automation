@@ -5,6 +5,7 @@
 #include <sstream>
 #include <filesystem>
 #include <fstream>
+#include <filesystem>
 #include "logsystem.hpp"
 #include "configPaths.hpp"
 
@@ -20,14 +21,13 @@ string LogSystem::getCurrentTime()
     return oss.str();
 }
 
-#include <filesystem>
-
 LogSystem::LogSystem(const string &file) : filename(file) 
 {
     namespace fs = filesystem;
     fs::path logPath = fs::path(file).parent_path();
 
-    if (!logPath.empty() && !fs::exists(logPath)) {
+    if (!logPath.empty() && !fs::exists(logPath))
+    {
         fs::create_directories(logPath);
     }
 
@@ -38,7 +38,8 @@ LogSystem::LogSystem(const string &file) : filename(file)
 void LogSystem::addLog(const string &message, const string &level) 
 {
     ofstream outfile(filename, ios::app);
-    if (!outfile) {
+    if (!outfile) 
+    {
         cerr << "Error: Cannot open log file!" << endl;
         return;
     }

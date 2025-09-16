@@ -15,7 +15,7 @@
 #include "logsystem.hpp"
 
 using namespace std;
-namespace fs = std::filesystem;
+namespace fs = filesystem;
 
 void gotoxy(int x, int y);
 
@@ -30,7 +30,7 @@ fs::path AdminPanel::chooseCsvFile()
 void AdminPanel::displayAllMeals()
 {
     drawBox(0, 0, 70, 100);
-    string mealsFile = "meals.json"; // مسیر فایل CSV
+    string mealsFile = "meals.json"; // مسیر فایل Json
     ifstream file(mealsFile);
     if (!file.is_open()) 
     {
@@ -41,7 +41,7 @@ void AdminPanel::displayAllMeals()
     nlohmann::json j;
     file >> j;
     file.close();
-    vector<Meal> meals = j.get<std::vector<Meal>>();  // دی‌سریالایز کل لیست
+    vector<Meal> meals = j.get<vector<Meal>>();  // دی‌سریالایز کل لیست
     // چاپ همه غذاها
     adminLogger.addLog("Admin viewed all meals." , "INFO");
     gotoxy(25, 1);
@@ -57,7 +57,7 @@ void AdminPanel::displayAllMeals()
 void AdminPanel::displayAllDininigHalls()
 {
     drawBox(0, 0, 70, 100);
-    string diningHallsFile = "diningHalls.json"; // مسیر فایل CSV
+    string diningHallsFile = "diningHalls.json"; // مسیر فایل Json
     ifstream file(diningHallsFile);
     if (!file.is_open()) 
     {    

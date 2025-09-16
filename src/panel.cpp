@@ -314,7 +314,7 @@ void Panel::addToShoppingCart(StudentSession::SessionManager& s)
     // ---------- Add to shopping cart ----------
         s.shoppingCart()->addReservation(*reservation);
         studentLogger.addLog("Student " + studentID + " added meal " + to_string(mealChoice) + " to shopping cart in dining hall: " + selectedHall->getName(),
-    "INFO");
+        "INFO");
         msgBox.addMessage("Meal added to shopping cart!", MsgColor::GREEN);
         msgBox.showMessages();
         system("pause");
@@ -343,7 +343,6 @@ void Panel::removeShoppingCartItem(StudentSession::SessionManager& s)
     system("cls");
     drawBox(0, 0, 50, 8);
     gotoxy(2, 1);
-    string studentID = s.currentStudent()->getStudentId();
     cout << "Enter the reservationID you want to remove:";
     cin >> ID;
     if(s.shoppingCart()->removeReservation(ID))
@@ -391,11 +390,7 @@ void Panel::increaseBalance(StudentSession::SessionManager& s)
     t.print();
     studentLogger.addLog("Student " + studentID + " increased balance by " + to_string(amount) + ". Transaction ID: " + to_string(t.getTransactionID()), "INFO");
 
-    Student* student = StudentSession::SessionManager::instance().currentStudent();
-    if (student)
-    {
-        student->addTransaction(t);  // دخیره کردن در کلاس student
-    }             
+    s.currentStudent()->addTransaction(t);  // دخیره کردن در کلاس student       
 }
 
 void Panel::viewRecentTransactions(StudentSession::SessionManager& s)

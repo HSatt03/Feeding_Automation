@@ -106,7 +106,7 @@ namespace nlohmann
             t.setAmount(j.at("amount").get<float>());
             t.setType(Transaction::stringToTransactionType((j.at("type").get<string>())));
             t.setStatus(Transaction::stringToTransactionStatus(j.at("status").get<string>()));
-            std::tm tm = {};
+            tm tm = {};
             istringstream ss(j.at("createdAT").get<string>());
             ss >> get_time(&tm, "%Y-%m-%dT%H:%M:%S");
             t.setCreatedAT(mktime(&tm));
