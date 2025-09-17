@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 enum class MsgColor { DEFAULT, RED, GREEN, YELLOW, BLUE };
 
 class ConsoleMessageBox
